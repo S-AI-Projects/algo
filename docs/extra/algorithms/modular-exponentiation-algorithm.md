@@ -72,6 +72,12 @@ def modular_exponentiation(base, exp, mod):
 # Example usage
 result = modular_exponentiation(2, 10, 1000)
 print(result)  # Output: 24
+
+# Worked example assertion
+assert modular_exponentiation(2, 10, 1000) == 24
+
+# Boundary example (exp = 0)
+assert modular_exponentiation(2, 0, 1000) == 1
 ```
 ## Time Complexity
 The time complexity of the modular exponentiation algorithm is significantly reduced by the exponentiation by squaring technique.

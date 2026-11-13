@@ -1,0 +1,48 @@
+{
+  "task": "R61-T041",
+  "item": "modular exponentiation algorithm",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/extra/algorithms/modular-exponentiation-algorithm.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "checks": [
+    {
+      "description": "Article worked example",
+      "input": {
+        "base": 2,
+        "exp": 10,
+        "mod": 1000
+      },
+      "expected": 24,
+      "actual": 24,
+      "passed": true
+    },
+    {
+      "description": "Boundary example (exp = 0)",
+      "input": {
+        "base": 2,
+        "exp": 0,
+        "mod": 1000
+      },
+      "expected": 1,
+      "actual": 1,
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": {
+        "base": 2,
+        "exp": 10,
+        "mod": 1000
+      },
+      "expected_to_fail_with": 999,
+      "subprocess_exit_code": 1,
+      "error_output_contains_assertion_error": true,
+      "passed": true
+    }
+  ],
+  "extracted_code": "def modular_exponentiation(base, exp, mod):\n    result = 1\n    base = base % mod  # Update base if it's more than mod\n    \n    while exp > 0:\n        if exp % 2 == 1:  # If exp is odd\n            result = (result * base) % mod\n        \n        base = (base * base) % mod  # Square the base\n        exp //= 2  # Reduce exp by half\n    \n    return result\n\n# Example usage\nresult = modular_exponentiation(2, 10, 1000)\nprint(result)  # Output: 24\n\n# Worked example assertion\nassert modular_exponentiation(2, 10, 1000) == 24\n\n# Boundary example (exp = 0)\nassert modular_exponentiation(2, 0, 1000) == 1"
+}
