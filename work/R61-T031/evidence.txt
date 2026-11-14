@@ -1,0 +1,18 @@
+=== Tool Versions ===
+Python 3.15.2
+v20.20.2
+10.8.2
+
+=== Inputs ===
+Worked Example: [[1, 2], [2, 3], [3, 4], [5, 6], [8, 8], [7, 7], [8, 9]], method='single', threshold=3
+Boundary Case: [[0, 0], [10, 10]], method='single', threshold=3
+
+=== Expected vs Actual Results ===
+Expected:
+Cluster Assignments: [1 1 1 1 1 1 1]
+Boundary Assignments: [1 2]
+
+Actual:
+PASS: Published example executed and matched expected output.
+Cluster Assignments: [1 1 1 1 1 1 1]
+Boundary Assignments: [1 2]

@@ -108,12 +108,17 @@ Each linkage method produces different cluster shapes, and the choice of linkage
 ### Dependencies
 Ensure you have the following libraries installed:
 ```bash
-pip install scipy matplotlib
+pip install numpy scipy matplotlib
 ```
+
+### Worked Example Walkthrough
+- **Concrete Input:** 7 two-dimensional points `[[1, 2], [2, 3], [3, 4], [5, 6], [8, 8], [7, 7], [8, 9]]` using single-linkage clustering and `threshold = 3`.
+- **Intermediate State:** The closest points `[8, 8]` and `[8, 9]` merge first at Euclidean distance `1.0`, followed by `[1, 2]`–`[2, 3]`, `[2, 3]`–`[3, 4]`, and `[7, 7]`–`[8, 8]` at $\sqrt{2} \approx 1.414$. Because the largest single-linkage bridge (`[3, 4]` to `[5, 6]`, $\sqrt{8} \approx 2.828$) is below `threshold = 3`, all 7 points group into cluster `1`.
+- **Boundary Case:** A 2-point dataset `[[0, 0], [10, 10]]` separated by distance $\sqrt{200} \approx 14.14 > 3$ splits into two separate clusters `[1 2]`.
 
 #### Python Implementation 
 
-```
+```python
 import numpy as np
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster
 from scipy.spatial.distance import pdist
@@ -157,6 +162,18 @@ plt.title("Hierarchical Clustering - Clustered Data Points")
 plt.xlabel("X-axis")
 plt.ylabel("Y-axis")
 plt.show()
+
+# Boundary case: two distant points exceeding threshold = 3
+boundary_data = np.array([[0, 0], [10, 10]])
+boundary_clusters = fcluster(linkage(pdist(boundary_data), method='single'), threshold, criterion='distance')
+print("Boundary Assignments:", boundary_clusters)
+```
+
+#### Expected Output
+
+```text
+Cluster Assignments: [1 1 1 1 1 1 1]
+Boundary Assignments: [1 2]
 ```
 
 
