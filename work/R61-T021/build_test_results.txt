@@ -1,0 +1,86 @@
+Build and Test Execution Results for Issue #21 (R61-T021)
+Generated: 2026-11-15T18:32:00Z
+Branch: student/e26b07f0757
+Target File: docs/languages/csharp/csharp-9.md
+
+================================================================================
+1. Validation Script (python3 work/R61-T021/check.py)
+================================================================================
+Command: python3 work/R61-T021/check.py
+Exit Code: 0
+Status: PASS
+
+Log Output:
+=== Step 1: Locating and reading markdown article ===
+Document path: /Users/ajaygurjar/algo/docs/languages/csharp/csharp-9.md
+
+=== Step 2: Extracting C# interface example from markdown ===
+Successfully extracted 30 lines of C# code from markdown.
+--- Extracted Code Snippet (first 10 lines) ---
+  using System;
+  
+  interface IAnimal {
+      void MakeSound();
+  }
+  
+  class Dog : IAnimal {
+      public void MakeSound() {
+          Console.WriteLine("Bark");
+      }
+  ...
+
+=== Step 3: Detecting .NET runtime and SDK ===
+Installed dotnet version: 11.0.100
+Target framework moniker (TFM): net11.0
+
+=== Step 4: Compiling and executing extracted C# code ===
+Actual stdout lines received:
+  > Bark
+  > Silence
+
+=== Step 5: Asserting expected outputs ===
+Expected output lines: ['Bark', 'Silence']
+PASS: Exact output assertion matches expected [worked example: 'Bark', boundary: 'Silence'].
+
+=== Step 6: Verifying deliberately incorrect output causes check failure ===
+PASS: Deliberately incorrect output correctly triggered AssertionError.
+
+==========================================
+ ALL CHECKS PASSED: C# example is runnable and valid!
+==========================================
+
+================================================================================
+2. Documentation Frontmatter Validation (npm run validate:docs)
+================================================================================
+Command: npm run validate:docs
+Exit Code: 0
+Status: PASS
+
+Log Output:
+> algo@0.0.0 validate:docs
+> node scripts/validate-frontmatter.js
+
+ℹ️ Comparing current HEAD against base reference: main
+🔍 Validating front-matter in documentation files...
+
+✅ All documentation files have valid front-matter!
+
+📊 Scanned 946 files, found 0 error(s) and 0 warning(s)
+
+================================================================================
+3. Production Static Site Build (npm run build)
+================================================================================
+Command: npm run build
+Exit Code: 0
+Status: PASS
+
+Log Output Summary:
+[INFO] Website will be built for all these locales: 
+- en
+- hi
+[INFO] [en] Creating an optimized production build...
+✔ Client Compiled successfully in 27.24s
+✔ Server Compiled successfully in 23.17s
+✔ Service Worker Compiled successfully in 220.24ms
+[SUCCESS] Generated static files in "build/hi".
+Build completed without errors.
