@@ -1,0 +1,50 @@
+{
+  "task": "R61-T043",
+  "item": "Queue Problem Practice: Queue Reversal",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/extra/Queue/Problem-Practice.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "checks": [
+    {
+      "description": "Article worked example (Iterative with Explicit Stack)",
+      "input": "[10, 20, 30, 40, 50]",
+      "expected": "[50, 40, 30, 20, 10]",
+      "actual": "[50, 40, 30, 20, 10]",
+      "passed": true
+    },
+    {
+      "description": "Article worked example (Recursive with Call Stack)",
+      "input": "[10, 20, 30, 40, 50]",
+      "expected": "[50, 40, 30, 20, 10]",
+      "actual": "[50, 40, 30, 20, 10]",
+      "passed": true
+    },
+    {
+      "description": "Boundary example: Empty queue (length 0)",
+      "input": "[]",
+      "expected": "[]",
+      "actual": "[]",
+      "passed": true
+    },
+    {
+      "description": "Boundary example: Single element queue (length 1)",
+      "input": "[42]",
+      "expected": "[42]",
+      "actual": "[42]",
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": "[10, 20, 30, 40, 50]",
+      "expected_to_fail_with": "[999, 888, 777]",
+      "subprocess_exit_code": 1,
+      "error_output_contains_assertion_error": true,
+      "passed": true
+    }
+  ],
+  "extracted_code": "from collections import deque\n\ndef reverse_queue_iterative(q: deque) -> deque:\n    \"\"\"Method 1: Iterative reversal using an explicit auxiliary stack.\"\"\"\n    stack = []\n    while q:\n        stack.append(q.popleft())\n    while stack:\n        q.append(stack.pop())\n    return q\n\ndef reverse_queue_recursive(q: deque) -> deque:\n    \"\"\"Method 2: Recursive reversal using the runtime call stack.\"\"\"\n    if not q:\n        return q\n    front = q.popleft()\n    reverse_queue_recursive(q)\n    q.append(front)\n    return q\n\n# Worked example on fixture [10, 20, 30, 40, 50]\nq_iter = deque([10, 20, 30, 40, 50])\nq_rec = deque([10, 20, 30, 40, 50])\n\nprint(\"Iterative reversal:\", list(reverse_queue_iterative(q_iter)))  # Output: [50, 40, 30, 20, 10]\nprint(\"Recursive reversal:\", list(reverse_queue_recursive(q_rec)))  # Output: [50, 40, 30, 20, 10]\n\n# Worked example assertions (both methods produce identical results)\nassert list(reverse_queue_iterative(deque([10, 20, 30, 40, 50]))) == [50, 40, 30, 20, 10]\nassert list(reverse_queue_recursive(deque([10, 20, 30, 40, 50]))) == [50, 40, 30, 20, 10]\n\n# Boundary case 1: Empty queue (length 0)\nassert list(reverse_queue_iterative(deque([]))) == []\nassert list(reverse_queue_recursive(deque([]))) == []\n\n# Boundary case 2: Single-element queue (length 1)\nassert list(reverse_queue_iterative(deque([42]))) == [42]\nassert list(reverse_queue_recursive(deque([42]))) == [42]"
+}
