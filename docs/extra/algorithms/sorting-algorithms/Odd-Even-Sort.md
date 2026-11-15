@@ -10,7 +10,27 @@ tags: [sorting algorithms, odd even sort, parallel sorting, dsa]
 
 ### Definition:
 
-Odd-Even Sort is a simple parallel sorting algorithm that works by repeatedly performing two phases: an odd phase and an even phase. It compares and swaps adjacent elements in two passes, which gradually sorts the array. It is mainly used in parallel computing environments due to its ability to be implemented efficiently across multiple processors.
+Odd-Even Sort (also known as Odd-Even Transposition Sort) is a simple parallel sorting algorithm that works by repeatedly performing two phases: an odd phase and an even phase. It compares and swaps adjacent elements in two passes, which gradually sorts the array. It is mainly used in parallel computing environments due to its ability to be implemented efficiently across multiple processors.
+
+### Loop Invariant & State Verification:
+
+The correctness of Odd-Even Sort is governed by the following state invariants:
+
+1. **Phase Invariant**:
+   - **Odd Phase**: For every odd index $i \in \{1, 3, 5, \dots\}$ such that $i < n - 1$, after the odd-phase pass completes, $arr[i] \le arr[i + 1]$. Because all odd-indexed pairs $(i, i+1)$ are disjoint, each comparison-swap operation is mutually independent.
+   - **Even Phase**: For every even index $i \in \{0, 2, 4, \dots\}$ such that $i < n - 1$, after the even-phase pass completes, $arr[i] \le arr[i + 1]$. All even-indexed pairs $(i, i+1)$ are likewise disjoint and independent.
+
+2. **Monotonic Inversion Reduction**:
+   Let $\text{inv}(arr) = \sum_{j < k} \mathbf{1}[arr[j] > arr[k]]$ denote the number of inversions. Whenever $\text{inv}(arr) > 0$, at least one pair is out of order and will be swapped during the alternating phases, strictly reducing $\text{inv}(arr)$ on every iteration where swaps occur until $\text{inv}(arr) = 0$.
+
+3. **Termination & Postcondition Invariant**:
+   The algorithm terminates when both the odd and even phases complete consecutively with zero swaps (`isSorted == true`). At termination:
+   $$\forall i \in \{0, 1, \dots, n-2\}, \quad arr[i] \le arr[i + 1]$$
+   The multiset of elements is invariant ($\text{multiset}(arr_{\text{final}}) = \text{multiset}(arr_{\text{initial}})$), guaranteeing a complete, stable non-decreasing permutation.
+
+4. **Preconditions & Boundary Behavior**:
+   - **Precondition**: The input array must be non-null (`arr != null`).
+   - **Empty array ($n = 0$) and Single-element array ($n = 1$)**: The loop conditions $i < n - 1$ evaluate to $i < -1$ and $i < 0$ respectively. No iterations occur, zero swaps are performed, and the algorithm terminates safely in $O(1)$ time with the invariant trivially satisfied.
 
 ### Video Explanation
 
@@ -88,13 +108,70 @@ public class OddEvenSort {
         arr[j] = temp;
     }
 
+    // Invariant verifier: checks that elements are sorted in non-decreasing order
+    public static boolean isSortedInvariant(int[] arr) {
+        if (arr == null) return true;
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i + 1]) return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
+        // Worked example from article
         int[] arr = {5, 3, 1, 4, 2};
         oddEvenSort(arr);
         System.out.println("Sorted array:");
         for (int num : arr) {
             System.out.print(num + " ");
         }
+        System.out.println();
+
+        // 1. Assert worked example output and invariant
+        assert java.util.Arrays.equals(arr, new int[]{1, 2, 3, 4, 5}) : "Worked example assertion failed";
+        assert isSortedInvariant(arr) : "Worked example invariant failed";
+
+        // 2. Boundary variation 1: Empty array (n = 0)
+        int[] emptyArr = {};
+        oddEvenSort(emptyArr);
+        assert java.util.Arrays.equals(emptyArr, new int[]{}) : "Empty array assertion failed";
+        assert isSortedInvariant(emptyArr) : "Empty array invariant failed";
+
+        // 3. Boundary variation 2: Single-element array (n = 1)
+        int[] singleArr = {42};
+        oddEvenSort(singleArr);
+        assert java.util.Arrays.equals(singleArr, new int[]{42}) : "Single element assertion failed";
+        assert isSortedInvariant(singleArr) : "Single element invariant failed";
+
+        // 4. Variation 3: Already sorted array (0 inversions)
+        int[] sortedArr = {1, 2, 3, 4, 5};
+        oddEvenSort(sortedArr);
+        assert java.util.Arrays.equals(sortedArr, new int[]{1, 2, 3, 4, 5}) : "Already sorted assertion failed";
+        assert isSortedInvariant(sortedArr) : "Already sorted invariant failed";
+
+        // 5. Variation 4: Reverse sorted array (maximum inversions)
+        int[] reverseArr = {5, 4, 3, 2, 1};
+        oddEvenSort(reverseArr);
+        assert java.util.Arrays.equals(reverseArr, new int[]{1, 2, 3, 4, 5}) : "Reverse sorted assertion failed";
+        assert isSortedInvariant(reverseArr) : "Reverse sorted invariant failed";
+
+        // 6. Variation 5: Duplicate elements (non-distinct keys)
+        int[] dupArr = {4, 2, 2, 4, 1, 3};
+        oddEvenSort(dupArr);
+        assert java.util.Arrays.equals(dupArr, new int[]{1, 2, 2, 3, 4, 4}) : "Duplicates assertion failed";
+        assert isSortedInvariant(dupArr) : "Duplicates invariant failed";
+
+        // 7. Variation 6: Array with negative numbers and zero
+        int[] negArr = {-3, 0, -1, 5, -2};
+        oddEvenSort(negArr);
+        assert java.util.Arrays.equals(negArr, new int[]{-3, -2, -1, 0, 5}) : "Negative numbers assertion failed";
+        assert isSortedInvariant(negArr) : "Negative numbers invariant failed";
+
+        // 8. Variation 7: Two-element inverted array (single inversion)
+        int[] twoArr = {2, 1};
+        oddEvenSort(twoArr);
+        assert java.util.Arrays.equals(twoArr, new int[]{1, 2}) : "Two elements assertion failed";
+        assert isSortedInvariant(twoArr) : "Two elements invariant failed";
     }
 }
 ```
