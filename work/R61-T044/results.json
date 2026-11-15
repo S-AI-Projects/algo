@@ -1,0 +1,201 @@
+{
+  "task": "R61-T044",
+  "item": "OddEvenSort",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/extra/algorithms/sorting-algorithms/Odd-Even-Sort.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "java": "openjdk version \"27.0.1.0.3\" 2026-10-24",
+    "javac": "javac 27.0.1.0.3",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "invariant": "For all i, arr[i] <= arr[i+1] upon termination; strictly decreasing inversion count inv(arr) on swap passes; multiset conservation",
+  "checks": [
+    {
+      "description": "Article worked example",
+      "input": [
+        5,
+        3,
+        1,
+        4,
+        2
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "passed": true
+    },
+    {
+      "description": "Boundary variation 1: Empty array (n = 0)",
+      "input": [],
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "description": "Boundary variation 2: Single-element array (n = 1)",
+      "input": [
+        42
+      ],
+      "expected": [
+        42
+      ],
+      "actual": [
+        42
+      ],
+      "passed": true
+    },
+    {
+      "description": "Variation 3: Already sorted array (0 inversions)",
+      "input": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "passed": true
+    },
+    {
+      "description": "Variation 4: Reverse sorted array (maximum inversions)",
+      "input": [
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "passed": true
+    },
+    {
+      "description": "Variation 5: Duplicate elements (non-distinct keys)",
+      "input": [
+        4,
+        2,
+        2,
+        4,
+        1,
+        3
+      ],
+      "expected": [
+        1,
+        2,
+        2,
+        3,
+        4,
+        4
+      ],
+      "actual": [
+        1,
+        2,
+        2,
+        3,
+        4,
+        4
+      ],
+      "passed": true
+    },
+    {
+      "description": "Variation 6: Array with negative numbers and zero",
+      "input": [
+        -3,
+        0,
+        -1,
+        5,
+        -2
+      ],
+      "expected": [
+        -3,
+        -2,
+        -1,
+        0,
+        5
+      ],
+      "actual": [
+        -3,
+        -2,
+        -1,
+        0,
+        5
+      ],
+      "passed": true
+    },
+    {
+      "description": "Variation 7: Two-element inverted array (single inversion)",
+      "input": [
+        2,
+        1
+      ],
+      "expected": [
+        1,
+        2
+      ],
+      "actual": [
+        1,
+        2
+      ],
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": [
+        5,
+        3,
+        1,
+        4,
+        2
+      ],
+      "expected_to_fail_with": [
+        999,
+        888,
+        777,
+        666,
+        555
+      ],
+      "subprocess_exit_code": 1,
+      "error_output_contains_assertion_error": true,
+      "passed": true
+    }
+  ],
+  "extracted_code": "public class OddEvenSort {\n\n    // Method to perform Odd-Even Sort\n    public static void oddEvenSort(int[] arr) {\n        boolean isSorted = false;\n        int n = arr.length;\n\n        while (!isSorted) {\n            isSorted = true;\n\n            // Odd phase\n            for (int i = 1; i < n - 1; i += 2) {\n                if (arr[i] > arr[i + 1]) {\n                    swap(arr, i, i + 1);\n                    isSorted = false;\n                }\n            }\n\n            // Even phase\n            for (int i = 0; i < n - 1; i += 2) {\n                if (arr[i] > arr[i + 1]) {\n                    swap(arr, i, i + 1);\n                    isSorted = false;\n                }\n            }\n        }\n    }\n\n    // Helper method to swap two elements\n    private static void swap(int[] arr, int i, int j) {\n        int temp = arr[i];\n        arr[i] = arr[j];\n        arr[j] = temp;\n    }\n\n    // Invariant verifier: checks that elements are sorted in non-decreasing order\n    public static boolean isSortedInvariant(int[] arr) {\n        if (arr == null) return true;\n        for (int i = 0; i < arr.length - 1; i++) {\n            if (arr[i] > arr[i + 1]) return false;\n        }\n        return true;\n    }\n\n    public static void main(String[] args) {\n        // Worked example from article\n        int[] arr = {5, 3, 1, 4, 2};\n        oddEvenSort(arr);\n        System.out.println(\"Sorted array:\");\n        for (int num : arr) {\n            System.out.print(num + \" \");\n        }\n        System.out.println();\n\n        // 1. Assert worked example output and invariant\n        assert java.util.Arrays.equals(arr, new int[]{1, 2, 3, 4, 5}) : \"Worked example assertion failed\";\n        assert isSortedInvariant(arr) : \"Worked example invariant failed\";\n\n        // 2. Boundary variation 1: Empty array (n = 0)\n        int[] emptyArr = {};\n        oddEvenSort(emptyArr);\n        assert java.util.Arrays.equals(emptyArr, new int[]{}) : \"Empty array assertion failed\";\n        assert isSortedInvariant(emptyArr) : \"Empty array invariant failed\";\n\n        // 3. Boundary variation 2: Single-element array (n = 1)\n        int[] singleArr = {42};\n        oddEvenSort(singleArr);\n        assert java.util.Arrays.equals(singleArr, new int[]{42}) : \"Single element assertion failed\";\n        assert isSortedInvariant(singleArr) : \"Single element invariant failed\";\n\n        // 4. Variation 3: Already sorted array (0 inversions)\n        int[] sortedArr = {1, 2, 3, 4, 5};\n        oddEvenSort(sortedArr);\n        assert java.util.Arrays.equals(sortedArr, new int[]{1, 2, 3, 4, 5}) : \"Already sorted assertion failed\";\n        assert isSortedInvariant(sortedArr) : \"Already sorted invariant failed\";\n\n        // 5. Variation 4: Reverse sorted array (maximum inversions)\n        int[] reverseArr = {5, 4, 3, 2, 1};\n        oddEvenSort(reverseArr);\n        assert java.util.Arrays.equals(reverseArr, new int[]{1, 2, 3, 4, 5}) : \"Reverse sorted assertion failed\";\n        assert isSortedInvariant(reverseArr) : \"Reverse sorted invariant failed\";\n\n        // 6. Variation 5: Duplicate elements (non-distinct keys)\n        int[] dupArr = {4, 2, 2, 4, 1, 3};\n        oddEvenSort(dupArr);\n        assert java.util.Arrays.equals(dupArr, new int[]{1, 2, 2, 3, 4, 4}) : \"Duplicates assertion failed\";\n        assert isSortedInvariant(dupArr) : \"Duplicates invariant failed\";\n\n        // 7. Variation 6: Array with negative numbers and zero\n        int[] negArr = {-3, 0, -1, 5, -2};\n        oddEvenSort(negArr);\n        assert java.util.Arrays.equals(negArr, new int[]{-3, -2, -1, 0, 5}) : \"Negative numbers assertion failed\";\n        assert isSortedInvariant(negArr) : \"Negative numbers invariant failed\";\n\n        // 8. Variation 7: Two-element inverted array (single inversion)\n        int[] twoArr = {2, 1};\n        oddEvenSort(twoArr);\n        assert java.util.Arrays.equals(twoArr, new int[]{1, 2}) : \"Two elements assertion failed\";\n        assert isSortedInvariant(twoArr) : \"Two elements invariant failed\";\n    }\n}"
+}
