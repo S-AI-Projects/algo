@@ -1,0 +1,81 @@
+{
+  "task": "R61-T042",
+  "item": "CocktailShakerSort",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/extra/algorithms/sorting-algorithms/CocktailShakerSort.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "java": "openjdk version \"27.0.1.0.3\" 2026-10-24",
+    "javac": "javac 27.0.1.0.3",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "checks": [
+    {
+      "description": "Article worked example",
+      "input": [
+        5,
+        3,
+        1,
+        4,
+        2
+      ],
+      "expected": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "actual": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "passed": true
+    },
+    {
+      "description": "Boundary example (length 0, empty array)",
+      "input": [],
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "description": "Boundary example (length 1, single-element array)",
+      "input": [
+        42
+      ],
+      "expected": [
+        42
+      ],
+      "actual": [
+        42
+      ],
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": [
+        5,
+        3,
+        1,
+        4,
+        2
+      ],
+      "expected_to_fail_with": [
+        9,
+        9,
+        9,
+        9,
+        9
+      ],
+      "subprocess_exit_code": 1,
+      "error_output_contains_assertion_error": true,
+      "passed": true
+    }
+  ],
+  "extracted_code": "public class CocktailShakerSort {\n\n    // Method to perform Cocktail Shaker Sort\n    public static void cocktailShakerSort(int[] arr) {\n        boolean swapped = true;\n        int start = 0;\n        int end = arr.length - 1;\n\n        while (swapped) {\n            swapped = false;\n\n            // Forward pass\n            for (int i = start; i < end; i++) {\n                if (arr[i] > arr[i + 1]) {\n                    swap(arr, i, i + 1);\n                    swapped = true;\n                }\n            }\n\n            // If nothing moved, the array is sorted\n            if (!swapped) break;\n\n            swapped = false;\n            end--;\n\n            // Backward pass\n            for (int i = end; i > start; i--) {\n                if (arr[i] < arr[i - 1]) {\n                    swap(arr, i, i - 1);\n                    swapped = true;\n                }\n            }\n\n            start++;\n        }\n    }\n\n    // Helper method to swap two elements\n    private static void swap(int[] arr, int i, int j) {\n        int temp = arr[i];\n        arr[i] = arr[j];\n        arr[j] = temp;\n    }\n\n    public static void main(String[] args) {\n        // Worked example\n        int[] arr = {5, 3, 1, 4, 2};\n        cocktailShakerSort(arr);\n        System.out.println(\"Sorted array:\");\n        for (int num : arr) {\n            System.out.print(num + \" \");\n        }\n        System.out.println();\n\n        // Worked example assertion\n        assert java.util.Arrays.equals(arr, new int[]{1, 2, 3, 4, 5}) : \"Worked example assertion failed\";\n\n        // Boundary case: smallest valid input (length 0)\n        int[] emptyArr = {};\n        cocktailShakerSort(emptyArr);\n        assert java.util.Arrays.equals(emptyArr, new int[]{}) : \"Empty array assertion failed\";\n\n        // Boundary case: single-element array (length 1)\n        int[] singleArr = {42};\n        cocktailShakerSort(singleArr);\n        assert java.util.Arrays.equals(singleArr, new int[]{42}) : \"Single-element array assertion failed\";\n    }\n}"
+}

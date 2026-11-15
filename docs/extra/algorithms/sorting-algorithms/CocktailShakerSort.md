@@ -50,6 +50,14 @@ Cocktail Shaker Sort, also known as Bidirectional Bubble Sort, is a variation of
 - **Space Complexity: O(1)**  
   The algorithm operates in constant space since it only requires a few variables for swapping and indexing.
 
+### Boundary Conditions & Preconditions:
+
+- **Precondition**: The input array reference must be valid and non-null (`arr != null`).
+- **Smallest / Boundary Cases**:
+  - **Empty Array (`arr.length == 0`)**: `end = -1` and `start = 0`. The forward loop condition `i < end` (`0 < -1`) is immediately false on the first iteration. The loop terminates via `if (!swapped) break;` in $O(1)$ time without modifying the array or causing index errors.
+  - **Single-Element Array (`arr.length == 1`)**: `end = 0` and `start = 0`. The forward loop condition `i < end` (`0 < 0`) is also false. The method breaks immediately on the first pass in $O(1)$ time, trivially leaving the single element in sorted order.
+  - Rather than requiring artificial error-handling branches, the standard loop invariants inherently satisfy the sorting contract on minimal valid inputs.
+
 ### Java Implementation:
 
 ```java
@@ -98,12 +106,27 @@ public class CocktailShakerSort {
     }
 
     public static void main(String[] args) {
+        // Worked example
         int[] arr = {5, 3, 1, 4, 2};
         cocktailShakerSort(arr);
         System.out.println("Sorted array:");
         for (int num : arr) {
             System.out.print(num + " ");
         }
+        System.out.println();
+
+        // Worked example assertion
+        assert java.util.Arrays.equals(arr, new int[]{1, 2, 3, 4, 5}) : "Worked example assertion failed";
+
+        // Boundary case: smallest valid input (length 0)
+        int[] emptyArr = {};
+        cocktailShakerSort(emptyArr);
+        assert java.util.Arrays.equals(emptyArr, new int[]{}) : "Empty array assertion failed";
+
+        // Boundary case: single-element array (length 1)
+        int[] singleArr = {42};
+        cocktailShakerSort(singleArr);
+        assert java.util.Arrays.equals(singleArr, new int[]{42}) : "Single-element array assertion failed";
     }
 }
 ```
