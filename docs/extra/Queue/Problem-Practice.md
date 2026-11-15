@@ -3,7 +3,7 @@ id: Practice-Problems-on-queue
 title: Queue Practice Problems
 sidebar_label: Queue Practice Problems
 sidebar_position: 9
-Description: Here are some practice problems for queuing data structure divided into topic and width.
+description: Here are some practice problems for queuing data structure divided into topic and width.
 tags: [DSA, algorithms, Queue, dsa]
 ---
 
@@ -13,6 +13,62 @@ tags: [DSA, algorithms, Queue, dsa]
 - [Stack using two Queues](https://www.geeksforgeeks.org/problems/stack-using-two-queues/1)
 - [Queue Reversal](https://www.geeksforgeeks.org/problems/queue-reversal/1)
 - [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/description/)
+
+#### Worked Example & Method Comparison: Queue Reversal
+
+A canonical problem under **Basic Queue Problems** is **Queue Reversal** (reversing the elements of a FIFO queue so that the last element becomes the first). Below, we compare two independently understandable approaches on the exact same fixture:
+
+1. **Method 1 (Iterative with Explicit Auxiliary Stack)**:
+   - Dequeues all elements into an explicit stack data structure (LIFO).
+   - Pops each element from the stack and re-enqueues it into the queue.
+   - **Intermediate Representation**: An explicit heap-allocated list/stack storing $N$ elements simultaneously.
+   - **Time Complexity**: $O(N)$ with $2N$ data transfers; **Space Complexity**: $O(N)$ explicit auxiliary heap memory.
+
+2. **Method 2 (Recursive with Runtime Call Stack)**:
+   - Recursively pops the front element, reverses the remaining sub-queue, and appends the stored element to the back as call frames unwind.
+   - **Intermediate Representation**: Implicit activation records (call frames) on the execution call stack holding local `front` references.
+   - **Time Complexity**: $O(N)$ with $N$ recursive call frames; **Space Complexity**: $O(N)$ call stack memory without allocating an auxiliary data structure.
+
+```python
+from collections import deque
+
+def reverse_queue_iterative(q: deque) -> deque:
+    """Method 1: Iterative reversal using an explicit auxiliary stack."""
+    stack = []
+    while q:
+        stack.append(q.popleft())
+    while stack:
+        q.append(stack.pop())
+    return q
+
+def reverse_queue_recursive(q: deque) -> deque:
+    """Method 2: Recursive reversal using the runtime call stack."""
+    if not q:
+        return q
+    front = q.popleft()
+    reverse_queue_recursive(q)
+    q.append(front)
+    return q
+
+# Worked example on fixture [10, 20, 30, 40, 50]
+q_iter = deque([10, 20, 30, 40, 50])
+q_rec = deque([10, 20, 30, 40, 50])
+
+print("Iterative reversal:", list(reverse_queue_iterative(q_iter)))  # Output: [50, 40, 30, 20, 10]
+print("Recursive reversal:", list(reverse_queue_recursive(q_rec)))  # Output: [50, 40, 30, 20, 10]
+
+# Worked example assertions (both methods produce identical results)
+assert list(reverse_queue_iterative(deque([10, 20, 30, 40, 50]))) == [50, 40, 30, 20, 10]
+assert list(reverse_queue_recursive(deque([10, 20, 30, 40, 50]))) == [50, 40, 30, 20, 10]
+
+# Boundary case 1: Empty queue (length 0)
+assert list(reverse_queue_iterative(deque([]))) == []
+assert list(reverse_queue_recursive(deque([]))) == []
+
+# Boundary case 2: Single-element queue (length 1)
+assert list(reverse_queue_iterative(deque([42]))) == [42]
+assert list(reverse_queue_recursive(deque([42]))) == [42]
+```
 
 ### Circular Queue Problems:
 
