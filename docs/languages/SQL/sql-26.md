@@ -48,6 +48,19 @@ SELECT column_name,
 FROM table_name;
 ```
 
+### Step-by-Step Derivation & Intermediate State Mapping
+
+A `CASE` expression operates as an element-wise conditional projection (analogous to a stream `.map()` or `switch` pattern matching operation) evaluated independently for each candidate record:
+
+1. **Row Streaming**: Each record `(ProductName, CategoryID)` is projected into the evaluation pipeline.
+2. **Sequential Equality Testing**:
+   - `WHEN value1 THEN result1`: Compares `CategoryID = value1`. If `TRUE`, evaluation halts for that row and returns `result1`.
+   - `WHEN value2 THEN result2`: If previous comparison was `FALSE` or `UNKNOWN`, compares `CategoryID = value2`.
+3. **Fallthrough / Default Resolution**:
+   - If no `WHEN` condition evaluates to `TRUE`, the `ELSE` expression is evaluated.
+   - Under ANSI SQL Three-Valued Logic (3VL), comparing `NULL = value` produces `UNKNOWN`, which safely falls through to the `ELSE` branch.
+   - If `ELSE` is omitted and no branch matches, `NULL` is returned.
+
 ### Key Points
 * Simple CASE compares an expression to a list of values and returns the corresponding result.
 * Searched CASE evaluates a list of conditions and returns the result for the first condition that is TRUE.
@@ -60,6 +73,22 @@ FROM table_name;
 ***Assign a label based on a product’s category.***
 
 ```sql
+-- 1. Table Schema Setup
+CREATE TABLE Products (
+    ProductID INTEGER PRIMARY KEY,
+    ProductName TEXT NOT NULL,
+    CategoryID INTEGER
+);
+
+-- 2. Literal Fixture Insertion
+INSERT INTO Products (ProductID, ProductName, CategoryID) VALUES
+(1, 'Laptop', 1),
+(2, 'Desk Chair', 2),
+(3, 'Apples', 3),
+(4, 'Desk Lamp', 99),
+(5, 'Uncategorized Item', NULL);
+
+-- 3. Worked Example Query (Simple CASE)
 SELECT ProductName,
     CASE CategoryID
         WHEN 1 THEN 'Electronics'
@@ -67,7 +96,33 @@ SELECT ProductName,
         WHEN 3 THEN 'Groceries'
         ELSE 'Other'
     END AS CategoryLabel
-FROM Products;
+FROM Products
+ORDER BY ProductID;
+
+-- 4. Boundary Case: Omitted ELSE Clause (Returns NULL when unmatched)
+SELECT ProductName,
+    CASE CategoryID
+        WHEN 1 THEN 'Electronics'
+        WHEN 2 THEN 'Furniture'
+    END AS CategoryLabel
+FROM Products
+WHERE ProductID = 4;
+```
+
+#### Expected Output & Derivation Table:
+
+| ProductID | Input ProductName | Input CategoryID | Evaluated Branch | Output CategoryLabel | Derivation Notes |
+|---|---|---|---|---|---|
+| 1 | Laptop | 1 | `WHEN 1` | Electronics | `1 = 1` evaluates to `TRUE`; returns `'Electronics'` immediately. |
+| 2 | Desk Chair | 2 | `WHEN 2` | Furniture | `2 = 1` is `FALSE`; `2 = 2` is `TRUE`; returns `'Furniture'`. |
+| 3 | Apples | 3 | `WHEN 3` | Groceries | `3 = 1` and `3 = 2` are `FALSE`; `3 = 3` is `TRUE`; returns `'Groceries'`. |
+| 4 | Desk Lamp | 99 | `ELSE` | Other | No `WHEN` branch matches; falls through to `ELSE 'Other'`. |
+| 5 | Uncategorized Item | NULL | `ELSE` | Other | Under 3VL, `NULL = 1..3` is `UNKNOWN`; falls through to `ELSE 'Other'`. |
+
+#### Boundary Output (Omitted ELSE):
+For `ProductID = 4` (`CategoryID = 99`), no `WHEN` branch matches and `ELSE` is omitted:
+```
+ProductName: Desk Lamp | CategoryLabel: NULL
 ```
 
 **Example 2: Searched CASE**
