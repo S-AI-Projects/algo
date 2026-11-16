@@ -21,12 +21,19 @@ Forms are the primary way users submit data to php scripts. php handles form dat
 
 ## A Simple HTML Form
 
-```html
+HTML forms collect input from users and dispatch it to a server-side PHP script. The two primary submission methods defined by HTTP are **POST** and **GET**. Below, both methods are compared using the exact same fixture: a simple form collecting a user's **Name** and **Email**.
+
+### Method 1: POST Submission
+
+When submitting via `method="post"`, form fields are packaged directly inside the HTTP request body. This keeps user data out of the URL bar and browser history.
+
+#### HTML Form (`post_form.html`)
+```html title="post_form.html"
 <!DOCTYPE html>
 <html>
 <body>
 
-<form method="post" action="welcome.php">
+<form method="post" action="welcome_post.php">
     Name: <input type="text" name="name"><br>
     Email: <input type="text" name="email"><br>
     <input type="submit" value="Submit">
@@ -36,19 +43,119 @@ Forms are the primary way users submit data to php scripts. php handles form dat
 </html>
 ```
 
-* * *
+#### How POST Sends Data (Intermediate Representation)
+1. **HTTP Request Structure**: The browser serializes the key-value pairs into an `application/x-www-form-urlencoded` message payload in the HTTP request body:
+   ```http
+   POST /welcome_post.php HTTP/1.1
+   Host: localhost
+   Content-Type: application/x-www-form-urlencoded
+   Content-Length: 35
 
-## Processing Form Data
+   name=Alice&email=alice%40example.com
+   ```
+2. **How PHP Reads It**: The PHP engine automatically parses the request body and populates the `$_POST` superglobal array:
+   - `$_POST['name'] = 'Alice'`
+   - `$_POST['email'] = 'alice@example.com'`
+   *(Raw, unparsed stream is also accessible through `php://input`)*.
 
-**welcome.php:**
-```php
+#### PHP Handler (`welcome_post.php`)
+```php title="welcome_post.php"
 <?php
 $name  = htmlspecialchars($_POST['name'] ?? '');
 $email = htmlspecialchars($_POST['email'] ?? '');
 
-echo "Welcome, $name!";
-echo "Your email is: $email";
+echo "Welcome, $name!\n";
+echo "Your email is: $email\n";
 ?>
+```
+
+### Method 2: GET Submission
+
+When submitting via `method="get"`, form fields are appended directly to the action URL as a query string.
+
+#### HTML Form (`get_form.html`)
+```html title="get_form.html"
+<!DOCTYPE html>
+<html>
+<body>
+
+<form method="get" action="welcome_get.php">
+    Name: <input type="text" name="name"><br>
+    Email: <input type="text" name="email"><br>
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
+```
+
+#### How GET Sends Data (Intermediate Representation)
+1. **HTTP Request Structure**: The browser appends the URL-encoded key-value pairs directly to the target URL path separated by `?` and `&`. The HTTP request body remains empty:
+   ```http
+   GET /welcome_get.php?name=Alice&email=alice%40example.com HTTP/1.1
+   Host: localhost
+   ```
+2. **How PHP Reads It**: The web server passes the query string via the `QUERY_STRING` environment variable (`$_SERVER['QUERY_STRING']`). PHP decodes this string into the `$_GET` superglobal array:
+   - `$_GET['name'] = 'Alice'`
+   - `$_GET['email'] = 'alice@example.com'`
+
+#### PHP Handler (`welcome_get.php`)
+```php title="welcome_get.php"
+<?php
+$name  = htmlspecialchars($_GET['name'] ?? '');
+$email = htmlspecialchars($_GET['email'] ?? '');
+
+echo "Welcome, $name!\n";
+echo "Your email is: $email\n";
+?>
+```
+
+* * *
+
+## Processing Form Data
+
+Both methods sanitize and render input using `htmlspecialchars()` to prevent Cross-Site Scripting (XSS) attacks.
+
+### Worked Example: Normal Input
+
+Consider the literal sample inputs submitted by a user:
+- **Name**: `Alice`
+- **Email**: `alice@example.com`
+
+#### Intermediate Processing:
+- **POST Method**:
+  1. Wire Format: Request body contains `name=Alice&email=alice%40example.com`.
+  2. Superglobal: PHP populates `$_POST['name'] = 'Alice'` and `$_POST['email'] = 'alice@example.com'`.
+  3. Sanitization: `htmlspecialchars('Alice')` yields `'Alice'`; `htmlspecialchars('alice@example.com')` yields `'alice@example.com'`.
+- **GET Method**:
+  1. Wire Format: URL query string is `?name=Alice&email=alice%40example.com`.
+  2. Superglobal: PHP populates `$_GET['name'] = 'Alice'` and `$_GET['email'] = 'alice@example.com'`.
+  3. Sanitization: `htmlspecialchars('Alice')` yields `'Alice'`; `htmlspecialchars('alice@example.com')` yields `'alice@example.com'`.
+
+#### Expected Output (Both POST and GET):
+```text
+Welcome, Alice!
+Your email is: alice@example.com
+```
+
+### Boundary Example: Missing or Empty Input
+
+In real-world web applications, forms may be submitted with blank fields, or a user might access the handler URL directly without submitting query or body parameters.
+
+1. **Precondition and Contract**:
+   - In PHP 8+, accessing an undefined array key (e.g. `$_POST['name']` when omitted) triggers an `Undefined array key` warning.
+   - The null coalescing operator (`?? ''`) checks if the key exists and is non-null; if absent, it provides an empty string `''` as fallback without raising warnings.
+2. **Missing Parameters** (e.g., navigating directly to `welcome_post.php` with no POST body, or `welcome_get.php` with no query string):
+   - `$_POST['name'] ?? ''` evaluates to `''`.
+   - `$_POST['email'] ?? ''` evaluates to `''`.
+3. **Empty String Inputs** (e.g., user clicks submit with both input fields left blank: `name=&email=`):
+   - `$_POST['name']` is `""`.
+   - `$_POST['email']` is `""`.
+
+#### Expected Output for Boundary Case (Both POST and GET):
+```text
+Welcome, !
+Your email is: 
 ```
 
 * * *

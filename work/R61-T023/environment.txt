@@ -1,0 +1,19 @@
+Runtime and Interpreter Environment for Issue #23 (R61-T023)
+Target: docs/languages/php/php-12.md
+--------------------------------------------------------------------------------
+PHP Environment:
+  php (CLI):     PHP 8.5.12 (cli) (built: Oct 19 2026 17:02:46) (NTS)
+  php-cgi (CGI): PHP 8.5.12 (cgi-fcgi) (built: Oct 19 2026 17:02:46) (NTS) (/opt/homebrew/bin/php-cgi)
+
+Python Runtime:
+  python: 3.9.6 (/Library/Developer/CommandLineTools/usr/bin/python3)
+
+Node & NPM Environment:
+  node: v26.13.1
+  npm:  11.20.0
+
+OS & Architecture:
+  system:   Darwin
+  release:  25.6.0
+  machine:  arm64
+  platform: macOS-26.6.2-arm64-arm-64bit

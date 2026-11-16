@@ -1,0 +1,75 @@
+{
+  "issue": "GitHub Issue #23: R61-T023 \u2014 Compare two methods: php 12",
+  "document": "docs/languages/php/php-12.md",
+  "section": "A Simple HTML Form / Processing Form Data",
+  "comparison": {
+    "method_1": "POST (application/x-www-form-urlencoded in HTTP request body; superglobal $_POST)",
+    "method_2": "GET (URL query string ?key=val; superglobal $_GET)"
+  },
+  "test_cases": [
+    {
+      "case_id": "TC-01",
+      "name": "POST Normal Worked Example",
+      "method": "POST",
+      "inputs": {
+        "name": "Alice",
+        "email": "alice@example.com"
+      },
+      "wire_payload": "name=Alice&email=alice%40example.com",
+      "expected_output": "Welcome, Alice!\nYour email is: alice@example.com\n"
+    },
+    {
+      "case_id": "TC-02",
+      "name": "GET Normal Worked Example",
+      "method": "GET",
+      "inputs": {
+        "name": "Alice",
+        "email": "alice@example.com"
+      },
+      "wire_payload": "name=Alice&email=alice%40example.com",
+      "expected_output": "Welcome, Alice!\nYour email is: alice@example.com\n"
+    },
+    {
+      "case_id": "TC-03",
+      "name": "POST Boundary Case (Missing Parameters)",
+      "method": "POST",
+      "inputs": {},
+      "wire_payload": "",
+      "precondition": "Null coalescing fallback handles absent array keys without undefined key notices",
+      "expected_output": "Welcome, !\nYour email is: \n"
+    },
+    {
+      "case_id": "TC-04",
+      "name": "GET Boundary Case (Missing Parameters)",
+      "method": "GET",
+      "inputs": {},
+      "wire_payload": "",
+      "precondition": "Null coalescing fallback handles absent array keys without undefined key notices",
+      "expected_output": "Welcome, !\nYour email is: \n"
+    },
+    {
+      "case_id": "TC-05",
+      "name": "POST Boundary Case (Empty String Inputs)",
+      "method": "POST",
+      "inputs": {
+        "name": "",
+        "email": ""
+      },
+      "wire_payload": "name=&email=",
+      "precondition": "Empty strings sanitized and rendered safely",
+      "expected_output": "Welcome, !\nYour email is: \n"
+    },
+    {
+      "case_id": "TC-06",
+      "name": "GET Boundary Case (Empty String Inputs)",
+      "method": "GET",
+      "inputs": {
+        "name": "",
+        "email": ""
+      },
+      "wire_payload": "name=&email=",
+      "precondition": "Empty strings sanitized and rendered safely",
+      "expected_output": "Welcome, !\nYour email is: \n"
+    }
+  ]
+}

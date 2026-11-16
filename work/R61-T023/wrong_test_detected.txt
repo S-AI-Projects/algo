@@ -1,0 +1,4 @@
+Deliberate wrong-result failure correctly caught:
+Expected: 'Welcome, Mallory!\nYour email is: evil@hack.com\n'
+Actual:   'Welcome, Alice!\nYour email is: alice@example.com\n'
+Error: Deliberate test failure: output matches wrong result!
