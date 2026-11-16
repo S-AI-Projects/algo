@@ -1,0 +1,101 @@
+Execution Date: 2026-11-16T08:19:55.225077Z
+
+=== Running: python3 work/R61-T022/check.py ===
+[CHECK] Starting validation for Issue #22 (R61-T022) ...
+[CHECK] Recorded environment to environment.txt
+[CHECK] Saved test inputs to test_inputs.json and test_inputs.txt
+[CHECK] Extracted 29 lines of C++ code
+[CHECK] Compiling extracted code with g++ -std=c++17 -O2 ...
+[CHECK] Executing compiled binary ...
+[CHECK] Saved expected_vs_actual.txt
+[CHECK] Positive test assertion passed!
+[CHECK] Deliberate wrong-result test correctly raised AssertionError!
+
+[SUCCESS] All checks passed successfully for Issue #22 (R61-T022).
+
+Exit Code: 0
+
+=== Running: npm run build ===
+
+> algo@0.0.0 prebuild
+> npm run generate:dsa-index && npm run generate:docs-catalog && npm run generate:digest
+
+
+> algo@0.0.0 generate:dsa-index
+> node scripts/generate-dsa-problems-index.js
+
+✅ Indexed 91 DSA problems -> src/data/generated/dsaProblemsIndex.json
+
+> algo@0.0.0 generate:docs-catalog
+> node scripts/generate-docs-catalog.js
+
+✅ Indexed 719 docs -> src/data/generated/docsCatalogIndex.json (1 with explicit difficulty, 718 inferred)
+
+> algo@0.0.0 generate:digest
+> node scripts/generate-algorithm-digest.js
+
+🔍 Scanning docs for Algorithm Digest generation...
+📦 Found 1044 total algorithm articles.
+✅ Saved JSON digest data -> /Users/ajaygurjar/algo-1/src/data/generated/algorithmDigest.json
+✅ Generated RSS feed -> /Users/ajaygurjar/algo-1/static/algorithm-digest.xml
+✅ Generated RSS mirror -> /Users/ajaygurjar/algo-1/static/rss/algorithm-digest.xml
+
+> algo@0.0.0 build
+> cross-env NODE_OPTIONS=--max-old-space-size=6144 docusaurus build --no-minify
+
+[INFO] Website will be built for all these locales: 
+- en
+- hi
+[INFO] [en] Creating an optimized production build...
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 21.40s
+[webpackbar] ✔ Client: Compiled successfully in 25.24s
+[WARNING] {"moduleIdentifier":"/Users/ajaygurjar/algo-1/node_modules/ws/lib/buffer-util.js","moduleName":"./node_modules/ws/lib/buffer-util.js","loc":"117:23-44","message":"Module not found: Error: Can't resolve 'bufferutil' in '/Users/ajaygurjar/algo-1/node_modules/ws/lib'","compilerPath":"server"}
+[WARNING] {"moduleIdentifier":"/Users/ajaygurjar/algo-1/node_modules/ws/lib/validation.js","moduleName":"./node_modules/ws/lib/validation.js","loc":"144:24-49","message":"Module not found: Error: Can't resolve 'utf-8-validate' in '/Users/ajaygurjar/algo-1/node_modules/ws/lib'","compilerPath":"server"}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+(node:31469) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[webpackbar] ℹ Compiling Service Worker
+[webpackbar] ✔ Service Worker: Compiled successfully in 232.92ms
+[WARNING] Docusaurus found broken anchors!
+
+Please check the pages of your site in the list below, and make sure you don't reference any anchor that does not exist.
+Note: it's possible to ignore broken anchors with the 'onBrokenAnchors' Docusaurus configuration, and let the build pass.
+
+Exhaustive list of all broken anchors found:
+- Broken anchor on source page path = /algo/stories/:
+   -> linking to #explore (resolved as: /algo/stories/#explore)
+
+[SUCCESS] Generated static files in "build".
+[INFO] [hi] Creating an optimized production build...
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 21.52s
+[webpackbar] ✔ Client: Compiled successfully in 25.50s
+[WARNING] {"moduleIdentifier":"/Users/ajaygurjar/algo-1/node_modules/ws/lib/buffer-util.js","moduleName":"./node_modules/ws/lib/buffer-util.js","loc":"117:23-44","message":"Module not found: Error: Can't resolve 'bufferutil' in '/Users/ajaygurjar/algo-1/node_modules/ws/lib'","compilerPath":"server"}
+[WARNING] {"moduleIdentifier":"/Users/ajaygurjar/algo-1/node_modules/ws/lib/validation.js","moduleName":"./node_modules/ws/lib/validation.js","loc":"144:24-49","message":"Module not found: Error: Can't resolve 'utf-8-validate' in '/Users/ajaygurjar/algo-1/node_modules/ws/lib'","compilerPath":"server"}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+[webpackbar] ℹ Compiling Service Worker
+[webpackbar] ✔ Service Worker: Compiled successfully in 212.43ms
+[WARNING] Docusaurus found broken anchors!
+
+Please check the pages of your site in the list below, and make sure you don't reference any anchor that does not exist.
+Note: it's possible to ignore broken anchors with the 'onBrokenAnchors' Docusaurus configuration, and let the build pass.
+
+Exhaustive list of all broken anchors found:
+- Broken anchor on source page path = /algo/hi/stories/:
+   -> linking to #explore (resolved as: /algo/hi/stories/#explore)
+
+[SUCCESS] Generated static files in "build/hi".
+[INFO] Use `npm run serve` command to test your build locally.
+┌───────────────────────────────────────────────────────────────┐
+│             @docusaurus/core update check failed              │
+│              Try running with sudo or get access              │
+│             to the local update config store via              │
+│ sudo chown -R $USER:$(id -gn $USER) /Users/ajaygurjar/.config │
+└───────────────────────────────────────────────────────────────┘
+
+Exit Code: 0
