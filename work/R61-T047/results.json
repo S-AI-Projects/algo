@@ -1,0 +1,134 @@
+{
+  "task": "R61-T047",
+  "item": "SQL CASE Expression Derivation",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/languages/SQL/sql-26.md",
+  "tool_versions": {
+    "sqlite3_version": "3.50.4",
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "derivation": {
+    "row_1": {
+      "input": [
+        "Laptop",
+        1
+      ],
+      "branch": "WHEN 1",
+      "output": "Electronics"
+    },
+    "row_2": {
+      "input": [
+        "Desk Chair",
+        2
+      ],
+      "branch": "WHEN 2",
+      "output": "Furniture"
+    },
+    "row_3": {
+      "input": [
+        "Apples",
+        3
+      ],
+      "branch": "WHEN 3",
+      "output": "Groceries"
+    },
+    "row_4": {
+      "input": [
+        "Desk Lamp",
+        99
+      ],
+      "branch": "ELSE",
+      "output": "Other"
+    },
+    "row_5": {
+      "input": [
+        "Uncategorized Item",
+        null
+      ],
+      "branch": "ELSE",
+      "output": "Other"
+    }
+  },
+  "checks": [
+    {
+      "description": "Article worked example (Simple CASE with 5 fixture rows)",
+      "expected": [
+        [
+          "Laptop",
+          "Electronics"
+        ],
+        [
+          "Desk Chair",
+          "Furniture"
+        ],
+        [
+          "Apples",
+          "Groceries"
+        ],
+        [
+          "Desk Lamp",
+          "Other"
+        ],
+        [
+          "Uncategorized Item",
+          "Other"
+        ]
+      ],
+      "actual": [
+        [
+          "Laptop",
+          "Electronics"
+        ],
+        [
+          "Desk Chair",
+          "Furniture"
+        ],
+        [
+          "Apples",
+          "Groceries"
+        ],
+        [
+          "Desk Lamp",
+          "Other"
+        ],
+        [
+          "Uncategorized Item",
+          "Other"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "description": "Boundary case 1: Omitted ELSE clause produces NULL",
+      "input": [
+        "Desk Lamp",
+        99
+      ],
+      "expected": [
+        "Desk Lamp",
+        null
+      ],
+      "actual": [
+        "Desk Lamp",
+        null
+      ],
+      "passed": true
+    },
+    {
+      "description": "Boundary case 2: Empty table returns 0 rows",
+      "input": "0 rows",
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": "WrongCategory assertion",
+      "expected_to_fail": true,
+      "passed": true
+    }
+  ],
+  "extracted_sql": "-- 1. Table Schema Setup\nCREATE TABLE Products (\n    ProductID INTEGER PRIMARY KEY,\n    ProductName TEXT NOT NULL,\n    CategoryID INTEGER\n);\n\n-- 2. Literal Fixture Insertion\nINSERT INTO Products (ProductID, ProductName, CategoryID) VALUES\n(1, 'Laptop', 1),\n(2, 'Desk Chair', 2),\n(3, 'Apples', 3),\n(4, 'Desk Lamp', 99),\n(5, 'Uncategorized Item', NULL);\n\n-- 3. Worked Example Query (Simple CASE)\nSELECT ProductName,\n    CASE CategoryID\n        WHEN 1 THEN 'Electronics'\n        WHEN 2 THEN 'Furniture'\n        WHEN 3 THEN 'Groceries'\n        ELSE 'Other'\n    END AS CategoryLabel\nFROM Products\nORDER BY ProductID;\n\n-- 4. Boundary Case: Omitted ELSE Clause (Returns NULL when unmatched)\nSELECT ProductName,\n    CASE CategoryID\n        WHEN 1 THEN 'Electronics'\n        WHEN 2 THEN 'Furniture'\n    END AS CategoryLabel\nFROM Products\nWHERE ProductID = 4;"
+}
