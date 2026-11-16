@@ -1,0 +1,69 @@
+Expected vs Actual Execution Results for Assignment R61-T026
+=============================================================
+
+Target Document: docs/extra/Fenwick Tree/FenwickTree.md
+Compiler: Apple clang version 21.0.0 (g++ -std=c++17 -O2)
+Test Harness: work/R61-T026/check.py
+
+------------------------------------------------------------------------------------------------------------------------
+Test ID                       Operation / Input                       Expected Value                  Actual Value     Status
+------------------------------------------------------------------------------------------------------------------------
+ORIGINAL_LINE_1               cout << ft.getSum(5)                   "Sum from 1 to 5: 7"            "Sum from 1..."  PASS
+ORIGINAL_LINE_2               cout << ft.rangeSum(3, 5)              "Range Sum from 3 to 5: 7"      "Range Sum..."   PASS
+BOUNDARY_LINE_3               cout << ft.getSum(0)                   "Empty prefix sum (getSum(0)): 0" "Empty..."     PASS
+INIT_GETSUM_0                 ft_empty.getSum(0)                      0                               0                PASS
+INIT_GETSUM_1                 ft_empty.getSum(1)                      0                               0                PASS
+BOUNDARY_EMPTY_PREFIX         ft.getSum(0)                            0                               0                PASS
+BOUNDARY_RANGE_LOWER_BOUND    ft.rangeSum(1, 5)                       7                               7                PASS
+QUERY_GETSUM_1                ft.getSum(1)                            0                               0                PASS
+QUERY_GETSUM_2                ft.getSum(2)                            0                               0                PASS
+QUERY_GETSUM_3                ft.getSum(3)                            5                               5                PASS
+QUERY_GETSUM_4                ft.getSum(4)                            5                               5                PASS
+QUERY_GETSUM_5                ft.getSum(5)                            7                               7                PASS
+QUERY_GETSUM_6                ft.getSum(6)                            7                               7                PASS
+QUERY_GETSUM_7                ft.getSum(7)                            7                               7                PASS
+QUERY_GETSUM_8                ft.getSum(8)                            7                               7                PASS
+QUERY_GETSUM_10               ft.getSum(10)                           7                               7                PASS
+QUERY_RANGESUM_3_5            ft.rangeSum(3, 5)                       7                               7                PASS
+QUERY_RANGESUM_3_3            ft.rangeSum(3, 3)                       5                               5                PASS
+QUERY_RANGESUM_5_5            ft.rangeSum(5, 5)                       2                               2                PASS
+QUERY_RANGESUM_4_5            ft.rangeSum(4, 5)                       2                               2                PASS
+QUERY_RANGESUM_1_10           ft.rangeSum(1, 10)                      7                               7                PASS
+POST_UPDATE_GETSUM_1          update(1, 10) -> getSum(1)              10                              10               PASS
+POST_UPDATE_GETSUM_3          getSum(3) after update(1, 10)           15                              15               PASS
+POST_UPDATE_GETSUM_5          getSum(5) after update(1, 10)           17                              17               PASS
+POST_UPDATE_RANGESUM_1_3      rangeSum(1, 3) after update             15                              15               PASS
+------------------------------------------------------------------------------------------------------------------------
+
+Detailed Standard Output Verification:
+--------------------------------------
+Expected:
+Sum from 1 to 5: 7
+Range Sum from 3 to 5: 7
+Empty prefix sum (getSum(0)): 0
+
+Actual:
+Sum from 1 to 5: 7
+Range Sum from 3 to 5: 7
+Empty prefix sum (getSum(0)): 0
+
+Match: EXACT (100%)
+
+
+Intermediate BIT Array Verification:
+------------------------------------
+Tree initialized: n = 10, BITree initialized to 11 zeros.
+After ft.update(3, 5):
+  Indices modified:
+    - i = 3: BITree[3] = 5
+    - i = 4: BITree[4] = 5
+    - i = 8: BITree[8] = 5
+After ft.update(5, 2):
+  Indices modified:
+    - i = 5: BITree[5] = 2
+    - i = 6: BITree[6] = 2
+    - i = 8: BITree[8] = 5 + 2 = 7
+
+Final BITree array contents: [0, 0, 0, 5, 5, 2, 2, 0, 7, 0, 0]
+Empty prefix query getSum(0): Returns 0 without entering loop (0 > 0 evaluates to false).
+Match: EXACT (100%)
