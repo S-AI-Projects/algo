@@ -1,0 +1,49 @@
+Deliberate Failure Test Evidence for Assignment R61-T025
+=========================================================
+
+To prove that the automated checker reliably catches discrepancies and errors,
+two deliberate wrong-result test cases were executed.
+
+Test 1: Deliberate Original Output Mismatch
+--------------------------------------------
+Tested Assertion:
+    assert actual_output == "The maximum sum of the contiguous subarray is: 999"
+
+Actual Value:
+    "The maximum sum of the contiguous subarray is: 6"
+
+Result:
+    AssertionError: Deliberate wrong-output assertion
+    Checker caught failure: YES
+    Verification status: PASS (Mismatch successfully detected)
+
+Traceback Representation:
+    Traceback (most recent call last):
+      File "work/R61-T025/check.py", line 125, in test_deliberate_failure_original
+        assert actual_output == wrong_expected, "Deliberate wrong-output assertion"
+    AssertionError: Deliberate wrong-output assertion
+
+
+Test 2: Deliberate Boundary Result Mismatch (Zero-Initialization Bug Trap)
+--------------------------------------------------------------------------
+Background:
+    A very common implementation bug in Kadane's algorithm is initializing `max_current`
+    and `max_global` to 0 rather than `nums[0]`. In that case, for an all-negative array
+    such as `[-7]`, the erroneous implementation returns 0 instead of -7.
+
+Tested Assertion:
+    assert actual_boundary_return == 0
+
+Actual Value:
+    -7
+
+Result:
+    AssertionError: Deliberate boundary wrong-result assertion
+    Checker caught failure: YES
+    Verification status: PASS (Mismatch successfully detected)
+
+Traceback Representation:
+    Traceback (most recent call last):
+      File "work/R61-T025/check.py", line 133, in test_deliberate_failure_boundary
+        assert actual_boundary_return == wrong_expected, "Deliberate boundary wrong-result assertion"
+    AssertionError: Deliberate boundary wrong-result assertion
