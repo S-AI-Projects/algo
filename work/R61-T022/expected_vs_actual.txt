@@ -1,0 +1,26 @@
+Expected vs. Actual Outputs for Issue #22 (R61-T022)
+Execution Target: Extracted C++ example from docs/languages/cpp/cp-13.md
+Validator: python3 work/R61-T022/check.py
+--------------------------------------------------------------------------------
+Case ID: TC-01 (Worked Example - Vector + for_each + Iterator Traversal)
+Expected: 2 4 6 8 10 
+Actual:   2 4 6 8 10 
+Status:   MATCH (PASS)
+
+--------------------------------------------------------------------------------
+Case ID: TC-02 (Boundary Case - Empty Vector)
+Expected: Empty vector boundary case: no output
+Actual:   Empty vector boundary case: no output
+Status:   MATCH (PASS)
+
+--------------------------------------------------------------------------------
+Full Stream Assertion:
+Expected:
+2 4 6 8 10 
+Empty vector boundary case: no output
+
+Actual:
+2 4 6 8 10 
+Empty vector boundary case: no output
+
+Status: PERFECT MATCH

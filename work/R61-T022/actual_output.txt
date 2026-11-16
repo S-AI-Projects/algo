@@ -1,0 +1,2 @@
+2 4 6 8 10 
+Empty vector boundary case: no output

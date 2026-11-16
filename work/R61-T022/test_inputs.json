@@ -1,0 +1,28 @@
+{
+  "issue": "GitHub Issue #22: R61-T022 \u2014 Explain the boundary: cp 13",
+  "document": "docs/languages/cpp/cp-13.md",
+  "section": "1. The Core Architecture of the STL",
+  "core_components": {
+    "container": "std::vector<int>",
+    "algorithm": "std::for_each",
+    "iterator": "std::vector<int>::iterator via begin() / end()"
+  },
+  "test_cases": [
+    {
+      "case_id": "TC-01",
+      "name": "Worked Example (Container, Algorithm, Iterator Interaction)",
+      "container_state": "std::vector<int> numbers = {1, 2, 3, 4, 5}",
+      "operation": "std::for_each(numbers.begin(), numbers.end(), Double()) then explicit iterator print",
+      "precondition": "Range [begin(), end()) contains 5 valid elements; each iterator dereference is safe",
+      "expected_output": "2 4 6 8 10 "
+    },
+    {
+      "case_id": "TC-02",
+      "name": "Boundary / Minimum Case (Empty Vector)",
+      "container_state": "std::vector<int> empty_vec = {}",
+      "operation": "Check empty_vec.begin() == empty_vec.end(); range is empty, traversal is bypassed",
+      "precondition": "begin() == end(); no dereferencing occurs as past-the-end dereferencing is undefined",
+      "expected_output": "Empty vector boundary case: no output"
+    }
+  ]
+}
