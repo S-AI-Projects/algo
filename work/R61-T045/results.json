@@ -1,0 +1,89 @@
+{
+  "task": "R61-T045",
+  "item": "Bitap Algorithm",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/extra/algorithms/string-algorithms/bitap-algorithm.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.4.1.1)",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "environment": {
+    "locale_management": "Pinned to 'C' locale for deterministic ASCII mask and restored",
+    "character_indexing": "static_cast<unsigned char> bounds safety [0, 255]"
+  },
+  "checks": [
+    {
+      "description": "Article worked example",
+      "text": "this is a simple example",
+      "pattern": "example",
+      "maxErrors": 1,
+      "expected_index": 17,
+      "actual_index": 17,
+      "passed": true
+    },
+    {
+      "description": "Boundary case 1: Exact match with 0 errors",
+      "text": "this is a simple example",
+      "pattern": "example",
+      "maxErrors": 0,
+      "expected_index": 17,
+      "actual_index": 17,
+      "passed": true
+    },
+    {
+      "description": "Boundary case 2: Pattern longer than text (m > n)",
+      "text": "short",
+      "pattern": "longer pattern",
+      "maxErrors": 1,
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "description": "Boundary case 3: Single-character pattern at start (index 0)",
+      "text": "abcdef",
+      "pattern": "a",
+      "maxErrors": 0,
+      "expected": [
+        0
+      ],
+      "actual": [
+        0
+      ],
+      "passed": true
+    },
+    {
+      "description": "Boundary case 4: Single-character pattern at end (index 5)",
+      "text": "abcdef",
+      "pattern": "f",
+      "maxErrors": 0,
+      "expected": [
+        5
+      ],
+      "actual": [
+        5
+      ],
+      "passed": true
+    },
+    {
+      "description": "Boundary case 5: Pattern not present in text",
+      "text": "hello world",
+      "pattern": "xyz",
+      "maxErrors": 1,
+      "expected": [],
+      "actual": [],
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": "matches[0] == 999",
+      "expected_exit_code_non_zero": true,
+      "actual_exit_code": -6,
+      "error_output_contains_assertion": true,
+      "passed": true
+    }
+  ],
+  "extracted_code": "#include <iostream>\n#include <vector>\n#include <string>\n#include <cassert>\n#include <clocale>\nusing namespace std;\n\n#define CHAR_SIZE 256 // Extended ASCII\n\nvoid preprocessPattern(const string& pattern, vector<int>& patternMask) {\n    int m = pattern.size();\n    for (int i = 0; i < CHAR_SIZE; ++i) {\n        patternMask[i] = ~0;\n    }\n    for (int i = 0; i < m; ++i) {\n        patternMask[static_cast<unsigned char>(pattern[i])] &= ~(1 << i);\n    }\n}\n\nvector<int> bitapSearch(const string& text, const string& pattern, int maxErrors, bool verbose = true) {\n    vector<int> matches;\n    int n = text.size();\n    int m = pattern.size();\n\n    if (m > n || m == 0) return matches;\n\n    vector<int> patternMask(CHAR_SIZE);\n    preprocessPattern(pattern, patternMask);\n\n    vector<int> R(maxErrors + 1, ~0);\n    for (int i = 0; i <= maxErrors; ++i) {\n        R[i] = ~1; // All bits set except the least significant bit\n    }\n\n    for (int i = 0; i < n; ++i) {\n        int oldR_jMinus1 = ~0;\n        for (int j = 0; j <= maxErrors; ++j) {\n            int temp = R[j];\n            R[j] = ((R[j] << 1) | patternMask[static_cast<unsigned char>(text[i])]);\n            if (j > 0) {\n                R[j] &= (oldR_jMinus1 << 1) | (R[j - 1] << 1) | oldR_jMinus1;\n            }\n            oldR_jMinus1 = temp;\n        }\n        if ((R[maxErrors] & (1 << (m - 1))) == 0) {\n            int matchIdx = i - m + 1;\n            matches.push_back(matchIdx);\n            if (verbose) {\n                cout << \"Pattern found at index \" << matchIdx << \" with \" << maxErrors << \" allowed errors.\" << endl;\n            }\n        }\n    }\n    return matches;\n}\n\nint main() {\n    // 1. Fix process-global locale to \"C\" for reproducible ASCII character handling\n    const char* prevLocale = setlocale(LC_ALL, nullptr);\n    string savedLocale = prevLocale ? prevLocale : \"C\";\n    setlocale(LC_ALL, \"C\");\n\n    // Worked example from article\n    string text = \"this is a simple example\";\n    string pattern = \"example\";\n    int maxErrors = 1; // Allow 1 error (insertion, deletion, or substitution)\n\n    vector<int> matches = bitapSearch(text, pattern, maxErrors);\n\n    // Worked example assertion\n    assert(matches.size() == 1 && matches[0] == 17);\n\n    // Boundary case 1: Exact match with 0 errors\n    assert(bitapSearch(\"this is a simple example\", \"example\", 0, false) == vector<int>{17});\n\n    // Boundary case 2: Pattern longer than text (m > n)\n    assert(bitapSearch(\"short\", \"longer pattern\", 1, false).empty());\n\n    // Boundary case 3: Single-character pattern at boundaries\n    assert(bitapSearch(\"abcdef\", \"a\", 0, false) == vector<int>{0});\n    assert(bitapSearch(\"abcdef\", \"f\", 0, false) == vector<int>{5});\n\n    // Boundary case 4: Pattern not present in text\n    assert(bitapSearch(\"hello world\", \"xyz\", 1, false).empty());\n\n    // 2. Restore process-global locale setting\n    setlocale(LC_ALL, savedLocale.c_str());\n\n    return 0;\n}"
+}

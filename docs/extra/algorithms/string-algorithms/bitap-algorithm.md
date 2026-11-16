@@ -11,6 +11,16 @@ sidebar_label: Bitap Algorithm
 
 The Bitap algorithm, also known as the **Shift-Or**, **Shift-And**, or **Bitap for Approximate String Matching**, is a string matching algorithm that efficiently finds patterns in a text with possible mismatches or errors. The algorithm leverages bitwise operations to perform both exact and approximate string matching, making it ideal for fuzzy searching.
 
+### Reproducible Execution & Environment Contract:
+
+To guarantee deterministic, portable execution across operating systems and compilers:
+1. **Locale Management**: Character bitmask construction depends on byte values. We pin the process-global locale to `"C"` via `std::setlocale(LC_ALL, "C")` to ensure uniform ASCII behavior regardless of ambient system configurations, and restore the original locale prior to termination.
+2. **Character Domain Mapping**: Characters are cast via `static_cast<unsigned char>` to guarantee non-negative indices in the range `[0, 255]`, preventing undefined behavior or memory corruption on platforms where `char` defaults to signed.
+3. **Boundary Guarantees**:
+   - When pattern length $m$ exceeds text length $n$ ($m > n$), the algorithm early-exits safely in $O(1)$ time.
+   - Exact matching ($k = 0$ allowed errors) functions as a strict substring locator.
+   - Single-character patterns are matched correctly at string boundaries (indices $0$ and $n-1$).
+
 ### Video Explanation
 
 <LiteYouTubeEmbed
@@ -59,6 +69,8 @@ The Bitap algorithm, also known as the **Shift-Or**, **Shift-And**, or **Bitap f
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cassert>
+#include <clocale>
 using namespace std;
 
 #define CHAR_SIZE 256 // Extended ASCII
@@ -69,15 +81,16 @@ void preprocessPattern(const string& pattern, vector<int>& patternMask) {
         patternMask[i] = ~0;
     }
     for (int i = 0; i < m; ++i) {
-        patternMask[pattern[i]] &= ~(1 << i);
+        patternMask[static_cast<unsigned char>(pattern[i])] &= ~(1 << i);
     }
 }
 
-void bitapSearch(const string& text, const string& pattern, int maxErrors) {
+vector<int> bitapSearch(const string& text, const string& pattern, int maxErrors, bool verbose = true) {
+    vector<int> matches;
     int n = text.size();
     int m = pattern.size();
 
-    if (m > n) return;
+    if (m > n || m == 0) return matches;
 
     vector<int> patternMask(CHAR_SIZE);
     preprocessPattern(pattern, patternMask);
@@ -91,24 +104,54 @@ void bitapSearch(const string& text, const string& pattern, int maxErrors) {
         int oldR_jMinus1 = ~0;
         for (int j = 0; j <= maxErrors; ++j) {
             int temp = R[j];
-            R[j] = ((R[j] << 1) | patternMask[text[i]]);
+            R[j] = ((R[j] << 1) | patternMask[static_cast<unsigned char>(text[i])]);
             if (j > 0) {
                 R[j] &= (oldR_jMinus1 << 1) | (R[j - 1] << 1) | oldR_jMinus1;
             }
             oldR_jMinus1 = temp;
         }
         if ((R[maxErrors] & (1 << (m - 1))) == 0) {
-            cout << "Pattern found at index " << i - m + 1 << " with " << maxErrors << " allowed errors." << endl;
+            int matchIdx = i - m + 1;
+            matches.push_back(matchIdx);
+            if (verbose) {
+                cout << "Pattern found at index " << matchIdx << " with " << maxErrors << " allowed errors." << endl;
+            }
         }
     }
+    return matches;
 }
 
 int main() {
+    // 1. Fix process-global locale to "C" for reproducible ASCII character handling
+    const char* prevLocale = setlocale(LC_ALL, nullptr);
+    string savedLocale = prevLocale ? prevLocale : "C";
+    setlocale(LC_ALL, "C");
+
+    // Worked example from article
     string text = "this is a simple example";
     string pattern = "example";
     int maxErrors = 1; // Allow 1 error (insertion, deletion, or substitution)
 
-    bitapSearch(text, pattern, maxErrors);
+    vector<int> matches = bitapSearch(text, pattern, maxErrors);
+
+    // Worked example assertion
+    assert(matches.size() == 1 && matches[0] == 17);
+
+    // Boundary case 1: Exact match with 0 errors
+    assert(bitapSearch("this is a simple example", "example", 0, false) == vector<int>{17});
+
+    // Boundary case 2: Pattern longer than text (m > n)
+    assert(bitapSearch("short", "longer pattern", 1, false).empty());
+
+    // Boundary case 3: Single-character pattern at boundaries
+    assert(bitapSearch("abcdef", "a", 0, false) == vector<int>{0});
+    assert(bitapSearch("abcdef", "f", 0, false) == vector<int>{5});
+
+    // Boundary case 4: Pattern not present in text
+    assert(bitapSearch("hello world", "xyz", 1, false).empty());
+
+    // 2. Restore process-global locale setting
+    setlocale(LC_ALL, savedLocale.c_str());
 
     return 0;
 }
