@@ -49,7 +49,7 @@ When submitting via `method="post"`, form fields are packaged directly inside th
    POST /welcome_post.php HTTP/1.1
    Host: localhost
    Content-Type: application/x-www-form-urlencoded
-   Content-Length: 35
+   Content-Length: 36
 
    name=Alice&email=alice%40example.com
    ```

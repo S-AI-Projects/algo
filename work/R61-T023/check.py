@@ -6,7 +6,8 @@ Anchor: ## A Simple HTML Form / ## Processing Form Data
 
 Extracts the runnable PHP examples for POST and GET from the markdown documentation,
 executes them using the PHP runtime, asserts expected normal and boundary outputs,
-and validates negative assertion detection.
+and executes genuine negative tests by temporarily mutating extracted PHP examples
+to confirm non-zero exit detection and automatic restoration.
 """
 
 import os
@@ -115,6 +116,7 @@ def save_test_inputs():
                 "method": "POST",
                 "inputs": {"name": "Alice", "email": "alice@example.com"},
                 "wire_payload": "name=Alice&email=alice%40example.com",
+                "content_length": 36,
                 "expected_output": "Welcome, Alice!\nYour email is: alice@example.com\n"
             },
             {
@@ -174,7 +176,7 @@ def save_test_inputs():
         "--------------------------------------------------------------------------------\n"
         "Case TC-01: POST Normal Input (Worked Example)\n"
         "  Method: POST\n"
-        "  Wire Payload: name=Alice&email=alice%40example.com\n"
+        "  Wire Payload: name=Alice&email=alice%40example.com (Content-Length: 36)\n"
         "  Parsed: $_POST['name']='Alice', $_POST['email']='alice@example.com'\n"
         "  Expected Output: Welcome, Alice!\\nYour email is: alice@example.com\\n\n"
         "\n"
@@ -261,7 +263,6 @@ def execute_php(code: str, method: str, params: str) -> str:
                 os.unlink(fpath)
     else:
         # Fallback using php CLI
-        # Inject simulated superglobals and parse_str before the user script
         clean_code = code.strip()
         if clean_code.startswith("<?php"):
             inner_code = clean_code[5:].strip()
@@ -293,28 +294,26 @@ def lint_php(code: str, label: str):
     log(f"PHP syntax lint clean for {label}")
 
 
-def main():
-    log("Starting verification suite for Issue #23 (R61-T023) ...")
-    record_environment()
-    save_test_inputs()
+def run_positive_checks(target_doc: Path, verbose: bool = True) -> tuple:
+    """Extracts PHP examples from target_doc and executes all 6 test cases."""
+    if not target_doc.is_file():
+        raise FileNotFoundError(f"Target documentation not found at {target_doc}")
 
-    if not DOC_PATH.is_file():
-        raise FileNotFoundError(f"Target documentation not found at {DOC_PATH}")
-
-    content = DOC_PATH.read_text(encoding="utf-8")
+    content = target_doc.read_text(encoding="utf-8")
 
     # Extract POST and GET handlers
     post_code = extract_code_block(content, "welcome_post.php", "$_POST['name']")
     get_code = extract_code_block(content, "welcome_get.php", "$_GET['name']")
-    log(f"Extracted welcome_post.php ({len(post_code.splitlines())} lines)")
-    log(f"Extracted welcome_get.php ({len(get_code.splitlines())} lines)")
+
+    if verbose:
+        log(f"Extracted welcome_post.php ({len(post_code.splitlines())} lines)")
+        log(f"Extracted welcome_get.php ({len(get_code.splitlines())} lines)")
 
     # Lint both code snippets
     lint_php(post_code, "welcome_post.php")
     lint_php(get_code, "welcome_get.php")
 
     # Execute test cases
-    log("Executing Test Cases ...")
     normal_payload = "name=Alice&email=alice%40example.com"
     empty_payload = "name=&email="
     missing_payload = ""
@@ -337,6 +336,136 @@ def main():
     # TC-06: GET Empty String
     actual_get_empty = execute_php(get_code, "GET", empty_payload)
 
+    # Assertions
+    assert actual_post_normal == expected_normal, f"POST normal failed: {repr(actual_post_normal)} != {repr(expected_normal)}"
+    assert actual_get_normal == expected_normal, f"GET normal failed: {repr(actual_get_normal)} != {repr(expected_normal)}"
+    assert actual_post_missing == expected_boundary, f"POST missing failed: {repr(actual_post_missing)} != {repr(expected_boundary)}"
+    assert actual_get_missing == expected_boundary, f"GET missing failed: {repr(actual_get_missing)} != {repr(expected_boundary)}"
+    assert actual_post_empty == expected_boundary, f"POST empty failed: {repr(actual_post_empty)} != {repr(expected_boundary)}"
+    assert actual_get_empty == expected_boundary, f"GET empty failed: {repr(actual_get_empty)} != {repr(expected_boundary)}"
+
+    if verbose:
+        log("All 6 test assertions PASSED!")
+
+    return (
+        actual_post_normal, actual_get_normal,
+        actual_post_missing, actual_get_missing,
+        actual_post_empty, actual_get_empty,
+        expected_normal, expected_boundary
+    )
+
+
+def run_genuine_negative_tests():
+    """
+    Genuine Negative Test:
+    Temporarily modifies an extracted PHP example in docs/languages/php/php-12.md
+    to produce incorrect output, executes the checker subprocess against that modified
+    example, asserts that the checker fails with a non-zero exit status, and restores
+    the original file in all circumstances via try...finally.
+    """
+    log("Executing genuine negative tests ...")
+    original_doc_content = DOC_PATH.read_text(encoding="utf-8")
+    script_path = str(Path(__file__).resolve())
+    negative_log_entries = []
+
+    # Case 1: Mutate welcome_post.php to emit incorrect output
+    log("Negative Case 1: Temporarily mutating welcome_post.php to produce incorrect output ...")
+    mutated_post_marker = 'echo "Welcome, $name!\\n";'
+    corrupted_post_replacement = 'echo "Welcome, CORRUPTED_TEST_NAME!\\n";'
+    assert mutated_post_marker in original_doc_content, "Target marker not found in php-12.md"
+
+    try:
+        mutated_content = original_doc_content.replace(mutated_post_marker, corrupted_post_replacement, 1)
+        DOC_PATH.write_text(mutated_content, encoding="utf-8")
+
+        # Run checker in subprocess
+        proc = subprocess.run(
+            [sys.executable, script_path, "--worker-check"],
+            capture_output=True,
+            text=True
+        )
+
+        assert proc.returncode != 0, (
+            f"Expected checker to fail with non-zero exit code on corrupted POST example, but got exit code 0!\nOutput:\n{proc.stdout}"
+        )
+        log(f"Subprocess checker correctly failed with non-zero exit code ({proc.returncode}) on mutated POST example.")
+        negative_log_entries.append(
+            f"--- Negative Case 1: Mutated welcome_post.php ---\n"
+            f"Exit Code: {proc.returncode} (Expected Non-Zero)\n"
+            f"Captured Failure Output:\n{proc.stderr or proc.stdout}\n"
+        )
+    finally:
+        DOC_PATH.write_text(original_doc_content, encoding="utf-8")
+        log("Restored original docs/languages/php/php-12.md from Negative Case 1.")
+
+    # Case 2: Mutate welcome_get.php to emit incorrect output
+    log("Negative Case 2: Temporarily mutating welcome_get.php to produce incorrect output ...")
+    mutated_get_marker = 'echo "Your email is: $email\\n";'
+    corrupted_get_replacement = 'echo "Your email is: CORRUPTED_EMAIL\\n";'
+    assert mutated_get_marker in original_doc_content, "Target marker not found in php-12.md"
+
+    try:
+        # Replace the second occurrence (which is in welcome_get.php)
+        parts = original_doc_content.split(mutated_get_marker)
+        if len(parts) >= 3:
+            mutated_content = parts[0] + mutated_get_marker + parts[1] + corrupted_get_replacement + mutated_get_marker.join(parts[2:])
+        else:
+            mutated_content = original_doc_content.replace(mutated_get_marker, corrupted_get_replacement, 1)
+
+        DOC_PATH.write_text(mutated_content, encoding="utf-8")
+
+        proc = subprocess.run(
+            [sys.executable, script_path, "--worker-check"],
+            capture_output=True,
+            text=True
+        )
+
+        assert proc.returncode != 0, (
+            f"Expected checker to fail with non-zero exit code on corrupted GET example, but got exit code 0!\nOutput:\n{proc.stdout}"
+        )
+        log(f"Subprocess checker correctly failed with non-zero exit code ({proc.returncode}) on mutated GET example.")
+        negative_log_entries.append(
+            f"--- Negative Case 2: Mutated welcome_get.php ---\n"
+            f"Exit Code: {proc.returncode} (Expected Non-Zero)\n"
+            f"Captured Failure Output:\n{proc.stderr or proc.stdout}\n"
+        )
+    finally:
+        DOC_PATH.write_text(original_doc_content, encoding="utf-8")
+        log("Restored original docs/languages/php/php-12.md from Negative Case 2.")
+
+    # Ensure document is pristine
+    restored_content = DOC_PATH.read_text(encoding="utf-8")
+    assert restored_content == original_doc_content, "Integrity check failed: restored file does not match original!"
+    log("Integrity verified: docs/languages/php/php-12.md is completely intact.")
+
+    # Save log to wrong_test_detected.txt
+    (WORKDIR / "wrong_test_detected.txt").write_text("\n".join(negative_log_entries), encoding="utf-8")
+    log("Saved genuine negative test evidence to wrong_test_detected.txt")
+
+
+def main():
+    # If run in worker-check mode, execute positive checks only and exit with appropriate status
+    if len(sys.argv) > 1 and sys.argv[1] == "--worker-check":
+        try:
+            run_positive_checks(DOC_PATH, verbose=False)
+            sys.exit(0)
+        except Exception as exc:
+            print(f"[WORKER-FAIL] {exc}", file=sys.stderr)
+            sys.exit(1)
+
+    log("Starting verification suite for Issue #23 (R61-T023) ...")
+    record_environment()
+    save_test_inputs()
+
+    # Step 1: Run all 6 positive checks
+    log("Running 6 positive test cases on target article ...")
+    (
+        actual_post_normal, actual_get_normal,
+        actual_post_missing, actual_get_missing,
+        actual_post_empty, actual_get_empty,
+        expected_normal, expected_boundary
+    ) = run_positive_checks(DOC_PATH, verbose=True)
+
     # Save expected and actual outputs
     combined_expected = (
         f"--- TC-01 POST Normal ---\n{expected_normal}"
@@ -357,16 +486,6 @@ def main():
 
     (WORKDIR / "expected_output.txt").write_text(combined_expected, encoding="utf-8")
     (WORKDIR / "actual_output.txt").write_text(combined_actual, encoding="utf-8")
-
-    # Assertions
-    log("Asserting outputs against documented contract ...")
-    assert actual_post_normal == expected_normal, f"POST normal failed: {repr(actual_post_normal)} != {repr(expected_normal)}"
-    assert actual_get_normal == expected_normal, f"GET normal failed: {repr(actual_get_normal)} != {repr(expected_normal)}"
-    assert actual_post_missing == expected_boundary, f"POST missing failed: {repr(actual_post_missing)} != {repr(expected_boundary)}"
-    assert actual_get_missing == expected_boundary, f"GET missing failed: {repr(actual_get_missing)} != {repr(expected_boundary)}"
-    assert actual_post_empty == expected_boundary, f"POST empty failed: {repr(actual_post_empty)} != {repr(expected_boundary)}"
-    assert actual_get_empty == expected_boundary, f"GET empty failed: {repr(actual_get_empty)} != {repr(expected_boundary)}"
-    log("All 6 test assertions PASSED!")
 
     # Write expected_vs_actual.txt comparison
     comparison_text = (
@@ -409,22 +528,13 @@ def main():
     (WORKDIR / "expected_vs_actual.txt").write_text(comparison_text, encoding="utf-8")
     log("Saved comparison to expected_vs_actual.txt")
 
-    # Negative test: verify deliberate wrong result is caught
-    log("Executing negative test (verifying detection of deliberate wrong output) ...")
-    deliberate_wrong = "Welcome, Mallory!\nYour email is: evil@hack.com\n"
-    try:
-        assert actual_post_normal == deliberate_wrong, "Deliberate test failure: output matches wrong result!"
-    except AssertionError as err:
-        err_msg = (
-            f"Deliberate wrong-result failure correctly caught:\n"
-            f"Expected: {repr(deliberate_wrong)}\n"
-            f"Actual:   {repr(actual_post_normal)}\n"
-            f"Error: {err}\n"
-        )
-        (WORKDIR / "wrong_test_detected.txt").write_text(err_msg, encoding="utf-8")
-        log("Deliberate wrong-result test correctly raised AssertionError!")
-    else:
-        raise RuntimeError("Checker failed to detect deliberate wrong output!")
+    # Step 2: Genuine negative tests
+    run_genuine_negative_tests()
+
+    # Step 3: Final check to ensure normal checker passes cleanly after restoration
+    log("Re-verifying normal positive checks on restored file ...")
+    run_positive_checks(DOC_PATH, verbose=False)
+    log("Normal checks confirmed passing after negative tests!")
 
     print("\n[SUCCESS] All checks passed successfully for Issue #23 (R61-T023).")
 

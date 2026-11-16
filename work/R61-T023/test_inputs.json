@@ -16,6 +16,7 @@
         "email": "alice@example.com"
       },
       "wire_payload": "name=Alice&email=alice%40example.com",
+      "content_length": 36,
       "expected_output": "Welcome, Alice!\nYour email is: alice@example.com\n"
     },
     {

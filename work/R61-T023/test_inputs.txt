@@ -6,7 +6,7 @@ Comparison: POST vs GET on Name and Email Form Fixture
 --------------------------------------------------------------------------------
 Case TC-01: POST Normal Input (Worked Example)
   Method: POST
-  Wire Payload: name=Alice&email=alice%40example.com
+  Wire Payload: name=Alice&email=alice%40example.com (Content-Length: 36)
   Parsed: $_POST['name']='Alice', $_POST['email']='alice@example.com'
   Expected Output: Welcome, Alice!\nYour email is: alice@example.com\n
 
