@@ -1,0 +1,18 @@
+--- TC-01 POST Normal ---
+Welcome, Alice!
+Your email is: alice@example.com
+--- TC-02 GET Normal ---
+Welcome, Alice!
+Your email is: alice@example.com
+--- TC-03 POST Missing ---
+Welcome, !
+Your email is: 
+--- TC-04 GET Missing ---
+Welcome, !
+Your email is: 
+--- TC-05 POST Empty ---
+Welcome, !
+Your email is: 
+--- TC-06 GET Empty ---
+Welcome, !
+Your email is: 

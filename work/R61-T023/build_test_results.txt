@@ -1,0 +1,2918 @@
+[CHECK] Starting verification suite for Issue #23 (R61-T023) ...
+[CHECK] Recorded environment to environment.txt
+[CHECK] Saved test inputs to test_inputs.json and test_inputs.txt
+[CHECK] Running 6 positive test cases on target article ...
+[CHECK] Extracted welcome_post.php (7 lines)
+[CHECK] Extracted welcome_get.php (7 lines)
+[CHECK] Linting PHP syntax for welcome_post.php ...
+[CHECK] PHP syntax lint clean for welcome_post.php
+[CHECK] Linting PHP syntax for welcome_get.php ...
+[CHECK] PHP syntax lint clean for welcome_get.php
+[CHECK] All 6 test assertions PASSED!
+[CHECK] Saved comparison to expected_vs_actual.txt
+[CHECK] Executing genuine negative tests ...
+[CHECK] Negative Case 1: Temporarily mutating welcome_post.php to produce incorrect output ...
+[CHECK] Subprocess checker correctly failed with non-zero exit code (1) on mutated POST example.
+[CHECK] Restored original docs/languages/php/php-12.md from Negative Case 1.
+[CHECK] Negative Case 2: Temporarily mutating welcome_get.php to produce incorrect output ...
+[CHECK] Subprocess checker correctly failed with non-zero exit code (1) on mutated GET example.
+[CHECK] Restored original docs/languages/php/php-12.md from Negative Case 2.
+[CHECK] Integrity verified: docs/languages/php/php-12.md is completely intact.
+[CHECK] Saved genuine negative test evidence to wrong_test_detected.txt
+[CHECK] Re-verifying normal positive checks on restored file ...
+[CHECK] Linting PHP syntax for welcome_post.php ...
+[CHECK] PHP syntax lint clean for welcome_post.php
+[CHECK] Linting PHP syntax for welcome_get.php ...
+[CHECK] PHP syntax lint clean for welcome_get.php
+[CHECK] Normal checks confirmed passing after negative tests!
+
+[SUCCESS] All checks passed successfully for Issue #23 (R61-T023).
+
+> algo@0.0.0 prebuild
+> npm run generate:dsa-index && npm run generate:docs-catalog && npm run generate:digest
+
+
+> algo@0.0.0 generate:dsa-index
+> node scripts/generate-dsa-problems-index.js
+
+✅ Indexed 91 DSA problems -> src/data/generated/dsaProblemsIndex.json
+
+> algo@0.0.0 generate:docs-catalog
+> node scripts/generate-docs-catalog.js
+
+✅ Indexed 719 docs -> src/data/generated/docsCatalogIndex.json (1 with explicit difficulty, 718 inferred)
+
+> algo@0.0.0 generate:digest
+> node scripts/generate-algorithm-digest.js
+
+🔍 Scanning docs for Algorithm Digest generation...
+📦 Found 1044 total algorithm articles.
+✅ Saved JSON digest data -> /Users/ajaygurjar/algo-1/src/data/generated/algorithmDigest.json
+✅ Generated RSS feed -> /Users/ajaygurjar/algo-1/static/algorithm-digest.xml
+✅ Generated RSS mirror -> /Users/ajaygurjar/algo-1/static/rss/algorithm-digest.xml
+
+> algo@0.0.0 build
+> cross-env NODE_OPTIONS=--max-old-space-size=6144 docusaurus build --no-minify
+
+[INFO] Website will be built for all these locales: 
+- en
+- hi
+[INFO] [en] Creating an optimized production build...
+
+● Client █████████████████████████  (0%)  
+ 
+
+◯ Server
+  
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1/1 dependencies
+ 0/1 modules 1 active 
+ babel-loader › node_modules/@docusaurus/core/lib/client/clientEntry.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 1/1 dependencies
+ 0/1 modules 1 active 
+ babel-loader › node_modules/@docusaurus/core/lib/client/serverEntry.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 17/62 dependenci
+es 3/14 modules 11 active 
+ ...loader › node_modules/@docusaurus/core/lib/client/ClientLifecyclesDispatch
+er.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 14/35 dependenci
+es 3/14 modules 11 active 
+ ...l-loader › node_modules/@docusaurus/core/lib/client/hasHydratedDataAttribu
+te.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 68/105 dependenc
+ies 6/33 modules 23 active 
+ json|/Users/ajaygurjar/algo-1/.docusaurus/routesChunkNames.json
+
+● Server █████████████████████████ building (10%) 0/1 entries 51/80 dependenci
+es 4/27 modules 23 active 
+ node_modules/react-loadable/lib/index.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 77/109 dependenc
+ies 12/37 modules 22 active 
+ babel-loader › node_modules/@docusaurus/core/lib/client/exports/Head.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 74/99 dependenci
+es 6/37 modules 26 active 
+ node_modules/react/cjs/react.production.min.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 77/112 dependenc
+ies 12/37 modules 25 active 
+ ...babel-loader › node_modules/@docusaurus/core/lib/client/exports/useIsBrows
+er.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 86/112 dependenc
+ies 17/39 modules 22 active 
+ javascript/esm|/Users/ajaygurjar/algo-1/.docusaurus/docusaurus.config.mjs
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 122/150 dependen
+cies 26/57 modules 28 active 
+ babel-loader › src/components/ProgressTracker/SidebarUpdater.tsx
+
+● Server █████████████████████████ building (10%) 0/1 entries 122/151 dependen
+cies 28/57 modules 23 active 
+ babel-loader › src/components/PageProgressIndicator.jsx
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 145/175 dependen
+cies 32/61 modules 26 active 
+ node_modules/prop-types/index.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 129/171 dependen
+cies 31/62 modules 31 active 
+ node_modules/react-dom/cjs/react-dom-server.node.production.min.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 194/235 dependen
+cies 37/86 modules 43 active 
+ babel-loader › src/data/challengeData.ts
+
+● Server █████████████████████████ building (10%) 0/1 entries 175/211 dependen
+cies 48/78 modules 29 active 
+ babel-loader › src/hooks/useFocusTrap.ts
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 203/247 dependen
+cies 42/88 modules 46 active 
+ ... › postcss-loader › src/components/ThemePickerModal/ThemePickerModal.modul
+e.css
+
+● Server █████████████████████████ building (10%) 0/1 entries 196/237 dependen
+cies 50/84 modules 34 active 
+ babel-loader › src/utils/progressStore.ts
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 250/283 dependen
+cies 51/107 modules 55 active 
+ babel-loader › src/theme/NotFound.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 245/275 dependen
+cies 68/105 modules 36 active 
+ ...js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 270/297 dependen
+cies 51/117 modules 66 active 
+ ...s
+
+● Server █████████████████████████ building (10%) 0/1 entries 267/296 dependen
+cies 70/116 modules 42 active 
+ node_modules/resolve-pathname/esm/resolve-pathname.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 282/309 dependen
+cies 56/121 modules 64 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 310/340 dependen
+cies 86/133 modules 43 active 
+ node_modules/path-to-regexp/index.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 662/5175 depende
+ncies 58/500 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 310/340 dependen
+cies 86/133 modules 46 active 
+ ...der › node_modules/@docusaurus/theme-classic/lib/theme/Layout/styles.modul
+e.css
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1963/5196 depend
+encies 58/1800 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (10%) 0/1 entries 684/2783 depende
+ncies 90/500 modules 42 active 
+ ...der › node_modules/@docusaurus/theme-classic/lib/theme/Layout/styles.modul
+e.css
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1963/5196 depend
+encies 58/1800 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2696/2783 depend
+encies 91/2508 modules 41 active 
+ ...babel-loader › node_modules/@docusaurus/plugin-content-docs/lib/client/ind
+ex.js
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1963/5196 depend
+encies 58/1800 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2837/2916 depend
+encies 111/2584 modules 53 active 
+ babel-loader › src/pages/visualization/searching/index.tsx
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1963/5196 depend
+encies 58/1800 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2894/2943 depend
+encies 142/2623 modules 72 active 
+ mdx-loader › docs/extra/graphs/minimum-cost-spanning-tree.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1963/5196 depend
+encies 58/1800 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2904/2943 depend
+encies 142/2633 modules 95 active 
+ mdx-loader › docs/programming-fundamentals/functions/callback-functions.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 1963/5196 depend
+encies 58/1800 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2909/2943 depend
+encies 142/2638 modules 110 active 
+ ...-loader › docs/extra/algorithms/Encryption algorithms/homomorphic-encrypti
+on.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 2700/5196 depend
+encies 58/2530 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2912/2943 depend
+encies 147/2640 modules 125 active 
+ mdx-loader › docs/extra/machine-learning/XGBoost.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 2700/5196 depend
+encies 58/2530 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (11%) 0/1 entries 2936/2955 depend
+encies 166/2652 modules 132 active 
+ mdx-loader › docs/dsa-problems/medium/segregate-even-odd-nodes.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 2700/5196 depend
+encies 58/2530 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (12%) 0/1 entries 2941/2955 depend
+encies 184/2655 modules 146 active 
+ mdx-loader › docs/extra/bit-manipulation/toggle-bit-at-position.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 2700/5196 depend
+encies 58/2530 modules 62 active 
+ ...babel-loader › node_modules/@docusaurus/theme-common/lib/utils/metadataUti
+ls.js
+
+● Server █████████████████████████ building (12%) 0/1 entries 2959/2970 depend
+encies 184/2668 modules 152 active 
+ mdx-loader › docs/extra/Stack/Stock-span.md
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 5132/5196 depend
+encies 58/2574 modules 63 active 
+ ...babel-loader › node_modules/@docusaurus/theme-classic/lib/theme/Layout/ind
+ex.js
+
+● Server █████████████████████████ building (12%) 0/1 entries 2961/2973 depend
+encies 184/2669 modules 155 active 
+ mdx-loader › docs/extra/string-algorithms/manachers-algorithm.mdx
+
+
+● Client █████████████████████████ building (10%) 0/1 entries 5239/5321 depend
+encies 81/2575 modules 80 active 
+ javascript/esm|/Users/ajaygurjar/algo-1/node_modules/tslib/tslib.es6.mjs
+
+● Server █████████████████████████ building (12%) 0/1 entries 2961/2973 depend
+encies 184/2669 modules 155 active 
+ mdx-loader › docs/extra/string-algorithms/manachers-algorithm.mdx
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5257/5329 depend
+encies 114/2579 modules 102 active 
+ mdx-loader › docs/extra/binary-search/matrix-binary-dsa.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2963/2973 depend
+encies 184/2671 modules 156 active 
+ mdx-loader › docs/extra/Sliding-Window/Problem-Practice.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5273/5329 depend
+encies 114/2594 modules 107 active 
+ ...mdx-loader › docs/extra/algorithms/mathematics-algorithms/modular-arithmet
+ic.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2966/2973 depend
+encies 184/2674 modules 160 active 
+ ...mdx-loader › docs/extra/algorithms/moores-voting-algorithm/moore-voting-al
+go.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5297/5339 depend
+encies 114/2615 modules 124 active 
+ mdx-loader › docs/extra/advance-data-structure/persistent-segment-tree.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2966/2973 depend
+encies 184/2674 modules 160 active 
+ ...mdx-loader › docs/extra/algorithms/moores-voting-algorithm/moore-voting-al
+go.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5301/5339 depend
+encies 114/2619 modules 131 active 
+ mdx-loader › docs/dsa-problems/easy/date-to-binary-conversion.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2967/2973 depend
+encies 184/2675 modules 161 active 
+ mdx-loader › docs/extra/algorithms/Legendre's Algorithm/legendre-algo.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5311/5339 depend
+encies 124/2629 modules 140 active 
+ mdx-loader › docs/dsa-problems/medium/flood-fill.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2967/2973 depend
+encies 184/2675 modules 161 active 
+ mdx-loader › docs/extra/algorithms/Legendre's Algorithm/legendre-algo.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5326/5347 depend
+encies 142/2634 modules 150 active 
+ babel-loader › src/pages/challenges/DP/fibonacci-number.tsx
+
+● Server █████████████████████████ building (12%) 0/1 entries 2973/2973 depend
+encies 184/2676 modules 162 active 
+ mdx-loader › docs/extra/machine-learning/lasso_regression.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5345/5351 depend
+encies 158/2646 modules 154 active 
+ ... › docs/extra/algorithms/string-algorithms/finite-state-automation-algorit
+hm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2973/2973 depend
+encies 184/2676 modules 166 active 
+ mdx-loader › docs/languages/Rust/rust-5.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5349/5354 depend
+encies 158/2649 modules 168 active 
+ ...aurus-plugin-content-docs/default/p/algo-docs-tags-array-in-dsa-python-54e
+.json
+
+● Server █████████████████████████ building (12%) 0/1 entries 2973/2973 depend
+encies 184/2676 modules 166 active 
+ mdx-loader › docs/languages/Rust/rust-5.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5367/5369 depend
+encies 160/2657 modules 178 active 
+ mdx-loader › docs/extra/complexity/time-complexity.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 2984/2984 depend
+encies 184/2682 modules 168 active 
+ mdx-loader › docs/languages/php/php-17.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5383/5383 depend
+encies 161/2665 modules 182 active 
+ mdx-loader › docs/graphs/kahns-algorithm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3233/3294 depend
+encies 184/2741 modules 169 active 
+ ...ocusaurus/docusaurus-plugin-content-blog/default/p/algo-blog-tags-java-654
+.json
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5383/5383 depend
+encies 161/2665 modules 182 active 
+ mdx-loader › docs/graphs/kahns-algorithm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3298/3349 depend
+encies 190/2765 modules 183 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-permutations-de2
+.json
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5383/5383 depend
+encies 161/2665 modules 182 active 
+ mdx-loader › docs/graphs/kahns-algorithm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3310/3349 depend
+encies 209/2771 modules 201 active 
+ babel-loader › src/pages/challenges/DP/knapsack-0-1.tsx
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5383/5383 depend
+encies 161/2665 modules 182 active 
+ mdx-loader › docs/graphs/kahns-algorithm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3398/3484 depend
+encies 224/2778 modules 223 active 
+ ...rjar/algo-1/.docusaurus/docusaurus-dynamic-profile-routes/default/__plugin
+.json
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5383/5383 depend
+encies 161/2665 modules 182 active 
+ mdx-loader › docs/graphs/kahns-algorithm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3474/3566 depend
+encies 245/2791 modules 242 active 
+ mdx-loader › docs/extra/graphs/Adjacency-Matrix.md
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5632/5693 depend
+encies 161/2724 modules 199 active 
+ ...s-plugin-content-docs/default/p/algo-docs-tags-approximation-algorithm-fcb
+.json
+
+● Server █████████████████████████ building (12%) 0/1 entries 3481/3578 depend
+encies 246/2793 modules 246 active 
+ ...gin-content-docs/default/p/algo-docs-category-programming-fundamentals-09a
+.json
+
+
+● Client █████████████████████████ building (11%) 0/1 entries 5694/5744 depend
+encies 173/2747 modules 236 active 
+ ...dx-loader › docs/extra/algorithms/string-algorithms/reverse-factor-algorit
+hm.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3496/3591 depend
+encies 255/2797 modules 249 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/priority-np.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5781/5847 depend
+encies 189/2760 modules 257 active 
+ ...us/docusaurus-plugin-content-docs/default/p/algo-docs-tags-code-editor-879
+.json
+
+● Server █████████████████████████ building (12%) 0/1 entries 3515/3613 depend
+encies 260/2798 modules 256 active 
+ ...x-loader › docs/extra/algorithms/mathematics-algorithms/sweep-line-algorit
+hm.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5843/5924 depend
+encies 202/2770 modules 260 active 
+ mdx-loader › docs/extra/dynamic-programming/palindrome_partitioning_IV.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3547/3640 depend
+encies 260/2814 modules 265 active 
+ mdx-loader › docs/extra/Queue/circular-queue.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5862/5943 depend
+encies 222/2775 modules 266 active 
+ mdx-loader › docs/extra/page-replacement-algorithms/fifo.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3577/3646 depend
+encies 268/2830 modules 270 active 
+ mdx-loader › docs/languages/python/py-3.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5889/5982 depend
+encies 229/2778 modules 260 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/priority-np.md
+
+● Server █████████████████████████ building (12%) 0/1 entries 3577/3655 depend
+encies 268/2830 modules 288 active 
+ mdx-loader › docs/cheatsheets/javascript-cheatsheet.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5908/5997 depend
+encies 229/2781 modules 265 active 
+ mdx-loader › docs/extra/Hashing/hashsets.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3628/3708 depend
+encies 274/2852 modules 297 active 
+ mdx-loader › src/pages/quiz-solutions/dfs.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5909/5997 depend
+encies 235/2781 modules 268 active 
+ mdx-loader › src/pages/quiz-solutions/sorting.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3681/3756 depend
+encies 274/2861 modules 320 active 
+ mdx-loader › docs/languages/go/go-8.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5918/6009 depend
+encies 235/2782 modules 276 active 
+ ...der › docs/database-problems/Easy/employees-earning-more-than-their-manage
+rs.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3754/3840 depend
+encies 293/2879 modules 324 active 
+ mdx-loader › docs/languages/swift/dynamic-programming.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5951/6034 depend
+encies 241/2798 modules 292 active 
+ mdx-loader › docs/extra/Stack/Stack-permutation.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3784/3862 depend
+encies 293/2883 modules 330 active 
+ ...docusaurus-plugin-content-docs/default/p/algo-docs-tags-balanced-trees-e08
+.json
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 5996/6081 depend
+encies 243/2823 modules 291 active 
+ mdx-loader › docs/languages/java/java-14.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3794/3868 depend
+encies 309/2893 modules 346 active 
+ ...md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 6015/6099 depend
+encies 243/2823 modules 311 active 
+ mdx-loader › docs/dsa-problems/medium/an-alternative-way.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3821/3902 depend
+encies 315/2894 modules 341 active 
+ mdx-loader › docs/extra/algorithms/recursive-algorithms/tree-recursion.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 6062/6129 depend
+encies 250/2840 modules 330 active 
+ ....md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3837/3931 depend
+encies 324/2896 modules 349 active 
+ mdx-loader › docs/extra/algorithms/sorting-algorithms/ShellSort.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 6121/6197 depend
+encies 256/2852 modules 345 active 
+ ...urus-plugin-content-docs/default/p/algo-docs-tags-coding-for-beginners-1fc
+.json
+
+● Server █████████████████████████ building (13%) 0/1 entries 3870/3959 depend
+encies 327/2908 modules 355 active 
+ mdx-loader › docs/languages/javascript/js-13.md
+
+
+● Client █████████████████████████ building (12%) 0/1 entries 6151/6234 depend
+encies 267/2861 modules 335 active 
+ mdx-loader › docs/extra/combinatorics/combinatorics-examples.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3873/3962 depend
+encies 332/2909 modules 364 active 
+ mdx-loader › docs/programming-fundamentals/language-syntax/loops.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6163/6246 depend
+encies 278/2867 modules 349 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/round-robin.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3906/3985 depend
+encies 334/2927 modules 363 active 
+ ...x-loader › docs/dsa-problems/medium/maximum-points-you-can-obtain-from-car
+ds.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6196/6278 depend
+encies 280/2873 modules 348 active 
+ ...-plugin-content-docs/default/p/algo-docs-tags-algorithm-of-bubble-sort-50b
+.json
+
+● Server █████████████████████████ building (13%) 0/1 entries 3914/4003 depend
+encies 338/2930 modules 375 active 
+ ...der › node_modules/@docusaurus/theme-classic/lib/theme/DocTagsListPage/ind
+ex.js
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6206/6278 depend
+encies 291/2877 modules 349 active 
+ babel-loader › src/pages/challenges/DP/longest-increasing-subsequence.tsx
+
+● Server █████████████████████████ building (13%) 0/1 entries 3934/4018 depend
+encies 342/2938 modules 378 active 
+ mdx-loader › docs/extra/Trees/Sum-tree.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6206/6285 depend
+encies 291/2877 modules 365 active 
+ ...cusaurus-plugin-content-docs/default/p/algo-docs-tags-topological-sort-1c4
+.json
+
+● Server █████████████████████████ building (13%) 0/1 entries 3950/4040 depend
+encies 342/2940 modules 379 active 
+ mdx-loader › docs/languages/cpp/cp-8.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6235/6317 depend
+encies 297/2883 modules 373 active 
+ mdx-loader › docs/dsa-problems/medium/valid-parenthesis-string.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3997/4064 depend
+encies 351/2957 modules 386 active 
+ mdx-loader › docs/languages/java/ex4.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6254/6347 depend
+encies 303/2886 modules 368 active 
+ mdx-loader › docs/extra/Tries/tries-examples.md
+
+● Server █████████████████████████ building (13%) 0/1 entries 3997/4064 depend
+encies 351/2957 modules 409 active 
+ mdx-loader › docs/languages/cpp/cp-9.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6261/6359 depend
+encies 303/2886 modules 372 active 
+ ...ugin-content-docs/default/p/algo-docs-tags-hare-and-tortoise-algorithm-3d3
+.json
+
+● Server █████████████████████████ building (13%) 0/1 entries 4036/4110 depend
+encies 361/2963 modules 423 active 
+ ...mdx-loader › docs/extra/algorithms/mathematics-algorithms/imp-of-mathemati
+cs.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6285/6365 depend
+encies 311/2902 modules 374 active 
+ ...usaurus/docusaurus-plugin-content-blog/default/p/algo-blog-tags-coding-1df
+.json
+
+● Server █████████████████████████ building (14%) 0/1 entries 4078/4161 depend
+encies 370/2973 modules 422 active 
+ mdx-loader › src/pages/quiz-solutions/arrays.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6285/6365 depend
+encies 311/2902 modules 385 active 
+ babel-loader › src/pages/challenges/Trees/maximum-depth-binary-tree.tsx
+
+● Server █████████████████████████ building (14%) 0/1 entries 4092/4179 depend
+encies 374/2974 modules 419 active 
+ mdx-loader › docs/extra/Hashing/imp-of-hashing.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6285/6365 depend
+encies 311/2902 modules 385 active 
+ babel-loader › src/pages/challenges/Trees/maximum-depth-binary-tree.tsx
+
+● Server █████████████████████████ building (14%) 0/1 entries 4109/4179 depend
+encies 377/2980 modules 426 active 
+ mdx-loader › docs/extra/algorithms/string-algorithms/lcs-algorithm.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6316/6391 depend
+encies 315/2911 modules 404 active 
+ babel-loader › src/pages/applications.tsx
+
+● Server █████████████████████████ building (14%) 0/1 entries 4126/4205 depend
+encies 377/2983 modules 427 active 
+ ...ocusaurus-plugin-content-docs/default/p/algo-docs-tags-text-processing-a76
+.json
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6316/6391 depend
+encies 315/2911 modules 404 active 
+ babel-loader › src/pages/applications.tsx
+
+● Server █████████████████████████ building (14%) 0/1 entries 4148/4234 depend
+encies 383/2988 modules 438 active 
+ ...-plugin-content-docs/default/p/algo-docs-tags-conclusion-of-shell-sort-3c1
+.json
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6374/6454 depend
+encies 323/2927 modules 414 active 
+ mdx-loader › docs/extra/b-tree/B-Tree-3.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4154/4234 depend
+encies 389/2988 modules 439 active 
+ ...mdx-loader › docs/extra/algorithms/Scheduling Algorithms/least-recently-us
+ed.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6408/6485 depend
+encies 332/2937 modules 424 active 
+ ...docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-faq-9b8
+.json
+
+● Server █████████████████████████ building (14%) 0/1 entries 4182/4273 depend
+encies 393/2995 modules 446 active 
+ mdx-loader › docs/extra/Number theory/modular-exponentiation.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6444/6531 depend
+encies 338/2945 modules 426 active 
+ mdx-loader › docs/extra/graphs/hopcroft-karp-algorithm.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4208/4279 depend
+encies 394/3013 modules 452 active 
+ mdx-loader › docs/extra/graphs/Johnson's-algo.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6479/6549 depend
+encies 342/2954 modules 426 active 
+ ...dx-loader › docs/extra/algorithms/backtracking-algorithms/hamilton-path-cy
+le.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4219/4295 depend
+encies 394/3014 modules 474 active 
+ mdx-loader › docs/languages/go/go-3.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6512/6588 depend
+encies 351/2965 modules 455 active 
+ mdx-loader › docs/languages/SQL/sql-10.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4246/4337 depend
+encies 402/3023 modules 471 active 
+ ...usaurus-plugin-content-docs/default/p/algo-docs-tags-operating-systems-abe
+.json
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6512/6588 depend
+encies 351/2965 modules 457 active 
+ ...urus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-anonymous-271
+.json
+
+● Server █████████████████████████ building (14%) 0/1 entries 4263/4337 depend
+encies 406/3027 modules 467 active 
+ mdx-loader › docs/programming-fundamentals/control-structures/return.md
+
+
+● Client █████████████████████████ building (13%) 0/1 entries 6542/6629 depend
+encies 361/2972 modules 455 active 
+ mdx-loader › docs/languages/SQL/sql-16.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4292/4364 depend
+encies 416/3038 modules 476 active 
+ ...cusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-while-0ce
+.json
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6566/6644 depend
+encies 364/2976 modules 457 active 
+ mdx-loader › docs/extra/graphs/dijkstra-algo.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4292/4364 depend
+encies 416/3038 modules 499 active 
+ mdx-loader › docs/languages/kotlin/kotlin-13.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6596/6683 depend
+encies 369/2986 modules 463 active 
+ mdx-loader › blog/practical-applications-of-recursion.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4336/4409 depend
+encies 442/3055 modules 511 active 
+ mdx-loader › docs/extra/basic-dsa/array/bucket-sort.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6622/6698 depend
+encies 370/2997 modules 467 active 
+ mdx-loader › docs/programming-fundamentals/control-structures/for-loop.md
+
+● Server █████████████████████████ building (14%) 0/1 entries 4371/4453 depend
+encies 451/3064 modules 517 active 
+ mdx-loader › docs/extra/machine-learning/Gaussian_Mixture_Model.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6645/6722 depend
+encies 375/3005 modules 476 active 
+ ...docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-dsu-976
+.json
+
+● Server █████████████████████████ building (15%) 0/1 entries 4408/4483 depend
+encies 457/3072 modules 532 active 
+ ...usaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-schema-adc
+.json
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6667/6752 depend
+encies 385/3011 modules 486 active 
+ mdx-loader › docs/extra/algorithms/sorting-algorithms/CountingSort.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4434/4517 depend
+encies 467/3077 modules 533 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/priority-p.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6698/6769 depend
+encies 394/3026 modules 511 active 
+ ...urus-plugin-content-docs/default/p/algo-docs-tags-matrix-factorization-f96
+.json
+
+● Server █████████████████████████ building (15%) 0/1 entries 4470/4551 depend
+encies 473/3085 modules 532 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/priority-p.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6737/6825 depend
+encies 419/3040 modules 508 active 
+ ...er › docs/dsa-problems/medium/number-of-operations-to-make-network-connect
+ed.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4498/4575 depend
+encies 482/3096 modules 551 active 
+ mdx-loader › docs/extra/algorithms/two-pointers-sliding-window.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6756/6835 depend
+encies 421/3043 modules 527 active 
+ ...rus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-cyclicsort-dd9
+.json
+
+● Server █████████████████████████ building (15%) 0/1 entries 4530/4607 depend
+encies 490/3103 modules 547 active 
+ babel-loader › src/pages/challenges/Sorting/sort-colors.tsx
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6790/6871 depend
+encies 430/3053 modules 523 active 
+ mdx-loader › docs/extra/Standard Template Library/STL-containers.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4530/4607 depend
+encies 490/3103 modules 565 active 
+ mdx-loader › docs/extra/algorithms/string-algorithms/bndm-algorithm.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6804/6871 depend
+encies 438/3058 modules 528 active 
+ babel-loader › src/pages/challenges/Trees/lowest-common-ancestor.tsx
+
+● Server █████████████████████████ building (15%) 0/1 entries 4568/4643 depend
+encies 499/3112 modules 580 active 
+ ...cusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-react-eaa
+.json
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6823/6898 depend
+encies 442/3062 modules 549 active 
+ mdx-loader › blog/a-very-useful-data-structure-linked-lists.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4606/4687 depend
+encies 511/3121 modules 569 active 
+ mdx-loader › docs/cheatsheets/R-cheatsheet.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6854/6938 depend
+encies 450/3067 modules 553 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/priority-p.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4644/4711 depend
+encies 523/3131 modules 576 active 
+ mdx-loader › docs/extra/machine-learning/HBOS.md
+
+
+● Client █████████████████████████ building (14%) 0/1 entries 6854/6938 depend
+encies 450/3067 modules 553 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/priority-p.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4650/4714 depend
+encies 532/3135 modules 588 active 
+ ...d
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 6906/7003 depend
+encies 467/3080 modules 560 active 
+ mdx-loader › docs/programming-fundamentals/pseudo-code/Introduction.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4703/4772 depend
+encies 533/3146 modules 615 active 
+ ...r › node_modules/@docusaurus/theme-classic/lib/theme/BlogTagsPostsPage/ind
+ex.js
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 6936/7011 depend
+encies 467/3089 modules 576 active 
+ mdx-loader › docs/extra/Recursion-depths/advanced-topics.md
+
+● Server █████████████████████████ building (15%) 0/1 entries 4766/4842 depend
+encies 544/3162 modules 605 active 
+ ...docusaurus-plugin-content-docs/default/p/algo-docs-tags-classification-89a
+.json
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 6972/7043 depend
+encies 472/3097 modules 593 active 
+ babel-loader › src/pages/resources/index.tsx
+
+● Server █████████████████████████ building (16%) 0/1 entries 4779/4842 depend
+encies 554/3167 modules 610 active 
+ mdx-loader › docs/programming-fundamentals/control-structures/break.md
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7002/7075 depend
+encies 486/3103 modules 599 active 
+ ...ocusaurus-plugin-content-docs/default/p/algo-docs-tags-arrow-functions-19b
+.json
+
+● Server █████████████████████████ building (16%) 0/1 entries 4811/4892 depend
+encies 561/3169 modules 621 active 
+ ...jaygurjar/algo-1/.docusaurus/docusaurus-plugin-content-blog/story/__plugin
+.json
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7036/7115 depend
+encies 496/3111 modules 603 active 
+ mdx-loader › docs/extra/machine-learning/HBOS.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 4838/4933 depend
+encies 565/3174 modules 633 active 
+ mdx-loader › docs/extra/algorithms/Searching Algorithms/HashingSearch.md
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7091/7163 depend
+encies 506/3127 modules 621 active 
+ ...docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-svd-f56
+.json
+
+● Server █████████████████████████ building (16%) 0/1 entries 4885/4962 depend
+encies 574/3187 modules 639 active 
+ babel-loader › src/pages/quizzes/linked-list.tsx
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7121/7201 depend
+encies 517/3133 modules 628 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-binary-trees-20d
+.json
+
+● Server █████████████████████████ building (16%) 0/1 entries 4924/5001 depend
+encies 586/3196 modules 647 active 
+ ...rus-plugin-content-docs/default/p/algo-docs-category-string-algorithms-181
+.json
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7134/7201 depend
+encies 524/3141 modules 621 active 
+ ...loader › docs/extra/algorithms/Encryption algorithms/post-quantum-encrypti
+on.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 4924/5001 depend
+encies 586/3196 modules 666 active 
+ mdx-loader › docs/dsa-problems/easy/symmetric-tree.md
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7156/7236 depend
+encies 524/3145 modules 636 active 
+ mdx-loader › docs/dsa-problems/easy/palindrome-linked-list-problem.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 4970/5038 depend
+encies 609/3207 modules 668 active 
+ ...der › docs/extra/algorithms/string-algorithms/levenshtein-distance-algorit
+hm.md
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7206/7275 depend
+encies 536/3156 modules 635 active 
+ mdx-loader › docs/extra/advance-data-structure/sqrt-decomposition.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 4996/5075 depend
+encies 609/3212 modules 684 active 
+ mdx-loader › docs/extra/graphs/eulerian-graphs.md
+
+
+● Client █████████████████████████ building (15%) 0/1 entries 7222/7311 depend
+encies 540/3160 modules 647 active 
+ mdx-loader › docs/languages/cpp/cp-4.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 5029/5105 depend
+encies 617/3223 modules 679 active 
+ ...cusaurus-plugin-content-docs/default/p/algo-docs-tags-clique-detection-d6d
+.json
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7263/7339 depend
+encies 546/3173 modules 648 active 
+ mdx-loader › docs/extra/Recursion/generate-parantheses.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 5029/5105 depend
+encies 617/3223 modules 697 active 
+ mdx-loader › docs/extra/binary-search/recursive_binary_search.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7272/7339 depend
+encies 551/3173 modules 655 active 
+ mdx-loader › docs/extra/Stack/Conversion.md
+
+● Server █████████████████████████ building (16%) 0/1 entries 5058/5133 depend
+encies 627/3229 modules 712 active 
+ mdx-loader › docs/extra/graphs/Longest-path-in-DAG.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7305/7375 depend
+encies 551/3178 modules 679 active 
+ ...mdx-loader › docs/extra/Object Oriented Programming/constructors-destructo
+rs.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5089/5174 depend
+encies 639/3242 modules 701 active 
+ mdx-loader › docs/extra/algorithms/Yolo-Object-detection-ML-Algorithm.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7343/7422 depend
+encies 563/3186 modules 668 active 
+ mdx-loader › docs/dsa-problems/easy/symmetric-tree.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5103/5180 depend
+encies 644/3245 modules 722 active 
+ ...urus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-immutable-8cd
+.json
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7353/7434 depend
+encies 572/3186 modules 690 active 
+ ...ocusaurus-plugin-content-docs/default/p/algo-docs-tags-linked-hash-map-928
+.json
+
+● Server █████████████████████████ building (17%) 0/1 entries 5140/5212 depend
+encies 654/3257 modules 713 active 
+ mdx-loader › docs/languages/php/php-5.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7362/7434 depend
+encies 583/3187 modules 679 active 
+ ...der › docs/extra/algorithms/string-algorithms/levenshtein-distance-algorit
+hm.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5140/5212 depend
+encies 654/3257 modules 733 active 
+ ...urus-plugin-content-docs/default/p/algo-docs-tags-types-of-inheritance-f1e
+.json
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7395/7463 depend
+encies 594/3198 modules 687 active 
+ mdx-loader › blog/Kadanes-algorithm.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5170/5250 depend
+encies 664/3258 modules 743 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-control-flow-c6b
+.json
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7421/7502 depend
+encies 596/3207 modules 702 active 
+ mdx-loader › docs/extra/graphs/kosaraju-algorithm.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5193/5280 depend
+encies 675/3261 modules 733 active 
+ babel-loader › src/pages/quizzes/linear-search.tsx
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7433/7517 depend
+encies 601/3209 modules 711 active 
+ mdx-loader › docs/dsa-problems/medium/flattening-a-linked-list.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5201/5280 depend
+encies 681/3265 modules 738 active 
+ mdx-loader › docs/extra/binary-trees/binary-tree.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7471/7555 depend
+encies 603/3218 modules 722 active 
+ mdx-loader › docs/extra/algorithms/Yolo-Object-detection-ML-Algorithm.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5231/5317 depend
+encies 687/3275 modules 743 active 
+ mdx-loader › docs/extra/Number theory/counting-divisors.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7501/7583 depend
+encies 609/3225 modules 736 active 
+ babel-loader › src/pages/visualization/trees/avl.tsx
+
+● Server █████████████████████████ building (17%) 0/1 entries 5265/5338 depend
+encies 691/3286 modules 751 active 
+ ...x-loader › docs/extra/algorithms/Scheduling Algorithms/EarliestDeadlineFir
+st.md
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7510/7592 depend
+encies 624/3230 modules 722 active 
+ mdx-loader › docs/extra/Trees/Heap-tree.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5265/5338 depend
+encies 691/3286 modules 774 active 
+ ...rus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-exceptions-918
+.json
+
+
+● Client █████████████████████████ building (16%) 0/1 entries 7546/7619 depend
+encies 629/3239 modules 752 active 
+ ...saurus-plugin-content-docs/default/p/algo-docs-tags-activity-selection-865
+.json
+
+● Server █████████████████████████ building (17%) 0/1 entries 5319/5401 depend
+encies 698/3304 modules 768 active 
+ ...urus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-bootstrap-e23
+.json
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7574/7650 depend
+encies 643/3244 modules 759 active 
+ mdx-loader › docs/programming-fundamentals/oop-basics/encapsulation.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5347/5423 depend
+encies 703/3311 modules 774 active 
+ mdx-loader › docs/extra/machine-learning/DBSCAN_Clustering_Algorithm.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7622/7696 depend
+encies 653/3256 modules 752 active 
+ mdx-loader › docs/dsa-problems/easy/loop-in-a-linked-list.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5370/5447 depend
+encies 712/3318 modules 803 active 
+ ...usaurus-plugin-content-docs/default/p/algo-docs-tags-kadanes-algorithm-36c
+.json
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7650/7729 depend
+encies 662/3266 modules 776 active 
+ ...der › docs/extra/algorithms/string-algorithms/apostolico-giancarlo-algorit
+hm.md
+
+● Server █████████████████████████ building (17%) 0/1 entries 5411/5486 depend
+encies 723/3333 modules 796 active 
+ mdx-loader › docs/languages/java/java-15.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7654/7750 depend
+encies 669/3266 modules 772 active 
+ mdx-loader › docs/languages/cpp/cp-11.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5413/5486 depend
+encies 733/3335 modules 803 active 
+ babel-loader › src/pages/challenges/DP/climbing-stairs.tsx
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7688/7760 depend
+encies 671/3279 modules 778 active 
+ mdx-loader › docs/extra/basic-dsa/Strings/Reversing a string.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5436/5513 depend
+encies 733/3341 modules 820 active 
+ mdx-loader › docs/languages/kotlin/kotlin-4.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7705/7785 depend
+encies 673/3284 modules 794 active 
+ ...docusaurus-plugin-content-docs/default/p/algo-docs-tags-circular-queue-ddc
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5464/5552 depend
+encies 741/3347 modules 813 active 
+ mdx-loader › docs/extra/Trees/AVL Tree.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7737/7813 depend
+encies 681/3295 modules 805 active 
+ ...usaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-kotlin-0ae
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5498/5577 depend
+encies 743/3353 modules 820 active 
+ ...docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-sjr-f83
+.json
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7746/7813 depend
+encies 688/3301 modules 798 active 
+ mdx-loader › docs/extra/algorithms/Scheduling Algorithms/SweepLine.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5498/5577 depend
+encies 743/3353 modules 836 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-advanced-dsa-bf1
+.json
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7775/7850 depend
+encies 692/3305 modules 808 active 
+ mdx-loader › docs/extra/machine-learning/random-forest.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5528/5611 depend
+encies 751/3361 modules 843 active 
+ mdx-loader › docs/languages/java/java-6.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7801/7889 depend
+encies 699/3311 modules 812 active 
+ mdx-loader › docs/extra/linked-list/introduction-to-linked-list.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5570/5638 depend
+encies 756/3378 modules 859 active 
+ mdx-loader › docs/languages/kotlin/kotlin-22.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7827/7908 depend
+encies 703/3319 modules 819 active 
+ ...rus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-shell-sort-38e
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5605/5689 depend
+encies 764/3388 modules 860 active 
+ ...saurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-if-else-2cf
+.json
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7856/7946 depend
+encies 714/3329 modules 826 active 
+ ...s-plugin-content-docs/default/p/algo-docs-tags-constructor-overloading-9cd
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5616/5701 depend
+encies 769/3388 modules 870 active 
+ mdx-loader › docs/extra/greedy-algorithms/prims-algorithm.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7870/7949 depend
+encies 717/3331 modules 845 active 
+ babel-loader › src/pages/quizzes/stack.tsx
+
+● Server █████████████████████████ building (18%) 0/1 entries 5701/5772 depend
+encies 779/3412 modules 874 active 
+ mdx-loader › docs/extra/machine-learning/K-Means_clustering.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7906/7999 depend
+encies 723/3341 modules 840 active 
+ mdx-loader › docs/dsa-problems/medium/removing-stars-from-string.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5701/5772 depend
+encies 779/3412 modules 897 active 
+ mdx-loader › docs/extra/Trees/Practice Problems.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7931/8008 depend
+encies 725/3347 modules 843 active 
+ mdx-loader › docs/programming-fundamentals/language-syntax/conditionals.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5701/5772 depend
+encies 779/3412 modules 897 active 
+ mdx-loader › docs/extra/Trees/Practice Problems.md
+
+
+● Client █████████████████████████ building (17%) 0/1 entries 7931/8008 depend
+encies 725/3347 modules 859 active 
+ ...md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5757/5833 depend
+encies 785/3421 modules 892 active 
+ ...ocusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-scan-837
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 7971/8042 depend
+encies 732/3361 modules 853 active 
+ ...docusaurus-plugin-content-docs/default/p/algo-docs-tags-puzzle-solving-120
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5757/5833 depend
+encies 785/3421 modules 915 active 
+ ....docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-go-f42
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8002/8080 depend
+encies 742/3368 modules 864 active 
+ ...ocusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-tsne-f83
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5789/5882 depend
+encies 797/3428 modules 906 active 
+ ...lugin-content-docs/default/p/algo-docs-tags-live-example-of-shell-sort-77a
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8002/8080 depend
+encies 742/3368 modules 880 active 
+ ...saurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-if-else-2cf
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5809/5882 depend
+encies 800/3432 modules 903 active 
+ mdx-loader › docs/basic-data-structures/array/arrays-bubblesort-dsa.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8063/8139 depend
+encies 744/3385 modules 879 active 
+ ...docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-let-b27
+.json
+
+● Server █████████████████████████ building (18%) 0/1 entries 5832/5910 depend
+encies 812/3436 modules 930 active 
+ .../docusaurus-plugin-content-docs/default/p/algo-docs-tags-ulam-sequence-037
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8095/8178 depend
+encies 756/3395 modules 891 active 
+ mdx-loader › docs/dsa-problems/medium/find-eventual-safe-states.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5837/5910 depend
+encies 814/3439 modules 928 active 
+ mdx-loader › docs/languages/SQL/sql-14.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8095/8178 depend
+encies 756/3395 modules 905 active 
+ mdx-loader › docs/extra/fundamentals/Functions/Function Call.md
+
+● Server █████████████████████████ building (18%) 0/1 entries 5878/5970 depend
+encies 814/3449 modules 929 active 
+ mdx-loader › docs/extra/algorithms/Two-Pointers/imp-of-two-pointers.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8136/8217 depend
+encies 760/3404 modules 914 active 
+ mdx-loader › docs/extra/algorithms/Searching Algorithms/TernarySearch.md
+
+● Server █████████████████████████ building (19%) 0/1 entries 5919/6000 depend
+encies 821/3463 modules 935 active 
+ mdx-loader › docs/extra/algorithms/sorting-algorithms/SlowSort.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8146/8236 depend
+encies 767/3404 modules 917 active 
+ mdx-loader › docs/dsa-problems/medium/yaroslav-and-productivity.md
+
+● Server █████████████████████████ building (19%) 0/1 entries 5932/6000 depend
+encies 826/3467 modules 942 active 
+ ...x-loader › docs/dsa-problems/medium/partition-array-according-to-given-piv
+ot.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8185/8261 depend
+encies 771/3410 modules 914 active 
+ ....docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-go-f42
+.json
+
+● Server █████████████████████████ building (19%) 0/1 entries 5949/6027 depend
+encies 829/3468 modules 964 active 
+ ...x-loader › docs/extra/Sliding-Window/longest-repeating-character-replaceme
+nt.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8207/8298 depend
+encies 778/3411 modules 932 active 
+ ...us-plugin-content-docs/default/p/algo-docs-category-challengesolutions-233
+.json
+
+● Server █████████████████████████ building (19%) 0/1 entries 6005/6084 depend
+encies 834/3482 modules 960 active 
+ babel-loader › src/pages/quizzes/avl-tree.tsx
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8231/8301 depend
+encies 785/3423 modules 939 active 
+ mdx-loader › docs/database-problems/Easy/rising-temperature.md
+
+● Server █████████████████████████ building (19%) 0/1 entries 6005/6084 depend
+encies 834/3482 modules 979 active 
+ mdx-loader › docs/languages/php/php-18.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8269/8350 depend
+encies 785/3431 modules 940 active 
+ ...aurus-plugin-content-docs/default/p/algo-docs-tags-generic-programming-b4d
+.json
+
+● Server █████████████████████████ building (19%) 0/1 entries 6058/6142 depend
+encies 848/3496 modules 991 active 
+ ...usaurus/docusaurus-plugin-content-blog/default/p/algo-blog-tags-graphs-8c5
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8301/8374 depend
+encies 794/3445 modules 947 active 
+ ...loader › node_modules/@docusaurus/theme-classic/lib/theme/BlogListPage/ind
+ex.js
+
+● Server █████████████████████████ building (19%) 0/1 entries 6102/6175 depend
+encies 858/3505 modules 1001 active 
+ ...ers/ajaygurjar/algo-1/.docusaurus/docusaurus-plugin-debug/default/__plugin
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8301/8374 depend
+encies 794/3445 modules 972 active 
+ babel-loader › src/pages/challenges/DP/dp-on-trees.tsx
+
+● Server █████████████████████████ building (19%) 0/1 entries 6106/6175 depend
+encies 869/3505 modules 990 active 
+ mdx-loader › docs/languages/C/c-5.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8355/8443 depend
+encies 803/3457 modules 974 active 
+ ...usaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-basics-73d
+.json
+
+● Server █████████████████████████ building (19%) 0/1 entries 6170/6239 depend
+encies 881/3519 modules 1000 active 
+ ...urus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-quicksort-b12
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8376/8443 depend
+encies 808/3465 modules 969 active 
+ babel-loader › src/pages/challenges/Trees/count-leaf-nodes.tsx
+
+● Server █████████████████████████ building (19%) 0/1 entries 6170/6239 depend
+encies 881/3519 modules 1024 active 
+ ...rus/docusaurus-plugin-content-docs/default/p/algo-docs-category-kotlin-519
+.json
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8396/8478 depend
+encies 808/3468 modules 988 active 
+ ...oader › blog/balancing-speed-and-memory-A-Guide-to-Time-and-Space-Complexi
+ty.md
+
+● Server █████████████████████████ building (19%) 0/1 entries 6208/6282 depend
+encies 895/3528 modules 1011 active 
+ ...r › docs/extra/algorithms/Encryption algorithms/advanced_encryption_standa
+rd.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8440/8510 depend
+encies 816/3477 modules 981 active 
+ mdx-loader › docs/extra/cpu-scheduling-algorithms/sjf.md
+
+● Server █████████████████████████ building (19%) 0/1 entries 6208/6282 depend
+encies 895/3528 modules 1032 active 
+ mdx-loader › docs/extra/algorithms/trie.md
+
+
+● Client █████████████████████████ building (18%) 0/1 entries 8440/8510 depend
+encies 816/3477 modules 1010 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-array-in-dsa-a76
+.json
+
+● Server █████████████████████████ building (19%) 0/1 entries 6247/6336 depend
+encies 904/3532 modules 1024 active 
+ mdx-loader › docs/extra/Number theory/LCM.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8479/8566 depend
+encies 832/3486 modules 1002 active 
+ ...rus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-data-types-ccb
+.json
+
+● Server █████████████████████████ building (19%) 0/1 entries 6288/6367 depend
+encies 906/3543 modules 1034 active 
+ mdx-loader › docs/extra/dynamic-programming/fence-painting.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8495/8578 depend
+encies 836/3486 modules 1015 active 
+ ...usaurus/docusaurus-plugin-content-docs/default/p/algo-docs-category-go-7a2
+.json
+
+● Server █████████████████████████ building (20%) 0/1 entries 6296/6367 depend
+encies 916/3545 modules 1041 active 
+ mdx-loader › docs/languages/kotlin/kotlin-14.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8544/8616 depend
+encies 852/3494 modules 1012 active 
+ mdx-loader › docs/extra/backtracking algorithms/Tiling-problem.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6328/6400 depend
+encies 916/3556 modules 1058 active 
+ babel-loader › src/pages/challenges/DP/edit-distance.tsx
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8567/8632 depend
+encies 861/3504 modules 1014 active 
+ mdx-loader › docs/extra/binary-search-tree/Post_order_traversal.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6366/6440 depend
+encies 922/3561 modules 1074 active 
+ babel-loader › src/pages/quizzes/arrays.tsx
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8567/8638 depend
+encies 861/3504 modules 1033 active 
+ mdx-loader › docs/extra/Stack/MonotonicStack.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6402/6475 depend
+encies 934/3571 modules 1063 active 
+ mdx-loader › docs/languages/php/php-21.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8606/8684 depend
+encies 868/3510 modules 1047 active 
+ mdx-loader › docs/extra/algorithms/trie.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6431/6516 depend
+encies 945/3574 modules 1075 active 
+ ...saurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-systems-269
+.json
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8644/8732 depend
+encies 878/3515 modules 1048 active 
+ mdx-loader › docs/extra/algorithms/backtracking-algorithms/sudoku-solver.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6446/6516 depend
+encies 951/3582 modules 1081 active 
+ mdx-loader › docs/extra/basic-dsa/array/heap-sort.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8689/8757 depend
+encies 881/3531 modules 1046 active 
+ ...usaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-string-537
+.json
+
+● Server █████████████████████████ building (20%) 0/1 entries 6462/6539 depend
+encies 951/3582 modules 1104 active 
+ mdx-loader › src/pages/quiz-solutions/bplus-tree.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8690/8757 depend
+encies 893/3531 modules 1058 active 
+ mdx-loader › docs/extra/dynamic-programming/Multistage-graph.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6462/6539 depend
+encies 951/3582 modules 1104 active 
+ mdx-loader › src/pages/quiz-solutions/bplus-tree.md
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8734/8826 depend
+encies 897/3538 modules 1065 active 
+ babel-loader › src/pages/visualization/searching/sliding-window.tsx
+
+● Server █████████████████████████ building (20%) 0/1 entries 6503/6590 depend
+encies 964/3592 modules 1106 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-side-effects-4c2
+.json
+
+
+● Client █████████████████████████ building (19%) 0/1 entries 8775/8848 depend
+encies 899/3546 modules 1095 active 
+ ...docusaurus-plugin-content-docs/default/p/algo-docs-tags-circular-array-d68
+.json
+
+● Server █████████████████████████ building (20%) 0/1 entries 6545/6617 depend
+encies 977/3608 modules 1104 active 
+ mdx-loader › docs/extra/machine-learning/GBM.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8779/8848 depend
+encies 916/3550 modules 1078 active 
+ mdx-loader › docs/languages/php/php-21.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6545/6617 depend
+encies 977/3608 modules 1125 active 
+ ...ocusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-crud-49e
+.json
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8806/8877 depend
+encies 916/3557 modules 1100 active 
+ mdx-loader › docs/extra/algorithms/GAN-ML-Algorithm.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6572/6649 depend
+encies 989/3617 modules 1114 active 
+ ...docusaurus-plugin-content-docs/default/p/algo-docs-tags-2-d-prefix-sum-f32
+.json
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8859/8932 depend
+encies 925/3568 modules 1095 active 
+ mdx-loader › docs/extra/fundamentals/Functions/Function Closures.md
+
+● Server █████████████████████████ building (20%) 0/1 entries 6598/6682 depend
+encies 998/3625 modules 1139 active 
+ babel-loader › src/pages/achievements.tsx
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8885/8968 depend
+encies 935/3573 modules 1120 active 
+ ...cusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-moore-a24
+.json
+
+● Server █████████████████████████ building (21%) 0/1 entries 6653/6731 depend
+encies 1003/3643 modules 1137 active 
+ mdx-loader › docs/dsa-problems/medium/crimson-triples.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8913/8992 depend
+encies 942/3582 modules 1129 active 
+ mdx-loader › docs/extra/machine-learning/GBM.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6686/6756 depend
+encies 1008/3653 modules 1144 active 
+ mdx-loader › docs/extra/basic-dsa/array/radix-sort.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8941/9016 depend
+encies 952/3592 modules 1120 active 
+ ...aurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-graphics-fc0
+.json
+
+● Server █████████████████████████ building (21%) 0/1 entries 6686/6756 depend
+encies 1008/3653 modules 1165 active 
+ babel-loader › src/pages/quizzes/hash-indexing.tsx
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8950/9040 depend
+encies 963/3599 modules 1128 active 
+ mdx-loader › docs/extra/graphs/kruskal-algorithm.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6720/6806 depend
+encies 1015/3662 modules 1166 active 
+ mdx-loader › docs/extra/greedy-algorithms/fractional-knapsack-algorithm.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8979/9048 depend
+encies 972/3608 modules 1138 active 
+ mdx-loader › docs/languages/javascript/js-14.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6734/6824 depend
+encies 1017/3662 modules 1174 active 
+ mdx-loader › docs/extra/Object Oriented Programming/4-pillars-of-oops.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 8998/9087 depend
+encies 972/3612 modules 1145 active 
+ mdx-loader › docs/languages/SQL/sql-26.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6781/6853 depend
+encies 1022/3676 modules 1183 active 
+ babel-loader › src/pages/visualization/dynamic-programming/fibonacci.tsx
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9034/9111 depend
+encies 972/3623 modules 1147 active 
+ ...docusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-get-291
+.json
+
+● Server █████████████████████████ building (21%) 0/1 entries 6803/6883 depend
+encies 1022/3679 modules 1200 active 
+ ...ocusaurus-plugin-content-docs/default/p/algo-docs-tags-diamond-problem-ebb
+.json
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9034/9111 depend
+encies 972/3623 modules 1162 active 
+ mdx-loader › docs/extra/Recursion/GrayCodeGeneration.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6831/6927 depend
+encies 1027/3681 modules 1196 active 
+ ...ugin-content-docs/dsa-interview/p/algo-dsa-interview-tags-two-pointers-4b5
+.json
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9072/9146 depend
+encies 984/3631 modules 1160 active 
+ mdx-loader › docs/dsa-problems/easy/contains-duplicate.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6853/6930 depend
+encies 1030/3690 modules 1210 active 
+ mdx-loader › docs/extra/linked-list/merge-two-sorted-list.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9072/9158 depend
+encies 984/3631 modules 1173 active 
+ mdx-loader › docs/extra/Recursion/StonePaperScissor.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6883/6962 depend
+encies 1034/3700 modules 1207 active 
+ mdx-loader › docs/dsa-problems/hard/predominant-frequency-division.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9110/9186 depend
+encies 988/3645 modules 1185 active 
+ ...der › docs/dsa-problems/medium/earliest-finish-time-for-land-and-water-rid
+es.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6891/6977 depend
+encies 1040/3702 modules 1213 active 
+ mdx-loader › docs/extra/binary-trees/minimum-depth.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9144/9229 depend
+encies 992/3652 modules 1190 active 
+ ...rus-plugin-content-docs/default/p/algo-docs-tags-unsupervised-learning-703
+.json
+
+● Server █████████████████████████ building (21%) 0/1 entries 6923/6998 depend
+encies 1046/3709 modules 1220 active 
+ mdx-loader › docs/languages/java/java-10.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9157/9252 depend
+encies 994/3655 modules 1190 active 
+ ...dx-loader › docs/extra/algorithms/backtracking-algorithms/n-queens_algorit
+hm.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6927/7001 depend
+encies 1055/3711 modules 1231 active 
+ mdx-loader › docs/extra/basic-dsa/array/Kadane-Algorithm.md
+
+
+● Client █████████████████████████ building (20%) 0/1 entries 9215/9299 depend
+encies 999/3666 modules 1203 active 
+ ...dx-loader › docs/dsa-problems/hard/vertical-order-traversal-of-a-binary-tr
+ee.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6960/7046 depend
+encies 1058/3717 modules 1247 active 
+ ...gin-content-docs/default/p/algo-docs-tags-space-complexity-calculation-296
+.json
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9249/9326 depend
+encies 1005/3674 modules 1211 active 
+ mdx-loader › docs/extra/basic-dsa/pointer.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 6996/7084 depend
+encies 1064/3733 modules 1247 active 
+ mdx-loader › docs/programming-fundamentals/oop-basics/classes.md
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9249/9326 depend
+encies 1005/3674 modules 1225 active 
+ mdx-loader › docs/extra/linked-list/merge-two-sorted-list.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 7031/7120 depend
+encies 1078/3745 modules 1254 active 
+ ...s/docusaurus-plugin-content-docs/default/p/algo-docs-tags-polymorphism-dad
+.json
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9285/9358 depend
+encies 1015/3685 modules 1228 active 
+ mdx-loader › docs/extra/binary-search-problems/aggressive-cows.md
+
+● Server █████████████████████████ building (21%) 0/1 entries 7053/7127 depend
+encies 1081/3747 modules 1279 active 
+ babel-loader › src/pages/profile.tsx
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9313/9409 depend
+encies 1024/3693 modules 1240 active 
+ ...rus/docusaurus-plugin-content-blog/default/p/algo-blog-tags-merge-sort-848
+.json
+
+● Server █████████████████████████ building (21%) 0/1 entries 7116/7197 depend
+encies 1086/3757 modules 1275 active 
+ mdx-loader › docs/extra/algorithms/RNN-ML-algorithm.md
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9333/9417 depend
+encies 1025/3697 modules 1251 active 
+ ...ocusaurus-plugin-content-docs/default/p/algo-docs-tags-graph-traversal-e47
+.json
+
+● Server █████████████████████████ building (22%) 0/1 entries 7127/7197 depend
+encies 1094/3763 modules 1281 active 
+ mdx-loader › docs/programming-fundamentals/oop-basics/delegation.md
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9363/9439 depend
+encies 1030/3708 modules 1247 active 
+ mdx-loader › docs/dsa-problems/medium/path-with-minimum-effort.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7145/7223 depend
+encies 1094/3764 modules 1302 active 
+ mdx-loader › docs/data-structures/roadmap-to-dsa.mdx
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9395/9480 depend
+encies 1040/3716 modules 1256 active 
+ mdx-loader › docs/extra/linked-list/remove-duplicates-from-sorted-list.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7177/7263 depend
+encies 1104/3773 modules 1304 active 
+ ...cusaurus-plugin-content-docs/default/p/algo-docs-tags-image-generation-435
+.json
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9413/9495 depend
+encies 1048/3721 modules 1273 active 
+ mdx-loader › docs/languages/swift/selection-sort.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7227/7298 depend
+encies 1109/3788 modules 1300 active 
+ babel-loader › src/pages/complexity-comparison.tsx
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9429/9522 depend
+encies 1052/3726 modules 1270 active 
+ ...usaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-friend-42b
+.json
+
+● Server █████████████████████████ building (22%) 0/1 entries 7227/7298 depend
+encies 1109/3788 modules 1318 active 
+ ...cusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-views-99c
+.json
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9453/9522 depend
+encies 1054/3731 modules 1295 active 
+ mdx-loader › docs/extra/graphs/shortest-path-algorithms/Prims-algorithm.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7266/7331 depend
+encies 1123/3795 modules 1307 active 
+ mdx-loader › docs/extra/binary-search-tree/avl-tree.md
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9453/9522 depend
+encies 1054/3731 modules 1295 active 
+ mdx-loader › docs/extra/graphs/shortest-path-algorithms/Prims-algorithm.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7270/7331 depend
+encies 1135/3799 modules 1324 active 
+ mdx-loader › docs/extra/fundamentals/Functions/Function Composition.md
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9539/9616 depend
+encies 1066/3748 modules 1295 active 
+ ...o-1/.docusaurus/docusaurus-plugin-content-blog/story/p/algo-story-tags-eb0
+.json
+
+● Server █████████████████████████ building (22%) 0/1 entries 7332/7411 depend
+encies 1140/3806 modules 1349 active 
+ mdx-loader › docs/dsa-problems/medium/lowest-common-ancestor.md
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9539/9616 depend
+encies 1066/3748 modules 1316 active 
+ babel-loader › src/pages/challenges/Greedy/partition-labels.tsx
+
+● Server █████████████████████████ building (22%) 0/1 entries 7364/7444 depend
+encies 1148/3818 modules 1342 active 
+ babel-loader › src/pages/visualization/linked-lists/index.tsx
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9572/9653 depend
+encies 1077/3759 modules 1321 active 
+ mdx-loader › docs/extra/algorithms/Searching Algorithms/A-Search.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7370/7465 depend
+encies 1153/3818 modules 1348 active 
+ ...saurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-reverse-b80
+.json
+
+
+● Client █████████████████████████ building (21%) 0/1 entries 9619/9705 depend
+encies 1083/3769 modules 1328 active 
+ ...us/docusaurus-plugin-content-docs/default/p/algo-docs-tags-conversions-e8d
+.json
+
+● Server █████████████████████████ building (22%) 0/1 entries 7404/7481 depend
+encies 1170/3834 modules 1354 active 
+ ...l-loader › node_modules/@docusaurus/plugin-content-docs/lib/client/docsUti
+ls.js
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9643/9714 depend
+encies 1093/3777 modules 1339 active 
+ ...oader › docs/extra/algorithms/Bentley-Ottmann-Algorithm/bentley-ottmann-al
+go.md
+
+● Server █████████████████████████ building (22%) 0/1 entries 7415/7481 depend
+encies 1173/3836 modules 1360 active 
+ ...er › docs/extra/algorithms/backtracking-algorithms/permutations-combinatio
+ns.md
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9677/9766 depend
+encies 1106/3784 modules 1335 active 
+ babel-loader › src/pages/challenges/Sorting/merge-sort.tsx
+
+● Server █████████████████████████ building (22%) 0/1 entries 7448/7521 depend
+encies 1173/3843 modules 1380 active 
+ mdx-loader › docs/extra/Recursion-depths/handling-depth-errors.md
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9718/9810 depend
+encies 1115/3788 modules 1347 active 
+ mdx-loader › docs/extra/hash/hash-tables.md
+
+● Server █████████████████████████ building (23%) 0/1 entries 7505/7577 depend
+encies 1184/3850 modules 1370 active 
+ mdx-loader › docs/languages/SQL/sql-18.md
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9741/9826 depend
+encies 1123/3795 modules 1362 active 
+ mdx-loader › docs/languages/php/php-8.md
+
+● Server █████████████████████████ building (23%) 0/1 entries 7539/7622 depend
+encies 1196/3855 modules 1381 active 
+ node_modules/ws/lib/subprotocol.js
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9778/9851 depend
+encies 1143/3806 modules 1365 active 
+ mdx-loader › docs/extra/machine-learning/K-NearestNeighbours.md
+
+● Server █████████████████████████ building (23%) 0/1 entries 7539/7622 depend
+encies 1196/3855 modules 1395 active 
+ mdx-loader › docs/dsa-problems/medium/find-a-peak-element-ii.md
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9814/9903 depend
+encies 1151/3821 modules 1380 active 
+ mdx-loader › docs/extra/machine-learning/neuralNetworks.md
+
+● Server █████████████████████████ building (23%) 0/1 entries 7633/7694 depend
+encies 1201/3895 modules 1391 active 
+ ...ocusaurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-fifo-f36
+.json
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9814/9903 depend
+encies 1151/3821 modules 1380 active 
+ mdx-loader › docs/extra/machine-learning/neuralNetworks.md
+
+● Server █████████████████████████ building (23%) 0/1 entries 7647/7758 depend
+encies 1218/3906 modules 1396 active 
+ .../algo-1/node_modules/framer-motion/dist/es/components/AnimatePresence/inde
+x.mjs
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9860/9933 depend
+encies 1152/3826 modules 1406 active 
+ ...aurus/docusaurus-plugin-content-docs/default/p/algo-docs-tags-best-fit-a8e
+.json
+
+● Server █████████████████████████ building (23%) 0/1 entries 7692/7758 depend
+encies 1226/3912 modules 1389 active 
+ node_modules/prismjs/components/prism-bash.js
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9865/9933 depend
+encies 1165/3830 modules 1393 active 
+ babel-loader › src/pages/quizzes/priority-queue.tsx
+
+● Server █████████████████████████ building (23%) 0/1 entries 7708/7775 depend
+encies 1235/3916 modules 1407 active 
+ babel-loader › src/components/VisualizerComingSoon.tsx
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9908/9998 depend
+encies 1166/3834 modules 1399 active 
+ mdx-loader › docs/extra/fundamentals/Functions/Function Overloading.md
+
+● Server █████████████████████████ building (23%) 0/1 entries 7757/7807 depend
+encies 1248/3926 modules 1434 active 
+ babel-loader › src/components/Quiz/AdaptiveQuizRunner.tsx
+
+
+● Client █████████████████████████ building (22%) 0/1 entries 9945/10021 depen
+dencies 1169/3845 modules 1406 active 
+ ...der › node_modules/@docusaurus/theme-classic/lib/theme/Layout/styles.modul
+e.css
+
+● Server █████████████████████████ building (23%) 0/1 entries 7757/7807 depend
+encies 1248/3926 modules 1434 active 
+ babel-loader › src/components/Quiz/AdaptiveQuizRunner.tsx
+
+
+● Client █████████████████████████ building (23%) 0/1 entries 9986/10069 depen
+dencies 1189/3864 modules 1406 active 
+ babel-loader › src/hooks/useQuizProgress.ts
+
+● Server █████████████████████████ building (23%) 0/1 entries 7757/7807 depend
+encies 1248/3926 modules 1434 active 
+ babel-loader › src/components/Quiz/AdaptiveQuizRunner.tsx
+
+
+● Client █████████████████████████ building (23%) 0/1 entries 10029/10180 depe
+ndencies 1213/3879 modules 1414 active 
+ node_modules/prismjs/components/prism-matlab.js
+
+● Server █████████████████████████ building (23%) 0/1 entries 7757/7807 depend
+encies 1248/3926 modules 1434 active 
+ babel-loader › src/components/Quiz/AdaptiveQuizRunner.tsx
+
+
+● Client █████████████████████████ building (23%) 0/1 entries 10133/10212 depe
+ndencies 1237/3899 modules 1413 active 
+ node_modules/@supabase/functions-js/dist/module/index.js
+
+● Server █████████████████████████ building (24%) 0/1 entries 7998/8022 depend
+encies 1362/4046 modules 1415 active 
+ ...usaurus/theme-classic/lib/theme/DocCategoryGeneratedIndexPage/styles.modul
+e.css
+
+
+● Client █████████████████████████ building (23%) 0/1 entries 10133/10212 depe
+ndencies 1237/3899 modules 1413 active 
+ node_modules/@supabase/functions-js/dist/module/index.js
+
+● Server █████████████████████████ building (25%) 0/1 entries 7999/8023 depend
+encies 1417/4046 modules 1434 active 
+ babel-loader › src/theme/DocBreadcrumbs/index.tsx
+
+
+● Client █████████████████████████ building (23%) 0/1 entries 10238/10320 depe
+ndencies 1245/3951 modules 1413 active 
+ ...saurus-plugin-content-blog/default/site-blog-recursion-vs-iteration-md-51c
+.json
+
+● Server █████████████████████████ building (26%) 0/1 entries 8127/8209 depend
+encies 1538/4068 modules 1441 active 
+ url-loader › docs/extra/b-tree/image/delete.png
+
+
+● Client █████████████████████████ building (24%) 0/1 entries 10320/10356 depe
+ndencies 1298/4015 modules 1478 active 
+ babel-loader › src/components/Visualizing/BellmanFordVisualizer.jsx
+
+● Server █████████████████████████ building (27%) 0/1 entries 8188/8238 depend
+encies 1616/4080 modules 1439 active 
+ ...ode_modules/@docusaurus/theme-classic/lib/theme/Blog/Components/Author/ind
+ex.js
+
+
+● Client █████████████████████████ building (25%) 0/1 entries 10370/10430 depe
+ndencies 1434/4028 modules 1434 active 
+ ...ader › src/components/Visualizing/largest-rectangle-in-histogram-visualize
+r.jsx
+
+● Server █████████████████████████ building (28%) 0/1 entries 8208/8257 depend
+encies 1699/4089 modules 1492 active 
+ ...efault/site-docs-dsa-problems-easy-intersection-of-two-linked-lists-md-616
+.json
+
+
+● Client █████████████████████████ building (26%) 0/1 entries 10429/10478 depe
+ndencies 1463/4039 modules 1440 active 
+ babel-loader › src/components/Auth/AuthPanel.tsx
+
+● Server █████████████████████████ building (29%) 0/1 entries 8235/8302 depend
+encies 1785/4098 modules 1474 active 
+ ...content-docs/default/site-docs-extra-basic-dsa-operator-overloading-md-6f6
+.json
+
+
+● Client █████████████████████████ building (26%) 0/1 entries 10490/10548 depe
+ndencies 1531/4050 modules 1482 active 
+ ...ult/site-docs-extra-object-oriented-programming-real-world-examples-md-3eb
+.json
+
+● Server █████████████████████████ building (29%) 0/1 entries 8270/8307 depend
+encies 1791/4106 modules 1512 active 
+ ...-docs/default/site-docs-extra-binary-search-recursive-binary-search-md-7b0
+.json
+
+
+● Client █████████████████████████ building (29%) 0/1 entries 10563/10606 depe
+ndencies 1763/4073 modules 1460 active 
+ babel-loader › src/data/Books.tsx
+
+● Server █████████████████████████ building (29%) 0/1 entries 8283/8313 depend
+encies 1806/4113 modules 1522 active 
+ ...ocusaurus-plugin-content-docs/default/site-docs-languages-cpp-cp-13-md-80b
+.json
+
+
+● Client █████████████████████████ building (29%) 0/1 entries 10635/10666 depe
+ndencies 1782/4105 modules 1531 active 
+ ...ocusaurus-plugin-content-docs/default/site-docs-languages-cpp-cp-13-md-80b
+.json
+
+● Server █████████████████████████ building (30%) 0/1 entries 8317/8323 depend
+encies 1819/4139 modules 1546 active 
+ ...ocusaurus-plugin-content-docs/default/site-docs-languages-cpp-cp-11-md-89c
+.json
+
+
+● Client █████████████████████████ building (30%) 0/1 entries 10705/10707 depe
+ndencies 1866/4135 modules 1561 active 
+ ...t-docs/default/site-docs-extra-linked-list-range-sum-of-linked-list-md-975
+.json
+
+● Server █████████████████████████ building (30%) 0/1 entries 8331/8332 depend
+encies 1897/4147 modules 1554 active 
+ ...aurus/docusaurus-plugin-content-blog/default/site-blog-dynamic-prog-md-9a7
+.json
+
+
+● Client █████████████████████████ building (31%) 0/1 entries 10717/10722 depe
+ndencies 1982/4138 modules 1561 active 
+ ...ocs/default/site-docs-extra-binary-search-painter-partition-problem-md-af0
+.json
+
+● Server █████████████████████████ building (32%) 0/1 entries 8382/8385 depend
+encies 2025/4151 modules 1552 active 
+ ...-extra-sliding-window-longest-substring-with-k-different-characters-md-b33
+.json
+
+
+● Client █████████████████████████ building (32%) 0/1 entries 10740/10746 depe
+ndencies 2015/4143 modules 1563 active 
+ ...-content-docs/default/site-docs-extra-linked-list-practice-problems-md-b64
+.json
+
+● Server █████████████████████████ building (32%) 0/1 entries 8440/8445 depend
+encies 2076/4204 modules 1551 active 
+ ...docs-extra-algorithms-edmonds-karp-algorithm-edmonds-karp-algorithm-md-bd1
+.json
+
+
+● Client █████████████████████████ building (32%) 0/1 entries 10799/10807 depe
+ndencies 2044/4198 modules 1562 active 
+ ...saurus-plugin-content-docs/default/site-docs-languages-python-py-17-md-bc3
+.json
+
+● Server █████████████████████████ building (32%) 0/1 entries 8441/8445 depend
+encies 2089/4205 modules 1552 active 
+ ...-dsa-problems-medium-clone-linked-list-with-random-and-next-pointer-md-c19
+.json
+
+
+● Client █████████████████████████ building (32%) 0/1 entries 10843/10846 depe
+ndencies 2082/4218 modules 1558 active 
+ ...ntent-docs/default/site-docs-extra-greedy-algorithms-graph-coloring-md-c62
+.json
+
+● Server █████████████████████████ building (33%) 0/1 entries 8456/8462 depend
+encies 2124/4214 modules 1553 active 
+ babel-loader › src/components/CodeEditor/MonacoSandbox.tsx
+
+
+● Client █████████████████████████ building (34%) 0/1 entries 10869/10869 depe
+ndencies 2190/4225 modules 1567 active 
+ ...site-docs-extra-algorithms-greedy-algorithms-job-sequencing-problem-md-db6
+.json
+
+● Server █████████████████████████ building (34%) 0/1 entries 8529/8530 depend
+encies 2228/4238 modules 1564 active 
+ ...saurus-plugin-content-docs/default/site-docs-languages-python-py-18-md-ded
+.json
+
+
+● Client █████████████████████████ building (34%) 0/1 entries 10897/10898 depe
+ndencies 2243/4228 modules 1570 active 
+ ...-plugin-content-docs/default/site-docs-languages-swift-introduction-md-e63
+.json
+
+● Server █████████████████████████ building (35%) 0/1 entries 8530/8530 depend
+encies 2274/4239 modules 1565 active 
+ ...in-content-docs/default/site-docs-extra-algorithms-rnn-ml-algorithm-md-e6e
+.json
+
+
+● Client █████████████████████████ building (34%) 0/1 entries 10908/10917 depe
+ndencies 2261/4232 modules 1571 active 
+ ...docs/default/site-docs-basic-data-structures-array-arrays-shellsort-md-ec2
+.json
+
+● Server █████████████████████████ building (35%) 0/1 entries 8530/8530 depend
+encies 2289/4239 modules 1565 active 
+ ...s-plugin-content-docs/default/site-docs-extra-graphs-graph-reversal-md-ede
+.json
+
+
+● Client █████████████████████████ building (35%) 0/1 entries 10944/10950 depe
+ndencies 2344/4243 modules 1566 active 
+ babel-loader › src/hooks/useQuizStreak.ts
+
+● Server █████████████████████████ building (36%) 0/1 entries 8608/8612 depend
+encies 2389/4252 modules 1560 active 
+ ...er › node_modules/@docusaurus/theme-classic/lib/theme/Heading/styles.modul
+e.css
+
+
+● Client █████████████████████████ building (36%) 0/1 entries 11000/11006 depe
+ndencies 2396/4253 modules 1554 active 
+ ...de_modules/@docusaurus/theme-common/lib/contexts/navbarSecondaryMenu/conte
+nt.js
+
+● Server █████████████████████████ building (36%) 0/1 entries 8634/8645 depend
+encies 2428/4252 modules 1545 active 
+ babel-loader › src/components/PseudocodeTab.tsx
+
+
+● Client █████████████████████████ building (36%) 0/1 entries 11033/11038 depe
+ndencies 2425/4257 modules 1575 active 
+ ...esm|/Users/ajaygurjar/algo-1/node_modules/lucide-react/dist/esm/icons/sigm
+a.mjs
+
+● Server █████████████████████████ building (48%) 0/1 entries 8701/8708 depend
+encies 3486/4276 modules 535 active 
+ ...s/ajaygurjar/algo-1/node_modules/lucide-react/dist/esm/icons/message-squar
+e.mjs
+
+
+● Client █████████████████████████ building (48%) 0/1 entries 11093/11118 depe
+ndencies 3473/4262 modules 556 active 
+ css-loader › postcss-loader › src/theme/DocBreadcrumbs/styles.module.css
+
+● Server █████████████████████████ building (48%) 0/1 entries 8771/8772 depend
+encies 3522/4285 modules 573 active 
+ ...odules/@docusaurus/theme-classic/lib/theme/Navbar/MobileSidebar/Toggle/ind
+ex.js
+
+
+● Client █████████████████████████ building (48%) 0/1 entries 11170/11205 depe
+ndencies 3511/4282 modules 554 active 
+ node_modules/algoliasearch-helper/src/version.js
+
+● Server █████████████████████████ building (48%) 0/1 entries 8771/8772 depend
+encies 3522/4285 modules 573 active 
+ ...odules/@docusaurus/theme-classic/lib/theme/Navbar/MobileSidebar/Toggle/ind
+ex.js
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 11241/11276 depe
+ndencies 3550/4298 modules 533 active 
+ ...modules/@docusaurus/theme-search-algolia/lib/theme/SearchPage/styles.modul
+e.css
+
+● Server █████████████████████████ building (49%) 0/1 entries 8844/8872 depend
+encies 3593/4295 modules 517 active 
+ node_modules/algoliasearch-helper/src/RecommendResults/index.js
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 11317/11377 depe
+ndencies 3592/4332 modules 513 active 
+ babel-loader › src/theme/DocItem/Content/index.tsx
+
+● Server █████████████████████████ building (49%) 0/1 entries 8930/8955 depend
+encies 3631/4335 modules 508 active 
+ babel-loader › src/components/Svg/index.tsx
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 11393/11454 depe
+ndencies 3621/4357 modules 500 active 
+ ...node_modules/@docusaurus/plugin-debug/lib/theme/DebugRegistry/styles.modul
+e.css
+
+● Server █████████████████████████ building (50%) 0/1 entries 8991/9024 depend
+encies 3666/4346 modules 495 active 
+ ...ygurjar/algo-1/node_modules/mermaid/dist/chunks/mermaid.core/chunk-UBXNYLI
+W.mjs
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 11436/11495 depe
+ndencies 3626/4372 modules 506 active 
+ ...der › node_modules/@docusaurus/plugin-ideal-image/lib/theme/IdealImage/ind
+ex.js
+
+● Server █████████████████████████ building (50%) 0/1 entries 9085/9119 depend
+encies 3691/4364 modules 498 active 
+ ...lgo-1/node_modules/mermaid/dist/chunks/mermaid.core/journeyDiagram-NVQOT4A
+X.mjs
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 11514/11582 depe
+ndencies 3650/4391 modules 513 active 
+ ...ar/algo-1/node_modules/mermaid/dist/chunks/mermaid.core/pegDiagram-VL7TDLO
+6.mjs
+
+● Server █████████████████████████ building (51%) 0/1 entries 9294/9363 depend
+encies 3733/4379 modules 457 active 
+ ...go-1/node_modules/mermaid/dist/chunks/mermaid.core/stateDiagram-v2-UEYNNEH
+I.mjs
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 11542/11615 depe
+ndencies 3680/4394 modules 497 active 
+ ...urjar/algo-1/node_modules/mermaid/dist/chunks/mermaid.core/diagram-LBJQPF4
+R.mjs
+
+● Server █████████████████████████ building (51%) 0/1 entries 9428/9841 depend
+encies 3753/4386 modules 453 active 
+ ...ript/esm|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/inde
+x.mjs
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 11829/11899 depe
+ndencies 3680/4450 modules 512 active 
+ ...ar/algo-1/node_modules/mermaid/dist/chunks/mermaid.core/pieDiagram-7S7Q4E2
+Y.mjs
+
+● Server █████████████████████████ building (51%) 0/1 entries 9428/9841 depend
+encies 3753/4386 modules 453 active 
+ ...ript/esm|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/inde
+x.mjs
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 11856/11923 depe
+ndencies 3680/4451 modules 534 active 
+ babel-loader › src/components/Homepage/UserTestimonialsSection.tsx
+
+● Server █████████████████████████ building (51%) 0/1 entries 9874/9936 depend
+encies 3757/4714 modules 450 active 
+ css-loader › src/components/AlgorithmRelationshipMap/styles.module.css
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 11856/11923 depe
+ndencies 3680/4451 modules 534 active 
+ babel-loader › src/components/Homepage/UserTestimonialsSection.tsx
+
+● Server █████████████████████████ building (51%) 0/1 entries 9933/10087 depen
+dencies 3782/4733 modules 461 active 
+ babel-loader › src/hooks/usePracticeActivityHeatmap.ts
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 12306/12350 depe
+ndencies 3688/4780 modules 574 active 
+ ...de_modules/@docusaurus/theme-common/lib/contexts/navbarSecondaryMenu/displ
+ay.js
+
+● Server █████████████████████████ building (51%) 0/1 entries 10014/10113 depe
+ndencies 3802/4743 modules 453 active 
+ ...|/Users/ajaygurjar/algo-1/node_modules/lucide-react/dist/esm/icons/bookmar
+k.mjs
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 12423/12491 depe
+ndencies 3764/4792 modules 520 active 
+ ...dules/@docusaurus/theme-common/lib/components/ThemedComponent/styles.modul
+e.css
+
+● Server █████████████████████████ building (52%) 0/1 entries 10065/10152 depe
+ndencies 3819/4772 modules 462 active 
+ node_modules/@supabase/functions-js/dist/module/helper.js
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 12508/12563 depe
+ndencies 3796/4826 modules 539 active 
+ ...ostcss-loader › node_modules/react-lite-youtube-embed/dist/LiteYouTubeEmbe
+d.css
+
+● Server █████████████████████████ building (52%) 0/1 entries 10153/10217 depe
+ndencies 3867/4795 modules 475 active 
+ ...@docusaurus/theme-classic/lib/theme/Navbar/MobileSidebar/SecondaryMenu/ind
+ex.js
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 12536/12590 depe
+ndencies 3813/4829 modules 546 active 
+ ...@docusaurus/theme-classic/lib/theme/DocBreadcrumbs/Items/Home/styles.modul
+e.css
+
+● Server █████████████████████████ building (52%) 0/1 entries 10249/10320 depe
+ndencies 3897/4834 modules 483 active 
+ ...l-loader › node_modules/@docusaurus/theme-classic/lib/theme/Admonition/Typ
+es.js
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 12566/12631 depe
+ndencies 3820/4836 modules 551 active 
+ ...er › node_modules/@docusaurus/theme-search-algolia/lib/theme/SearchBar/ind
+ex.js
+
+● Server █████████████████████████ building (53%) 0/1 entries 10481/10539 depe
+ndencies 3972/4888 modules 475 active 
+ ...rs/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/predicate/isSymbo
+l.mjs
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 12616/12651 depe
+ndencies 3823/4874 modules 574 active 
+ babel-loader › src/components/DsaProblemHintLadder.tsx
+
+● Server █████████████████████████ building (53%) 0/1 entries 10571/10636 depe
+ndencies 3991/4912 modules 483 active 
+ ...jaygurjar/algo-1/node_modules/es-toolkit/dist/compat/array/intersectionWit
+h.mjs
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 12793/12835 depe
+ndencies 3839/4918 modules 594 active 
+ babel-loader › src/theme/CodeBlock/Layout/index.js
+
+● Server █████████████████████████ building (54%) 0/1 entries 10837/10919 depe
+ndencies 4030/4952 modules 566 active 
+ ...m|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/object/clon
+e.mjs
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 12793/12835 depe
+ndencies 3839/4918 modules 595 active 
+ css-loader › postcss-loader › node_modules/reactflow/dist/style.css
+
+● Server █████████████████████████ building (54%) 0/1 entries 11013/11047 depe
+ndencies 4063/4976 modules 566 active 
+ ...sers/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/object/transfor
+m.mjs
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 12911/12949 depe
+ndencies 3856/4943 modules 606 active 
+ babel-loader › src/utils/algoliaAnalytics.ts
+
+● Server █████████████████████████ building (54%) 0/1 entries 11028/11056 depe
+ndencies 4065/4985 modules 631 active 
+ ...|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/string/repea
+t.mjs
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 13027/13106 depe
+ndencies 3886/4991 modules 623 active 
+ ...|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/util/toNumbe
+r.mjs
+
+● Server █████████████████████████ building (54%) 0/1 entries 11513/11552 depe
+ndencies 4110/5081 modules 655 active 
+ ...ar/algo-1/node_modules/framer-motion/dist/es/motion/features/viewport/inde
+x.mjs
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 13200/13244 depe
+ndencies 3899/5045 modules 671 active 
+ ...esm|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/util/time
+s.mjs
+
+● Server █████████████████████████ building (53%) 0/1 entries 11898/11962 depe
+ndencies 4191/5318 modules 622 active 
+ javascript/esm|/Users/ajaygurjar/algo-1/node_modules/d3-format/src/index.js
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 13502/13535 depe
+ndencies 3938/5151 modules 743 active 
+ ...|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/object/inver
+t.mjs
+
+● Server █████████████████████████ building (51%) 0/1 entries 12223/12299 depe
+ndencies 4204/5579 modules 661 active 
+ babel-loader › src/components/EdgeCases/index.tsx
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 13721/13770 depe
+ndencies 3971/5223 modules 768 active 
+ ...sers/ajaygurjar/algo-1/node_modules/es-toolkit/dist/compat/string/snakeCas
+e.mjs
+
+● Server █████████████████████████ building (53%) 0/1 entries 12408/12518 depe
+ndencies 4440/5642 modules 557 active 
+ ...ules/@docusaurus/theme-classic/lib/theme/TOCCollapsible/CollapseButton/ind
+ex.js
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 13820/13829 depe
+ndencies 3983/5269 modules 822 active 
+ ...ers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/gestures/pan/inde
+x.mjs
+
+● Server █████████████████████████ building (54%) 0/1 entries 12615/12690 depe
+ndencies 4578/5696 modules 530 active 
+ ...modules/@mermaid-js/parser/dist/chunks/mermaid-parser.core/wardley-OPB4EBW
+U.mjs
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 14210/14259 depe
+ndencies 4016/5308 modules 790 active 
+ ...ar/algo-1/node_modules/framer-motion/dist/es/motion/features/viewport/inde
+x.mjs
+
+● Server █████████████████████████ building (54%) 0/1 entries 12671/12748 depe
+ndencies 4585/5701 modules 575 active 
+ ...rjar/algo-1/node_modules/framer-motion/dist/es/render/svg/utils/build-attr
+s.mjs
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 14299/14325 depe
+ndencies 4041/5342 modules 827 active 
+ ...› node_modules/@docusaurus/theme-common/lib/utils/errorBoundaryUtils.modul
+e.css
+
+● Server █████████████████████████ building (54%) 0/1 entries 12921/12978 depe
+ndencies 4718/5774 modules 543 active 
+ ...vascript/esm|/Users/ajaygurjar/algo-1/node_modules/d3-array/src/intersecti
+on.js
+
+
+● Client █████████████████████████ building (51%) 0/1 entries 14299/14325 depe
+ndencies 4041/5342 modules 827 active 
+ ...› node_modules/@docusaurus/theme-common/lib/utils/errorBoundaryUtils.modul
+e.css
+
+● Server █████████████████████████ building (54%) 0/1 entries 13449/13499 depe
+ndencies 4810/5889 modules 694 active 
+ ...vascript/esm|/Users/ajaygurjar/algo-1/node_modules/d3-shape/src/symbol/cro
+ss.js
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 14670/14700 depe
+ndencies 4041/5695 modules 852 active 
+ node_modules/react-popper/lib/esm/utils.js
+
+● Server █████████████████████████ building (57%) 0/1 entries 13729/13791 depe
+ndencies 5166/5970 modules 485 active 
+ ...avascript/esm|/Users/ajaygurjar/algo-1/node_modules/khroma/dist/methods/hs
+la.js
+
+
+● Client █████████████████████████ building (48%) 0/1 entries 14718/14763 depe
+ndencies 4046/5710 modules 899 active 
+ ...cript/esm|/Users/ajaygurjar/algo-1/node_modules/dagre-d3-es/src/dagre/layo
+ut.js
+
+● Server █████████████████████████ building (57%) 0/1 entries 13760/13840 depe
+ndencies 5191/5983 modules 496 active 
+ ...vascript/esm|/Users/ajaygurjar/algo-1/node_modules/khroma/dist/methods/sca
+le.js
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 14787/14835 depe
+ndencies 4089/5725 modules 857 active 
+ ...pt/esm|/Users/ajaygurjar/algo-1/node_modules/dagre-d3-es/src/dagre/normali
+ze.js
+
+● Server █████████████████████████ building (57%) 0/1 entries 13837/13869 depe
+ndencies 5240/6010 modules 523 active 
+ ...rs/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/sync-tim
+e.mjs
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 14830/14873 depe
+ndencies 4098/5738 modules 864 active 
+ ...t/esm|/Users/ajaygurjar/algo-1/node_modules/dagre-d3-es/src/dagre/rank/ind
+ex.js
+
+● Server █████████████████████████ building (60%) 0/1 entries 14209/14278 depe
+ndencies 5680/6126 modules 344 active 
+ ...esm|/Users/ajaygurjar/algo-1/node_modules/@iconify/utils/lib/emoji/test/na
+me.js
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 14912/14937 depe
+ndencies 4159/5770 modules 860 active 
+ ...mjs
+
+● Server █████████████████████████ building (60%) 0/1 entries 14448/14491 depe
+ndencies 5752/6238 modules 338 active 
+ ...@docusaurus/plugin-ideal-image/lib/theme/IdealImageLegacy/components/helpe
+rs.js
+
+
+● Client █████████████████████████ building (49%) 0/1 entries 14996/15040 depe
+ndencies 4170/5783 modules 863 active 
+ ...eal-image/lib/theme/IdealImageLegacy/components/IdealImageWithDefaults/ind
+ex.js
+
+● Server █████████████████████████ building (61%) 0/1 entries 14650/14702 depe
+ndencies 5909/6291 modules 284 active 
+ node_modules/@popperjs/core/lib/utils/mergePaddingObject.js
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 15077/15158 depe
+ndencies 4243/5812 modules 830 active 
+ ...sm|/Users/ajaygurjar/algo-1/node_modules/es-toolkit/dist/predicate/isBuffe
+r.mjs
+
+● Server █████████████████████████ building (61%) 0/1 entries 14815/14877 depe
+ndencies 5981/6375 modules 321 active 
+ node_modules/@popperjs/core/lib/dom-utils/getParentNode.js
+
+
+● Client █████████████████████████ building (50%) 0/1 entries 15146/15163 depe
+ndencies 4360/5859 modules 828 active 
+ ...script/esm|/Users/ajaygurjar/algo-1/node_modules/@iconify/utils/lib/svg/tr
+im.js
+
+● Server █████████████████████████ building (62%) 0/1 entries 15212/15366 depe
+ndencies 6199/6505 modules 255 active 
+ ...avascript/esm|/Users/ajaygurjar/algo-1/node_modules/lodash-es/_cloneDataVi
+ew.js
+
+
+● Client █████████████████████████ building (52%) 0/1 entries 15341/15378 depe
+ndencies 4570/5883 modules 751 active 
+ ...-1/node_modules/framer-motion/dist/es/render/svg/utils/scrape-motion-value
+s.mjs
+
+● Server █████████████████████████ building (61%) 0/1 entries 15353/15387 depe
+ndencies 6211/6574 modules 318 active 
+ ...ynamic|/Users/ajaygurjar/algo-1/node_modules/core-js/internals/function-ca
+ll.js
+
+
+● Client █████████████████████████ building (54%) 0/1 entries 15563/15588 depe
+ndencies 4774/5961 modules 657 active 
+ javascript/esm|/Users/ajaygurjar/algo-1/node_modules/d3-fetch/src/dsv.js
+
+● Server █████████████████████████ building (62%) 0/1 entries 15698/15730 depe
+ndencies 6338/6672 modules 305 active 
+ ...pt/dynamic|/Users/ajaygurjar/algo-1/node_modules/core-js/internals/to-obje
+ct.js
+
+
+● Client █████████████████████████ building (53%) 0/1 entries 15933/15947 depe
+ndencies 4830/6057 modules 788 active 
+ ...aygurjar/algo-1/node_modules/d3-scale-chromatic/src/sequential-multi/sineb
+ow.js
+
+● Server █████████████████████████ building (64%) 0/1 entries 16169/16176 depe
+ndencies 6641/6754 modules 109 active 
+ node_modules/gopd/index.js
+
+
+● Client █████████████████████████ building (54%) 0/1 entries 16277/16318 depe
+ndencies 5011/6192 modules 762 active 
+ babel-loader › src/components/CursorSwitcher.tsx
+
+● Server █████████████████████████ building (64%) 0/1 entries 16204/16206 depe
+ndencies 6731/6761 modules 30 active 
+ node_modules/supports-color/index.js
+
+
+● Client █████████████████████████ building (54%) 0/1 entries 16445/16511 depe
+ndencies 5112/6249 modules 754 active 
+ babel-loader › src/theme/Admonition/Icon/Danger.js
+
+● Server █████████████████████████ building (64%) 0/1 entries 16210/16211 depe
+ndencies 6733/6763 modules 30 active 
+ node_modules/call-bind-apply-helpers/actualApply.js
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (70%) finish module graph 
+ InnerGraphPlugin
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (70%)  
+ plugins
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (71%) dependencies optimization 
+ ConstExportsPlugin
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (73%)  
+ after chunk graph
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (87%)  
+ code generation
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (88%)  
+ runtime requirements
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (92%)  
+ asset processing
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (92%) asset processing 
+ HtmlModulesPlugin
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16491/16581 depe
+ndencies 5139/6252 modules 747 active 
+ ...sers/ajaygurjar/algo-1/node_modules/framer-motion/dist/es/frameloop/batche
+r.mjs
+
+● Server █████████████████████████ sealing (92%)  
+ asset processing
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16564/16628 depe
+ndencies 5162/6292 modules 744 active 
+ ...lgo-1/node_modules/framer-motion/dist/es/animation/optimized-appear/data-i
+d.mjs
+
+● Server █████████████████████████ emitting (95%)  
+ emit
+
+
+● Client █████████████████████████ building (55%) 0/1 entries 16697/16722 depe
+ndencies 5299/6339 modules 698 active 
+ node_modules/d3-sankey/node_modules/d3-shape/src/index.js
+
+● Server █████████████████████████ emitting (95%)  
+ emit
+
+
+● Client █████████████████████████ building (56%) 0/1 entries 16744/16753 depe
+ndencies 5377/6352 modules 688 active 
+ ...|/Users/ajaygurjar/algo-1/node_modules/motion-utils/dist/es/time-conversio
+n.mjs
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (58%) 0/1 entries 16946/16972 depe
+ndencies 5611/6423 modules 582 active 
+ javascript/esm|/Users/ajaygurjar/algo-1/node_modules/lodash-es/merge.js
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (58%) 0/1 entries 17070/17092 depe
+ndencies 5687/6472 modules 588 active 
+ .../ajaygurjar/algo-1/node_modules/core-js/modules/web.dom-collections.iterat
+or.js
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (58%) 0/1 entries 17246/17276 depe
+ndencies 5718/6542 modules 582 active 
+ ...1/node_modules/framer-motion/dist/es/render/html/utils/make-none-animatabl
+e.mjs
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (59%) 0/1 entries 17571/17591 depe
+ndencies 5931/6657 modules 535 active 
+ ...js
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (59%) 0/1 entries 18029/18053 depe
+ndencies 6094/6800 modules 552 active 
+ ....js
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (61%) 0/1 entries 18560/18589 depe
+ndencies 6440/6883 modules 412 active 
+ ...rs/ajaygurjar/algo-1/node_modules/core-js/internals/object-define-properti
+es.js
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ building (63%) 0/1 entries 18814/18816 depe
+ndencies 6759/6949 modules 187 active 
+ ...ules/@docusaurus/theme-classic/lib/theme/Navbar/Search/styles.module.css|0
+|||}}
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (70%) finish module graph 
+ FlagDependencyExportsPlugin
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (70%) finish module graph 
+ InnerGraphPlugin
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (70%)  
+ plugins
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (71%) dependencies optimization 
+ ConstExportsPlugin
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (73%)  
+ after chunk graph
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (75%) chunk optimization 
+ RemoveEmptyChunksPlugin
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (78%)  
+ chunk modules optimization
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (87%)  
+ code generation
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (88%)  
+ runtime requirements
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (89%)  
+ after hashing
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ sealing (92%) asset processing 
+ HtmlModulesPlugin
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+● Client █████████████████████████ emitting (98%)  
+ after emit
+
+✔ Server
+  Compiled successfully in 21.00s
+
+
+✔ Client
+  Compiled successfully in 25.22s
+
+✔ Server
+  Compiled successfully in 21.00s
+
+[WARNING] {"moduleIdentifier":"/Users/ajaygurjar/algo-1/node_modules/ws/lib/buffer-util.js","moduleName":"./node_modules/ws/lib/buffer-util.js","loc":"117:23-44","message":"Module not found: Error: Can't resolve 'bufferutil' in '/Users/ajaygurjar/algo-1/node_modules/ws/lib'","compilerPath":"server"}
+[WARNING] {"moduleIdentifier":"/Users/ajaygurjar/algo-1/node_modules/ws/lib/validation.js","moduleName":"./node_modules/ws/lib/validation.js","loc":"144:24-49","message":"Module not found: Error: Can't resolve 'utf-8-validate' in '/Users/ajaygurjar/algo-1/node_modules/ws/lib'","compilerPath":"server"}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
+(node:44012) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
