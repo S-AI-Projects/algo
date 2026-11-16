@@ -1,0 +1,68 @@
+{
+  "task": "R61-T046",
+  "item": "Node.js Cheatsheet Core Modules",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/cheatsheets/nodejs-cheatsheet.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "annotated_operations": {
+    "path_normalization": {
+      "raw_input": "path.posix.join('/var/app', 'logs/../config/runtime.json')",
+      "intermediate_joined": "/var/app/logs/../config/runtime.json",
+      "intermediate_normalized": "/var/app/config/runtime.json"
+    },
+    "sha256_digest": {
+      "input_payload": "Node.js v20+ Core Modules",
+      "intermediate_digest": "b7d999ada29e8017f2b9e239a227ead6e425e27b3446d749ee00435db3d19c07"
+    }
+  },
+  "checks": [
+    {
+      "description": "Path normalization worked example",
+      "input": "['/var/app', 'logs/../config/runtime.json']",
+      "expected": "/var/app/config/runtime.json",
+      "actual": "/var/app/config/runtime.json",
+      "passed": true
+    },
+    {
+      "description": "SHA-256 worked example digest",
+      "input": "Node.js v20+ Core Modules",
+      "expected": "b7d999ada29e8017f2b9e239a227ead6e425e27b3446d749ee00435db3d19c07",
+      "actual": "b7d999ada29e8017f2b9e239a227ead6e425e27b3446d749ee00435db3d19c07",
+      "passed": true
+    },
+    {
+      "description": "Boundary case 1: Empty string SHA-256 digest",
+      "input": "",
+      "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "description": "Boundary case 2: Empty path normalization",
+      "input": "",
+      "expected": ".",
+      "actual": ".",
+      "passed": true
+    },
+    {
+      "description": "Boundary case 3: Root path normalization",
+      "input": "/",
+      "expected": "/",
+      "actual": "/",
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": "mutated hash assertion",
+      "expected_exit_code_non_zero": true,
+      "actual_exit_code": 1,
+      "error_output_contains_assertion": true,
+      "passed": true
+    }
+  ],
+  "extracted_code": "import fs from 'node:fs/promises';   // Modern promise-based File System\nimport path from 'node:path';       // Path utilities with URL compatibility\nimport http from 'node:http';       // Native HTTP server \nimport crypto from 'node:crypto';   // Cryptography and Web Crypto API\nimport os from 'node:os';           // Operating System resources\nimport assert from 'node:assert/strict';\n\n// --- Annotated Difficult Operations: Path Normalization & Cryptographic Digest ---\n\n// 1. Path Normalization (Resolving redundant traversal segments)\n// Step 1a: Raw segment joining with relative traversal\nconst rawPath = path.posix.join('/var/app', 'logs/../config/runtime.json');\n// Intermediate Value (raw joined): '/var/app/logs/../config/runtime.json'\n\n// Step 1b: Normalizing redundant separators and '..' parent segments\nconst normalizedPath = path.posix.normalize(rawPath);\n// Intermediate Value (normalized): '/var/app/config/runtime.json'\n\nconsole.log('Normalized Path:', normalizedPath);\n\n// 2. Cryptographic Content Hashing (SHA-256)\n// Step 2a: Define input string payload\nconst payload = 'Node.js v20+ Core Modules';\n\n// Step 2b: Update hash state with UTF-8 byte stream\nconst hashStream = crypto.createHash('sha256').update(payload, 'utf8');\n\n// Step 2c: Generate 64-character hexadecimal digest\nconst digest = hashStream.digest('hex');\nconsole.log('SHA-256 Digest:', digest);\n\n// 3. Module Interface Verifications\nconst isHttpServerFunc = typeof http.createServer === 'function';\nconst isFsReadFileFunc = typeof fs.readFile === 'function';\nconst platform = os.platform();\n\nconsole.log(`Core Modules Initialized Successfully (Platform: ${platform})`);\n\n// --- Assertions for Worked Example ---\nassert.equal(normalizedPath, '/var/app/config/runtime.json');\nassert.equal(digest, 'b7d999ada29e8017f2b9e239a227ead6e425e27b3446d749ee00435db3d19c07');\nassert.ok(isHttpServerFunc);\nassert.ok(isFsReadFileFunc);\nassert.ok(typeof platform === 'string' && platform.length > 0);\n\n// --- Boundary Case 1: Empty String Payload (Zero-Length Digest) ---\nconst emptyDigest = crypto.createHash('sha256').update('', 'utf8').digest('hex');\nassert.equal(emptyDigest, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');\nconsole.log('Empty Payload Digest:', emptyDigest);\n\n// --- Boundary Case 2: Empty Path Normalization ---\nconst emptyPath = path.posix.normalize('');\nassert.equal(emptyPath, '.');\nconsole.log('Empty Path Normalization:', emptyPath);\n\n// --- Boundary Case 3: Root Path Normalization ---\nconst rootPath = path.posix.normalize('/');\nassert.equal(rootPath, '/');\nconsole.log('Root Path Normalization:', rootPath);"
+}

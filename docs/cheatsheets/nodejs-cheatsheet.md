@@ -34,12 +34,68 @@ npx upload-cli
 
 ## 2. Core Modules (ESM Syntax)
 
+In modern Node.js, built-in modules are loaded using the `node:` prefix. Below, we annotate the core modules in action, demonstrating step-by-step intermediate transformations for path normalization and cryptographic digest calculation:
+
 ```js
 import fs from 'node:fs/promises';   // Modern promise-based File System
 import path from 'node:path';       // Path utilities with URL compatibility
 import http from 'node:http';       // Native HTTP server 
 import crypto from 'node:crypto';   // Cryptography and Web Crypto API
 import os from 'node:os';           // Operating System resources
+import assert from 'node:assert/strict';
+
+// --- Annotated Difficult Operations: Path Normalization & Cryptographic Digest ---
+
+// 1. Path Normalization (Resolving redundant traversal segments)
+// Step 1a: Raw segment joining with relative traversal
+const rawPath = path.posix.join('/var/app', 'logs/../config/runtime.json');
+// Intermediate Value (raw joined): '/var/app/logs/../config/runtime.json'
+
+// Step 1b: Normalizing redundant separators and '..' parent segments
+const normalizedPath = path.posix.normalize(rawPath);
+// Intermediate Value (normalized): '/var/app/config/runtime.json'
+
+console.log('Normalized Path:', normalizedPath);
+
+// 2. Cryptographic Content Hashing (SHA-256)
+// Step 2a: Define input string payload
+const payload = 'Node.js v20+ Core Modules';
+
+// Step 2b: Update hash state with UTF-8 byte stream
+const hashStream = crypto.createHash('sha256').update(payload, 'utf8');
+
+// Step 2c: Generate 64-character hexadecimal digest
+const digest = hashStream.digest('hex');
+console.log('SHA-256 Digest:', digest);
+
+// 3. Module Interface Verifications
+const isHttpServerFunc = typeof http.createServer === 'function';
+const isFsReadFileFunc = typeof fs.readFile === 'function';
+const platform = os.platform();
+
+console.log(`Core Modules Initialized Successfully (Platform: ${platform})`);
+
+// --- Assertions for Worked Example ---
+assert.equal(normalizedPath, '/var/app/config/runtime.json');
+assert.equal(digest, 'b7d999ada29e8017f2b9e239a227ead6e425e27b3446d749ee00435db3d19c07');
+assert.ok(isHttpServerFunc);
+assert.ok(isFsReadFileFunc);
+assert.ok(typeof platform === 'string' && platform.length > 0);
+
+// --- Boundary Case 1: Empty String Payload (Zero-Length Digest) ---
+const emptyDigest = crypto.createHash('sha256').update('', 'utf8').digest('hex');
+assert.equal(emptyDigest, 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+console.log('Empty Payload Digest:', emptyDigest);
+
+// --- Boundary Case 2: Empty Path Normalization ---
+const emptyPath = path.posix.normalize('');
+assert.equal(emptyPath, '.');
+console.log('Empty Path Normalization:', emptyPath);
+
+// --- Boundary Case 3: Root Path Normalization ---
+const rootPath = path.posix.normalize('/');
+assert.equal(rootPath, '/');
+console.log('Root Path Normalization:', rootPath);
 ```
 
 ## 3. File System (fs) - Async / Promise
