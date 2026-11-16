@@ -1,0 +1,39 @@
+Expected vs Actual Execution Results for Assignment R61-T025
+=============================================================
+
+Target Document: docs/extra/algorithms/kadane-algorithm/kadane-algo.md
+Compiler: Apple clang version 21.0.0 (g++ -std=c++17 -O2)
+Test Harness: work/R61-T025/check.py
+
+--------------------------------------------------------------------------------------------------------------------
+Test ID                   Input Array                           Expected                         Actual                           Status
+--------------------------------------------------------------------------------------------------------------------
+ORIGINAL_STDOUT           [-2, 1, -3, 4, -1, 2, 1, -5, 4]       "The maximum sum of the..."      "The maximum sum of the..."      PASS
+                                                                (max sum: 6)                     (max sum: 6)
+ORIGINAL_RESULT           [-2, 1, -3, 4, -1, 2, 1, -5, 4]       6                                6                                PASS
+BOUNDARY_RESULT           [-7]                                  -7                               -7                               PASS
+ALL_NEG_RESULT            [-5, -3, -8, -2, -9]                  -2                               -2                               PASS
+ALL_POS_RESULT            [1, 2, 3, 4, 5]                       15                               15                               PASS
+SINGLE_POS_RESULT         [42]                                  42                               42                               PASS
+--------------------------------------------------------------------------------------------------------------------
+
+Detailed Standard Output Verification:
+--------------------------------------
+Expected:
+The maximum sum of the contiguous subarray is: 6
+
+Actual:
+The maximum sum of the contiguous subarray is: 6
+
+Match: EXACT (100%)
+
+
+Boundary Condition Verification:
+--------------------------------
+Input: [-7]
+State: max_current = -7, max_global = -7
+Loop: for (size_t i = 1; i < nums.size(); i++) -> terminates immediately without iteration
+Return Value: -7
+Expected: -7
+Actual: -7
+Match: EXACT (100%)
