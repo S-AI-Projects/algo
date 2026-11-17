@@ -1,0 +1,4 @@
+F(6) = 8
+Naive recursive calls: 25; deepest active calls: 6
+Memoized cache misses: 7; hits: 4; deepest first descent: 6
+Iterative boundary F(0) = 0
