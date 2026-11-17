@@ -2,10 +2,10 @@ Expected Outputs for Task R61-T030
 ===================================
 
 1. Published Driver Program Output:
-DFS traversal starting from node 0: 
-0 1 3 4 2 
-DFS traversal for single-node boundary graph starting from node 0: 
-0 
+DFS traversal starting from node 0:
+0 1 3 4 2
+DFS traversal for single-node boundary graph starting from node 0:
+0
 
 2. Extended Harness Expected Results:
 TEST_WORKED_EXAMPLE: 0 1 3 4 2

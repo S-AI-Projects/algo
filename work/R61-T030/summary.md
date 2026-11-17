@@ -1,9 +1,8 @@
 # Task Summary: R61-T030 (Issue #30) — Depth-First Search (DFS) Java Regression Protection
 
-**Repository:** `S-AI-Projects/algo`  
-**Task Branch:** `R61-T030`  
-**Target Document:** `docs/extra/graphs/dfs_java.md`  
-**Pull Request:** [#69](https://github.com/S-AI-Projects/algo/pull/69)  
+**Repository:** `S-AI-Projects/algo`
+**Task Branch:** `R61-T030`
+**Target Document:** `docs/extra/graphs/dfs_java.md`
 
 ---
 
@@ -50,10 +49,10 @@ The automated verification suite performs:
 1. **Extraction:** Directly parses and extracts the Java code block containing `public class DepthFirstSearch` and worked example from the Markdown file. Retyping or hardcoding a separate implementation is strictly prohibited.
 2. **Compilation & Execution:** Compiles the published Java code using `javac` and executes it using `java`. Confirms stdout matches:
    ```text
-   DFS traversal starting from node 0: 
-   0 1 3 4 2 
-   DFS traversal for single-node boundary graph starting from node 0: 
-   0 
+   DFS traversal starting from node 0:
+   0 1 3 4 2
+   DFS traversal for single-node boundary graph starting from node 0:
+   0
    ```
 3. **Extended Topology Harness:** Executes `DFSExtendedHarness` verifying:
    - Worked example: `0 1 3 4 2`

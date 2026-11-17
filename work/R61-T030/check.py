@@ -402,6 +402,10 @@ def run_mutation_tests(
     return mutation_results
 
 
+def _write_clean(path: Path, content: str) -> None:
+    cleaned = "\n".join(line.rstrip() for line in content.splitlines()) + "\n"
+    path.write_text(cleaned, encoding="utf-8")
+
 def generate_evidence_files(
     work_dir: Path,
     java_bin: str,
@@ -450,17 +454,17 @@ def generate_evidence_files(
    - Mutation 2: Omitted visited assignment -> '// visited[node] = true;'
    - Mutation 3: Deliberate assertion failure test input -> 'DFS traversal starting from node 0:\\n9 9 9'
 """
-    (work_dir / "inputs.txt").write_text(inputs_content, encoding="utf-8")
+    _write_clean(work_dir / "inputs.txt", inputs_content)
 
     # 2. expected.txt
     expected_content = f"""Expected Outputs for Task R61-T030
 ===================================
 
 1. Published Driver Program Output:
-DFS traversal starting from node 0: 
-0 1 3 4 2 
-DFS traversal for single-node boundary graph starting from node 0: 
-0 
+DFS traversal starting from node 0:
+0 1 3 4 2
+DFS traversal for single-node boundary graph starting from node 0:
+0
 
 2. Extended Harness Expected Results:
 TEST_WORKED_EXAMPLE: 0 1 3 4 2
@@ -478,7 +482,7 @@ TEST_LINEAR_CHAIN: 0 1 2 3 4
 - MUTATION_3_BOGUS_STDOUT_CHECK:
   Expected: Rejected via AssertionError by validate_driver_output().
 """
-    (work_dir / "expected.txt").write_text(expected_content, encoding="utf-8")
+    _write_clean(work_dir / "expected.txt", expected_content)
 
     # 3. actual.txt
     actual_content = f"""Actual Captured Outputs for Task R61-T030
@@ -507,7 +511,7 @@ TEST_LINEAR_CHAIN: 0 1 2 3 4
   Status: {mutation_results["MUTATION_3_BOGUS_STDOUT_CHECK"]["status"]}
   Detail: {mutation_results["MUTATION_3_BOGUS_STDOUT_CHECK"]["detail"]}
 """
-    (work_dir / "actual.txt").write_text(actual_content, encoding="utf-8")
+    _write_clean(work_dir / "actual.txt", actual_content)
 
     # 4. mutation_test_results.txt
     mutation_report = f"""Mutation Testing Verification Report for Task R61-T030
@@ -532,7 +536,7 @@ TEST_LINEAR_CHAIN: 0 1 2 3 4
 
 Result: All 3 mutation checks passed. The regression protection suite is sound.
 """
-    (work_dir / "mutation_test_results.txt").write_text(mutation_report, encoding="utf-8")
+    _write_clean(work_dir / "mutation_test_results.txt", mutation_report)
 
     # 5. environment.txt
     proc_java = subprocess.run([java_bin, "-version"], capture_output=True, text=True)
@@ -553,14 +557,14 @@ Javac Version:
 Node.js: {proc_node.stdout.strip()}
 npm: {proc_npm.stdout.strip()}
 """
-    (work_dir / "environment.txt").write_text(env_content, encoding="utf-8")
+    _write_clean(work_dir / "environment.txt", env_content)
 
     # 6. summary.md
     summary_content = f"""# Task Summary: R61-T030 (Issue #30) — Depth-First Search (DFS) Java Regression Protection
 
-**Repository:** `S-AI-Projects/algo`  
-**Task Branch:** `R61-T030`  
-**Target Document:** `docs/extra/graphs/dfs_java.md`  
+**Repository:** `S-AI-Projects/algo`
+**Task Branch:** `R61-T030`
+**Target Document:** `docs/extra/graphs/dfs_java.md`
 
 ---
 
@@ -607,10 +611,10 @@ The automated verification suite performs:
 1. **Extraction:** Directly parses and extracts the Java code block containing `public class DepthFirstSearch` and worked example from the Markdown file. Retyping or hardcoding a separate implementation is strictly prohibited.
 2. **Compilation & Execution:** Compiles the published Java code using `javac` and executes it using `java`. Confirms stdout matches:
    ```text
-   DFS traversal starting from node 0: 
-   0 1 3 4 2 
-   DFS traversal for single-node boundary graph starting from node 0: 
-   0 
+   DFS traversal starting from node 0:
+   0 1 3 4 2
+   DFS traversal for single-node boundary graph starting from node 0:
+   0
    ```
 3. **Extended Topology Harness:** Executes `DFSExtendedHarness` verifying:
    - Worked example: `0 1 3 4 2`
@@ -638,7 +642,7 @@ All evidence files are saved under `work/R61-T030/`:
 - `environment.txt`: Toolchain and OS versions.
 - `summary.md`: This comprehensive report.
 """
-    (work_dir / "summary.md").write_text(summary_content, encoding="utf-8")
+    _write_clean(work_dir / "summary.md", summary_content)
 
 
 def main() -> None:
@@ -725,7 +729,7 @@ All checks completed successfully.
   * Mutation 3 (deliberate stdout assertion mismatch) -> PASS (rejected with AssertionError)
 - Phase 6: Evidence files generated in work/R61-T030/ -> PASS
 """
-        (work_dir / "verification_output.txt").write_text(verification_log, encoding="utf-8")
+        _write_clean(work_dir / "verification_output.txt", verification_log)
         print("✓ PASS: Generated inputs.txt, expected.txt, actual.txt, environment.txt, mutation_test_results.txt, summary.md, verification_output.txt")
 
     print("\n========================================================")
