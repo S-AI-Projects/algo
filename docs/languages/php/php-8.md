@@ -28,8 +28,28 @@ $double = "Hello World";           // Double quotes
 $name = "Alice";
 $msg = "Hello, $name!";           // Variable interpolation (double only)
 
-echo $msg; // Hello, Alice!
+if ($msg !== "Hello, Alice!") {
+    throw new RuntimeException("Double-quoted interpolation changed the expected message.");
+}
+echo $msg, PHP_EOL; // Hello, Alice!
+
+// Boundary case: an empty string is still interpolated, leaving the surrounding punctuation.
+$emptyName = "";
+$boundaryMessage = "Hello, $emptyName!";
+if ($boundaryMessage !== "Hello, !") {
+    throw new RuntimeException("The empty-name boundary result changed.");
+}
+echo $boundaryMessage, PHP_EOL; // Hello, !
 ?>
+```
+
+The double-quoted string substitutes the value of `$name`, so the first output is `Hello, Alice!`. The empty-string boundary case shows that interpolation still happens when the variable has no characters; the comma, space, and exclamation mark remain, producing `Hello, !`.
+
+**Expected output:**
+
+```text
+Hello, Alice!
+Hello, !
 ```
 
 * * *

@@ -1,0 +1,6 @@
+Command: npm run build
+Result: PASS; production build generated English and Hindi output.
+Warnings: existing broken anchor /stories/#explore in both locales; optional ws native modules bufferutil and utf-8-validate are absent; Docusaurus update check could not access the local config store.
+
+Command: npm run validate:docs
+Result: PASS; 946 files scanned, 0 errors, 0 warnings.

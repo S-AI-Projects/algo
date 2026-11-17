@@ -1,0 +1,2 @@
+PHP 8.5.12 (cli) (built: Oct 19 2026 17:02:46) (NTS)
+Python 3.15.2
