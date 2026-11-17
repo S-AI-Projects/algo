@@ -1,0 +1,26 @@
+Expected Results for Assignment R61-T029 (Reservoir Sampling)
+=============================================================
+
+1. Published Executable Subprocess Output:
+------------------------------------------
+Random sample: [18152, 22772, 29552, 59712, 55457]
+Boundary sample (n <= k): [10, 20, 30]
+
+2. Function Return Values:
+--------------------------
+- reservoir_sampling(range(1, 100001), 5) [seed=42]: [18152, 22772, 29552, 59712, 55457]
+- reservoir_sampling([10, 20, 30], 5): [10, 20, 30]
+- reservoir_sampling([1, 2, 3, 4, 5], 5): [1, 2, 3, 4, 5]
+- reservoir_sampling([], 5): []
+- reservoir_sampling([100, 200, 300], 1): length 1, element in {100, 200, 300}
+- reservoir_sampling(generator(50), 4): length 4, all distinct elements in [0, 49]
+- Statistical Uniformity (k=3, n=10, 20,000 trials):
+  Expected probability per item: 0.3000 (approx 6,000 counts per item +/- 3 sigma)
+
+3. Deliberate Failure Rejection Assertions:
+-------------------------------------------
+- Negative Test 1 (stdout mismatch): Assertion fails when expecting [999999, 888888]
+- Negative Test 2 (boundary mismatch): Assertion fails when expecting [99, 99, 99]
+- Mutation Test 1 (Index Out of Bounds j <= k): Rejection confirmed (exit code != 0 or IndexError)
+- Mutation Test 2 (No-op replacement): Rejection confirmed (sample mismatch)
+- Mutation Test 3 (Empty stub return): Rejection confirmed (empty list mismatch)
