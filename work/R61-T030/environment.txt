@@ -1,0 +1,14 @@
+Execution Environment for Task R61-T030
+=======================================
+OS: Darwin 25.6.0 (arm64)
+Python: 3.9.6
+Java Binary: /opt/homebrew/opt/openjdk/bin/java
+Java Version:
+openjdk version "27.0.1.0.3" 2026-10-24
+OpenJDK Runtime Environment Homebrew (build 27.0.1.0.3)
+OpenJDK 64-Bit Server VM Homebrew (build 27.0.1.0.3, mixed mode, sharing)
+Javac Binary: /opt/homebrew/opt/openjdk/bin/javac
+Javac Version:
+javac 27.0.1.0.3
+Node.js: v26.13.1
+npm: 11.20.0

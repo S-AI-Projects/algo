@@ -1,0 +1,21 @@
+Mutation Testing Verification Report for Task R61-T030
+=====================================================
+
+1. Mutation 1 — Inverted Visited Guard:
+   - Target line: if (!visited[neighbor])
+   - Mutated to:  if (visited[neighbor])
+   - Rationale: Tests whether the test suite detects suppressed traversal of unvisited nodes.
+   - Outcome: REJECTED (AssertionError: expected '0 1 3 4 2', actual produced only '0')
+
+2. Mutation 2 — Omission of Visited Marking:
+   - Target line: visited[node] = true;
+   - Mutated to:  // visited[node] = true;
+   - Rationale: Tests whether the test suite detects infinite recursion and stack overflow in cyclic/undirected graphs.
+   - Outcome: REJECTED (Process crash: java.lang.StackOverflowError, exit code != 0)
+
+3. Mutation 3 — Checker Assertion Engine Integrity:
+   - Test: Injected mismatched output string to validate_driver_output()
+   - Rationale: Verifies that the checker never passes silently on incorrect outputs.
+   - Outcome: REJECTED (AssertionError correctly raised)
+
+Result: All 3 mutation checks passed. The regression protection suite is sound.

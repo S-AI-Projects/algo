@@ -1,0 +1,35 @@
+Input Specifications for Task R61-T030 (Depth-First Search in Java)
+======================================================================
+
+1. Published Worked Example:
+   - Vertices: V = 5 (nodes 0, 1, 2, 3, 4)
+   - Graph Type: Undirected graph represented via List<List<Integer>> adjList
+   - Edges:
+     (0, 1), (0, 2), (1, 0), (1, 3), (1, 4), (2, 0), (3, 1), (4, 1)
+   - Adjacency List:
+     0: [1, 2]
+     1: [0, 3, 4]
+     2: [0]
+     3: [1]
+     4: [1]
+   - Start Node: 0
+
+2. Boundary Example (Single-node Graph):
+   - Vertices: V = 1 (node 0)
+   - Graph Type: Undirected graph with 0 edges
+   - Adjacency List:
+     0: []
+   - Start Node: 0
+
+3. Extended Harness Test Inputs:
+   - TEST_WORKED_EXAMPLE: 5 nodes, edges [(0,1), (0,2), (1,3), (1,4)], start 0
+   - TEST_BOUNDARY_SINGLE_NODE: 1 node, 0 edges, start 0
+   - TEST_DISCONNECTED_COMPONENT: 3 nodes, edge (0,1), node 2 isolated, start 0
+   - TEST_CYCLE_TRIANGLE: 3 nodes, edges [(0,1), (1,2), (2,0)], start 0
+   - TEST_STAR_GRAPH: 5 nodes, edges [(0,1), (0,2), (0,3), (0,4)], start 0
+   - TEST_LINEAR_CHAIN: 5 nodes, edges [(0,1), (1,2), (2,3), (3,4)], start 0
+
+4. Mutation Test Inputs:
+   - Mutation 1: Inverted visited guard -> 'if (visited[neighbor])'
+   - Mutation 2: Omitted visited assignment -> '// visited[node] = true;'
+   - Mutation 3: Deliberate assertion failure test input -> 'DFS traversal starting from node 0:\n9 9 9'
