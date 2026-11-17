@@ -1,0 +1,21 @@
+Verification Log for Assignment R61-T029
+========================================
+All checks completed successfully.
+- Phase 1: Published code extraction -> PASS
+- Phase 2: Published code subprocess execution -> PASS
+- Phase 3: Dynamic module import & unit tests -> PASS
+  * Worked example verification -> PASS
+  * Boundary example (n <= k) -> PASS
+  * Boundary example (n == k) -> PASS
+  * Boundary example (n == 0) -> PASS
+  * Boundary example (k == 1) -> PASS
+  * Lazy generator streaming input -> PASS
+- Phase 4: Statistical uniformity test (100,000 trials, seed 42) -> PASS
+- Phase 5: Memory invariance experiment (sys.getsizeof, n=5..1,000,000) -> PASS
+- Phase 6: Deliberate failure & mutation tests -> PASS
+  * Deliberate stdout mismatch test -> PASS
+  * Deliberate boundary mismatch test -> PASS
+  * Mutation 1 (out-of-bounds index) -> PASS
+  * Mutation 2 (no-op replacement) -> PASS
+  * Mutation 3 (empty stub) -> PASS
+- Phase 7: Evidence files generated in work/R61-T029/ -> PASS
