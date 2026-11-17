@@ -27,6 +27,16 @@ The second line of each test case contains a binary string $s$ of length $n$.
 **Output**
 For each test case, print the minimum possible length of the string $s$ that can be achieved after applying the operation any number of times.
 
+### Common Misconceptions & Contract Boundary Conditions:
+
+- **Misconception: Alternating transitions are permanently stuck.**
+  A common misconception is assuming that any transition between `0` and `1` creates an irreducible boundary. While a 2-block string (e.g., `00111`, `01`, `10`) is indeed permanently stuck at length 2 because no palindrome of length $\ge 2$ can span the single transition, any string with $\ge 3$ blocks (e.g., `010`, `00110`, `1001`) contains matching outer characters forming an enclosing palindrome. Deleting a boundary character collapses the block count and allows complete reduction to length 1.
+
+- **Source Contract Precondition ($1 \le n \le 100$, $s \in \{0, 1\}^n$):**
+  - **Unsupported / Empty String Case ($n = 0$)**: An empty string $s = ""$ contains 0 characters and 0 blocks. A naive block-counting loop initialized at `blocks = 1` would incorrectly output 1 instead of 0. Checking `if (n <= 0) return 0;` makes the contract boundary explicit.
+  - **Minimal Valid Input ($n = 1$)**: For a single character (`"0"` or `"1"`), no palindrome of length $\ge 2$ exists; 0 operations can be applied, and the string correctly remains length 1.
+  - **Minimal Reducible vs. Irreducible ($n = 2$)**: `"00"` forms a length-2 palindrome and reduces to length 1, whereas `"01"` and `"10"` contain no palindrome of length $\ge 2$ and remain stuck at length 2.
+
 ---
 
 ## Approaches:
@@ -55,38 +65,62 @@ This problem can be solved with a simple $O(N)$ observation by grouping identica
 ```cpp
 #include <iostream>
 #include <string>
+#include <cassert>
 
 using namespace std;
 
-void solve() {
-    int n;
-    cin >> n;
-    string s;
-    cin >> s;
-    
+// Evaluates the minimum reachable string length under palindromic reduction
+int minRemainingLength(int n, const string& s) {
+    // Contract precondition: 1 <= n <= 100, s consists of '0' and '1'
+    if (n <= 0) return 0; // Empty string boundary: unsupported by contract (length 0)
+
     int blocks = 1;
     for (int i = 1; i < n; i++) {
         if (s[i] != s[i - 1]) {
             blocks++;
         }
     }
-    
-    if (blocks == 2) {
-        cout << 2 << "\n";
-    } else {
-        cout << 1 << "\n";
-    }
+    return (blocks == 2) ? 2 : 1;
+}
+
+void solve() {
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    cout << minRemainingLength(n, s) << "\n";
 }
 
 int main() {
     // Fast I/O
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    
+
     int t;
-    cin >> t;
-    while (t--) {
-        solve();
+    if (cin >> t) {
+        while (t--) {
+            solve();
+        }
+    } else {
+        // Self-test assertion mode when executed without standard input
+        // 1. Worked example cases from problem description
+        assert(minRemainingLength(3, "000") == 1);   // 1 block
+        assert(minRemainingLength(5, "00111") == 2); // 2 blocks
+        assert(minRemainingLength(3, "010") == 1);   // 3 blocks (collapsible via outer palindrome)
+        assert(minRemainingLength(5, "00110") == 1); // 3 blocks
+        assert(minRemainingLength(4, "1100") == 2);  // 2 blocks
+
+        // 2. Minimal valid boundaries (n = 1 and n = 2)
+        assert(minRemainingLength(1, "0") == 1);
+        assert(minRemainingLength(1, "1") == 1);
+        assert(minRemainingLength(2, "01") == 2);
+        assert(minRemainingLength(2, "10") == 2);
+        assert(minRemainingLength(2, "00") == 1);
+
+        // 3. Contract failure / unsupported boundary case
+        assert(minRemainingLength(0, "") == 0);
+
+        cout << "All self-test assertions passed!\n";
     }
     return 0;
 }
