@@ -53,17 +53,18 @@ Consider the following Graph:
 - Vertices: `{A, B, C, D}`
 - Edges: `{(A, B), (A, C), (B, D), (C, D)}`
 
-Step-by-Step Execution:
+Step-by-Step Execution (vertices are processed in the order A, B, C, D):
 
-1. **Assign color 1 to A**:
+| Vertex | Already-colored neighbors | Colors unavailable | Smallest available color |
+| --- | --- | --- | --- |
+| A | none | none | 1 |
+| B | A (color 1) | 1 | 2 |
+| C | A (color 1); B is not adjacent to C | 1 | 2 |
+| D | B and C (both color 2) | 2 | 1 |
 
-2. **Assign color 2 to B (adjacent to A)**:
+The C++ implementation stores colors as zero-based integers: color 1 is stored as `0`, and color 2 as `1`. For vertex D, both neighbors mark `available[1]`; `available[0]` remains false, so the loop selects `cr = 0`. The final stored vector is `[0, 1, 1, 0]`, which represents the table above and uses two colors. This greedy order gives a valid coloring for this graph; in general, greedy coloring does not guarantee the minimum number of colors.
 
-3. **Assign color 2 to C (non-adjacent to B but adjacent to A)**:
-
-4. **Assign color 1 to D (adjacent to both B and C)**:
-  
-Total Colors Used: `2` 
+The smallest valid boundary is one vertex and no edges (`V = 1`, adjacency list `[[]]`). The only vertex receives stored color `0` (display color 1), and no adjacency constraint is violated.
 
 
 
@@ -75,11 +76,12 @@ Total Colors Used: `2`
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cassert>
 
 using namespace std;
 
 // Function to perform greedy graph coloring
-void greedyGraphColoring(vector<vector<int>>& graph, int V) {
+vector<int> greedyGraphColoring(vector<vector<int>>& graph, int V) {
     // Array to store the color assigned to each vertex
     vector<int> result(V, -1);
 
@@ -119,11 +121,7 @@ void greedyGraphColoring(vector<vector<int>>& graph, int V) {
         }
     }
 
-    // Print the result
-    cout << "Vertex\tColor\n";
-    for (int u = 0; u < V; u++) {
-        cout << u << "\t" << result[u] << endl;
-    }
+    return result;
 }
 
 int main() {
@@ -144,7 +142,17 @@ int main() {
     graph[3].push_back(2); // Edge D-C
 
     // Call the greedy coloring function
-    greedyGraphColoring(graph, V);
+    vector<int> result = greedyGraphColoring(graph, V);
+    cout << "Vertex\tColor\n";
+    for (int u = 0; u < V; u++) {
+        cout << u << "\t" << result[u] << endl;
+    }
+
+    // Boundary case: a one-vertex graph needs its first available color only.
+    vector<vector<int>> singleVertexGraph(1);
+    vector<int> boundaryColors = greedyGraphColoring(singleVertexGraph, 1);
+    assert(boundaryColors == vector<int>{0});
+    cout << "Boundary (one vertex) stored color: " << boundaryColors[0] << endl;
 
     return 0;
 }
