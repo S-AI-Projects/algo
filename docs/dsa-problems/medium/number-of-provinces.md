@@ -38,6 +38,12 @@ Output: `2`
 Input: `isConnected = [[1,0,0],[0,1,0],[0,0,1]]`
 Output: `3`
 
+### Example 1 Walkthrough and Boundary
+
+For `[[1,1,0],[1,1,0],[0,0,1]]`, the outer loop first reaches city `0` while it is unvisited, so it starts province 1. DFS marks cities `0` and `1` visited because their matrix entries connect them. City `2` is not connected to either, so it remains unvisited. When the outer loop reaches `2`, it starts province 2 and marks that city. The final count is therefore `2`. Marking each reached city in `visit` prevents the connected pair from being counted twice.
+
+The one-city boundary `[[1]]` contains exactly one unvisited city at the start. The loop increments the count once, DFS marks city `0`, and the method returns `1`.
+
 ---
 
 ## Video Explanation:

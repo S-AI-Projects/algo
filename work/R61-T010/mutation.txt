@@ -1,0 +1,4 @@
+Temporary mutation: provinces++; -> provinces += 0;
+Mutant output: '0\n0\n0\n'
+Expected: '2\n3\n1\n'
+Mutation rejected: yes
