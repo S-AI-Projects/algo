@@ -49,6 +49,21 @@ The problem asks us to simulate a specific mapping process for each word. The pr
 - **Time Complexity:** $O(N)$, where $N$ is the total number of characters across all words in the array. We visit each character exactly once to calculate the sum.
 - **Space Complexity:** $O(W)$, where $W$ is the number of words. The output string will contain exactly one character per word. Auxiliary space is $O(1)$.
 
+### Resource Scaling & Copy/View Semantics:
+
+1. **Pass-by-Reference & Zero-Copy Traversal**:
+   - In C++, iterating via `for (const string& word : words)` accesses each string by const reference. Iterating by value (`for (string word : words)`) would trigger a deep copy of each string and its heap buffer, causing $O(W \times L)$ redundant allocations.
+   - Similarly, the outer parameters are accepted as `const vector<string>&` and `const vector<int>&` to avoid cloning the collections on function call.
+
+2. **Buffer Reservation vs. Dynamic Reallocation**:
+   - Since each word maps to exactly one output character, the output size is strictly known in advance ($W = \text{words.size()}$). Calling `result.reserve(words.size())` allocates the required buffer upfront in a single heap operation.
+   - Omitting `reserve()` forces `std::string` to undergo geometric capacity doubling and heap reallocations as elements are appended.
+
+3. **Fixed-Cost Operation & Type Behavior**:
+   - **Array Indexing**: `weights[c - 'a']` executes as an $O(1)$ direct array index offset calculation into contiguous memory.
+   - **Modular Arithmetic Invariant**: `sum = (sum + weights[c - 'a']) % 26` ensures the accumulator remains bounded strictly within $[0, 25]$, avoiding integer overflow regardless of word length.
+   - **Reverse Alphabetical Projection**: `(char)('z' - rem)` performs deterministic $O(1)$ ASCII arithmetic mapping remainder $0 \rightarrow \text{'z'}$ and $25 \rightarrow \text{'a'}$.
+
 ---
 
 ## Solutions
@@ -57,11 +72,20 @@ The problem asks us to simulate a specific mapping process for each word. The pr
   <TabItem value="cpp" label="C++" default>
 
 ```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cassert>
+
+using namespace std;
+
 class Solution {
 public:
-    string mapWordWeights(vector<string>& words, vector<int>& weights) {
+    string mapWordWeights(const vector<string>& words, const vector<int>& weights) {
         string result = "";
-        for (const string& word : words) {
+        result.reserve(words.size()); // Pre-allocate buffer to avoid dynamic reallocations
+        
+        for (const string& word : words) { // Const reference avoids redundant string copies
             int sum = 0;
             for (char c : word) {
                 sum = (sum + weights[c - 'a']) % 26;
@@ -72,6 +96,60 @@ public:
         return result;
     }
 };
+
+int main() {
+    Solution sol;
+
+    // Worked Example 1 from problem description
+    vector<string> words = {"abcd", "def", "xyz"};
+    vector<int> weights = {5,3,12,14,1,2,3,2,10,6,6,9,7,8,7,10,8,9,6,9,9,8,3,7,7,2};
+
+    string result = sol.mapWordWeights(words, weights);
+    cout << "Worked Example Output: " << result << endl;
+    assert(result == "rij");
+
+    // Boundary Case 1: Minimum remainder (0 maps to 'z')
+    vector<string> boundaryZero = {"a"};
+    vector<int> weightsZero(26, 0);
+    assert(sol.mapWordWeights(boundaryZero, weightsZero) == "z");
+
+    // Boundary Case 2: Maximum remainder (25 maps to 'a')
+    vector<string> boundaryMax = {"a"};
+    vector<int> weightsMax(26, 25);
+    assert(sol.mapWordWeights(boundaryMax, weightsMax) == "a");
+
+    // Boundary Case 3: Empty words array
+    vector<string> emptyWords = {};
+    assert(sol.mapWordWeights(emptyWords, weights) == "");
+
+    // Small experiment: Measure capacity reallocation count with and without reserve()
+    string unreserved;
+    size_t unreservedReallocs = 0;
+    size_t prevCap = unreserved.capacity();
+    for (int i = 0; i < 100; ++i) {
+        unreserved += 'a';
+        if (unreserved.capacity() != prevCap) {
+            unreservedReallocs++;
+            prevCap = unreserved.capacity();
+        }
+    }
+
+    string reserved;
+    reserved.reserve(100);
+    size_t reservedCap = reserved.capacity();
+    size_t reservedReallocs = 0;
+    for (int i = 0; i < 100; ++i) {
+        reserved += 'a';
+        if (reserved.capacity() != reservedCap) {
+            reservedReallocs++;
+        }
+    }
+    cout << "Capacity Reallocations without reserve (100 appends): " << unreservedReallocs << endl;
+    cout << "Capacity Reallocations with reserve (100 appends): " << reservedReallocs << endl;
+    assert(reservedReallocs == 0);
+
+    return 0;
+}
 ```
 
   </TabItem>
