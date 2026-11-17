@@ -83,124 +83,97 @@ It measures how quickly a system responds to a process (important in interactive
 
 ## 7. Python Implementation
 
+The function receives the process fixture and time quantum as explicit inputs. Each call creates new process records and keeps its queue, clock, and results local, so a repeated run cannot inherit mutated scheduling state from an earlier run.
+
 ```python
-data = []
-
-n = int(input("Enter no of processes: "))
-
-print("Enter name of process, arrival time, burst time:")
-
-for i in range(1, n + 1):
-    d = {}
-    d["name"], d["at"], d["bt"] = list(map(str, input().split()))
-    d["at"] = int(d["at"])
-    d["bt"] = int(d["bt"])
-    d["order"] = i
-    data.append(d)
-
-q = int(input("Enter time quantum: "))
-
-p_data = data.copy()
-
-time = 0
-intervals = ["0"]
-processes = []
-
-print("\nGantt Chart:")
-
-for p in data:
-    p["rbt"] = p["bt"]
-    p["st"] = None
-
-ready = []
-
-while data or ready:
-
-    for p in data:
-        if p["at"] <= time and p not in ready:
-            ready.append(p)
-
-    if not ready:
-        processes.append("idle")
-        time += 1
-        intervals.append(str(time))
-        continue
-
-    p = ready.pop(0)
-
-    processes.append(p["name"])
-
-    if p["st"] is None:
-        p["st"] = time
-
-    run = min(q, p["rbt"])
-
-    time += run
-    p["rbt"] -= run
-    intervals.append(str(time))
-
-    for x in data:
-        if x["at"] <= time and x not in ready and x != p:
-            ready.append(x)
-
-    if p["rbt"] == 0:
-        p["ct"] = time
-        data.remove(p)
-    else:
-        ready.append(p)
+from collections import deque
 
 
-processes1 = processes.copy()
-intervals1 = intervals.copy()
+def round_robin(process_specs, quantum):
+    """Return a schedule and metrics without mutating caller-owned input."""
+    if quantum <= 0:
+        raise ValueError("time quantum must be positive")
 
-processes2 = []
-intervals2 = [intervals1[0]]
+    processes = [
+        {**spec, "order": order, "rbt": spec["bt"], "st": None}
+        for order, spec in enumerate(process_specs, start=1)
+    ]
+    pending = deque(sorted(processes, key=lambda p: (p["at"], p["order"])))
+    ready = deque()
+    segments = []
+    time = 0
 
-for i in range(len(processes1)-1):
-    if processes1[i] == processes1[i+1]:
-        processes1[i] = None
-        intervals1[i+1] = None
+    while pending or ready:
+        while pending and pending[0]["at"] <= time:
+            ready.append(pending.popleft())
 
-for i in range(len(processes1)-1):
-    if processes1[i] != None:
-        processes2.append(processes1[i])
-    if intervals1[i+1] != None:
-        intervals2.append(intervals1[i+1])
+        if not ready:
+            next_arrival = pending[0]["at"]
+            segments.append(("idle", time, next_arrival))
+            time = next_arrival
+            continue
 
-processes2.append(processes1[-1])
-intervals2.append(intervals1[-1])
+        process = ready.popleft()
+        if process["st"] is None:
+            process["st"] = time
+        run = min(quantum, process["rbt"])
+        start = time
+        time += run
+        process["rbt"] -= run
+        segments.append((process["name"], start, time))
 
-print()
-print("    ", end="")
-print("        ".join(processes2))
-print("         ".join(intervals2))
+        while pending and pending[0]["at"] <= time:
+            ready.append(pending.popleft())
+        if process["rbt"] == 0:
+            process["ct"] = time
+        else:
+            ready.append(process)
+
+    metrics = {}
+    for process in processes:
+        turnaround = process["ct"] - process["at"]
+        metrics[process["name"]] = {
+            "turnaround": turnaround,
+            "waiting": turnaround - process["bt"],
+            "response": process["st"] - process["at"],
+        }
+    return segments, metrics
 
 
-tat = 0
-print("\nTurn Around Time:")
-for p in p_data:
-    p["tat"] = p["ct"] - p["at"]
-    tat += p["tat"]
-    print(f"{p['name']}: {p['tat']}")
-print("Average turn around time = ", tat / n)
+def show_schedule(process_specs, quantum):
+    segments, metrics = round_robin(process_specs, quantum)
+    print("Gantt Chart:\n")
+    print("    " + "        ".join(name for name, _, _ in segments))
+    print("         ".join([str(segments[0][1])] + [str(end) for _, _, end in segments]))
+
+    for label, key in (("Turn Around Time", "turnaround"), ("Waiting Time", "waiting"), ("Response Time", "response")):
+        print(f"\n{label}:")
+        total = 0
+        for process in process_specs:
+            value = metrics[process["name"]][key]
+            total += value
+            print(f"{process['name']}: {value}")
+        print(f"Average {label.lower()} = ", total / len(process_specs))
 
 
-wt = 0
-print("\nWaiting Time:")
-for p in p_data:
-    p["wt"] = p["tat"] - p["bt"]
-    wt += p["wt"]
-    print(f"{p['name']}: {p['wt']}")
-print("Average waiting time = ", wt / n)
+# Literal fixture from the worked example; all scheduling state is local to the call.
+worked_processes = [
+    {"name": "p1", "at": 2, "bt": 5},
+    {"name": "p2", "at": 3, "bt": 3},
+    {"name": "p3", "at": 5, "bt": 7},
+    {"name": "p4", "at": 12, "bt": 2},
+]
+original_fixture = [process.copy() for process in worked_processes]
+worked_result = round_robin(worked_processes, 3)
+assert worked_result == round_robin(worked_processes, 3)
+assert worked_processes == original_fixture  # repeated calls do not leak mutated state
+show_schedule(worked_processes, 3)
 
-
-rt = 0
-print("\nResponse Time:")
-for p in p_data:
-    p["rt"] = p["st"] - p["at"]
-    rt += p["rt"]
-    print(f"{p['name']}: {p['rt']}")
-print("Average response time = ", rt / n)
+# Small boundary: one process, one quantum, and no queue rotation.
+boundary = [{"name": "solo", "at": 0, "bt": 1}]
+_, boundary_metrics = round_robin(boundary, 1)
+assert boundary_metrics["solo"] == {"turnaround": 1, "waiting": 0, "response": 0}
+print("\nBoundary: solo completes at 1 (turnaround=1, waiting=0, response=0)")
 ```
 
 **Example:**
@@ -243,4 +216,6 @@ p2: 2
 p3: 3
 p4: 4
 Average response time =  2.25
+
+Boundary: solo completes at 1 (turnaround=1, waiting=0, response=0)
 ```

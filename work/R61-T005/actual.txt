@@ -1,0 +1,27 @@
+Gantt Chart:
+
+    idle        p1        p2        p3        p1        p3        p4        p3
+0         2         5         8         11         13         16         18         19
+
+Turn Around Time:
+p1: 11
+p2: 5
+p3: 14
+p4: 6
+Average turn around time =  9.0
+
+Waiting Time:
+p1: 6
+p2: 2
+p3: 7
+p4: 4
+Average waiting time =  4.75
+
+Response Time:
+p1: 0
+p2: 2
+p3: 3
+p4: 4
+Average response time =  2.25
+
+Boundary: solo completes at 1 (turnaround=1, waiting=0, response=0)

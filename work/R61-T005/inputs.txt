@@ -1,0 +1,2 @@
+p1 2 5; p2 3 3; p3 5 7; p4 12 2; quantum=3
+Boundary: solo arrives at 0, burst=1, quantum=1
