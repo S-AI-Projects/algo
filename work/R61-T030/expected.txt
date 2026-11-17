@@ -1,0 +1,24 @@
+Expected Outputs for Task R61-T030
+===================================
+
+1. Published Driver Program Output:
+DFS traversal starting from node 0:
+0 1 3 4 2
+DFS traversal for single-node boundary graph starting from node 0:
+0
+
+2. Extended Harness Expected Results:
+TEST_WORKED_EXAMPLE: 0 1 3 4 2
+TEST_BOUNDARY_SINGLE_NODE: 0
+TEST_DISCONNECTED_COMPONENT: 0 1
+TEST_CYCLE_TRIANGLE: 0 1 2
+TEST_STAR_GRAPH: 0 1 2 3 4
+TEST_LINEAR_CHAIN: 0 1 2 3 4
+
+3. Mutation Testing Expected Rejection Signatures:
+- MUTATION_1_INVERTED_GUARD:
+  Expected: Rejected via AssertionError because neighbor exploration is suppressed.
+- MUTATION_2_MISSING_VISITED_MARK:
+  Expected: Rejected via process crash (exit code != 0, java.lang.StackOverflowError) or recursion timeout.
+- MUTATION_3_BOGUS_STDOUT_CHECK:
+  Expected: Rejected via AssertionError by validate_driver_output().
