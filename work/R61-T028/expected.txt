@@ -25,6 +25,7 @@ Output: 0
 - text = "balloonballoo"             -> 1
 - text = "bbbbbaaoooonnnnnll"        -> 1
 - text = "xyz"                       -> 0
+- text = "balon"                     -> 0
 
 3. Harness Key-Value Map:
 -------------------------
@@ -37,8 +38,18 @@ TEST_BOUNDARY_EXACT_ONE: 1
 TEST_ASYMMETRIC_DEFICIT: 1
 TEST_BOTTLENECK_L: 1
 TEST_UNRELATED_ONLY: 0
+TEST_SINGLE_L_O_DEFICIT: 0
 
-4. Deliberate Wrong-Result Assertions:
---------------------------------------
-Negative Test 1 (stdout mismatch): "Output: 999" raises AssertionError
-Negative Test 2 (boundary mismatch): asserting TEST_BOUNDARY_SINGLE_CHAR == 1 raises AssertionError
+4. C++ Mutation Test Expected Outcomes:
+---------------------------------------
+Mutation 1 (No / 2 on 'l' and 'o'):
+  Validation outcome: False
+  Rejection reason: "Harness mismatch for TEST_BOTTLENECK_L: expected 1, got 2"
+
+Mutation 2 (Only return count of 'b'):
+  Validation outcome: False
+  Rejection reason: "Published stdout line 8 mismatch: expected 'Output: 0', got 'Output: 1'"
+
+Mutation 3 (Always return 0):
+  Validation outcome: False
+  Rejection reason: "Published stdout line 2 mismatch: expected 'Output: 1', got 'Output: 0'"

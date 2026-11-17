@@ -8,10 +8,20 @@ Requirements:
 1. Extract the actual published C++ code block directly from the Markdown article.
 2. Compile the extracted C++ code using the available C++ compiler (g++ / clang++).
 3. Execute the compiled program.
-4. Assert the original worked examples' expected results ("nlaebolko" -> 1, "loonbalxballpoon" -> 2, "leetcode" -> 0).
-5. Assert the new boundary example's expected result ("b" -> 0).
+4. Assert the original worked examples' expected results:
+   - "nlaebolko" -> 1
+   - "loonbalxballpoon" -> 2
+   - "leetcode" -> 0
+5. Assert the new boundary example's expected result:
+   - "b" -> 0
 6. Run an extended test harness derived from the published class Solution.
-7. Include deliberate wrong-result tests to demonstrate that the checker detects incorrect output.
+7. Perform genuine C++ mutation tests:
+   - Extract published C++ code.
+   - Create temporary, intentionally incorrect/mutated versions of the extracted code.
+   - Compile and execute the mutated C++ implementations.
+   - Run the exact validation logic and confirm it rejects the incorrect implementations.
+   - Confirm the original published implementation passes cleanly.
+   - Ensure temporary files are cleaned up without modifying the markdown or leaving artifacts.
 8. Propagate compiler and subprocess failures.
 9. Exit with a non-zero status whenever any assertion fails.
 """
@@ -82,16 +92,9 @@ def compile_and_run(source_code: str, binary_name: str, build_dir: Path) -> subp
     compile_proc = subprocess.run(compile_cmd, capture_output=True, text=True)
 
     if compile_proc.returncode != 0:
-        print(f"[ERROR] Compilation failed for {binary_name}:", file=sys.stderr)
-        print(compile_proc.stderr, file=sys.stderr)
-        sys.exit(compile_proc.returncode if compile_proc.returncode != 0 else 1)
+        return compile_proc
 
     run_proc = subprocess.run([str(binary_file)], capture_output=True, text=True)
-    if run_proc.returncode != 0:
-        print(f"[ERROR] Execution failed for {binary_name} with exit code {run_proc.returncode}:", file=sys.stderr)
-        print(run_proc.stderr, file=sys.stderr)
-        sys.exit(run_proc.returncode)
-
     return run_proc
 
 
@@ -114,6 +117,7 @@ int main() {
     cout << "TEST_ASYMMETRIC_DEFICIT:" << sol.maxNumberOfBalloons("balloonballoo") << endl;
     cout << "TEST_BOTTLENECK_L:" << sol.maxNumberOfBalloons("bbbbbaaoooonnnnnll") << endl;
     cout << "TEST_UNRELATED_ONLY:" << sol.maxNumberOfBalloons("xyz") << endl;
+    cout << "TEST_SINGLE_L_O_DEFICIT:" << sol.maxNumberOfBalloons("balon") << endl;
 
     return 0;
 }
@@ -131,22 +135,116 @@ def parse_harness_output(output_text: str) -> dict:
     return results
 
 
-def test_deliberate_stdout_mismatch(actual_stdout: str) -> bool:
-    deliberate_wrong = "Output: 999"
-    try:
-        assert deliberate_wrong in actual_stdout, "Deliberate wrong stdout check"
-        return False
-    except AssertionError:
-        return True
+def validate_implementation(source_code: str, label: str, build_dir: Path) -> tuple:
+    """
+    Validates a C++ implementation against:
+    1. Compilation success.
+    2. Published stdout output (Examples 1-4).
+    3. Extended harness test cases.
+    Returns (True, "All checks passed") on success, or (False, error_message) on failure.
+    """
+    # 1. Compile & run published driver
+    proc_pub = compile_and_run(source_code, f"{label}_pub", build_dir)
+    if proc_pub.returncode != 0:
+        return False, f"Compilation or runtime failed for {label}: returncode {proc_pub.returncode}\n{proc_pub.stderr}"
+
+    expected_pub_lines = [
+        'Input: text = "nlaebolko"',
+        'Output: 1',
+        'Input: text = "loonbalxballpoon"',
+        'Output: 2',
+        'Input: text = "leetcode"',
+        'Output: 0',
+        'Input: text = "b"',
+        'Output: 0',
+    ]
+    actual_pub_lines = [line.strip() for line in proc_pub.stdout.strip().splitlines() if line.strip()]
+
+    if len(actual_pub_lines) != len(expected_pub_lines):
+        return False, f"Published line count mismatch: expected {len(expected_pub_lines)}, got {len(actual_pub_lines)}"
+
+    for idx, (exp, act) in enumerate(zip(expected_pub_lines, actual_pub_lines)):
+        if exp != act:
+            return False, f"Published stdout line {idx + 1} mismatch: expected '{exp}', got '{act}'"
+
+    # 2. Compile & run extended harness
+    harness_code = create_extended_harness(source_code)
+    proc_harness = compile_and_run(harness_code, f"{label}_harness", build_dir)
+    if proc_harness.returncode != 0:
+        return False, f"Harness compilation or runtime failed for {label}: returncode {proc_harness.returncode}\n{proc_harness.stderr}"
+
+    harness_results = parse_harness_output(proc_harness.stdout)
+
+    expected_harness = {
+        "TEST_ORIGINAL_1": 1,
+        "TEST_ORIGINAL_2": 2,
+        "TEST_ORIGINAL_3": 0,
+        "TEST_BOUNDARY_SINGLE_CHAR": 0,
+        "TEST_BOUNDARY_LENGTH_6_MISSING_N": 0,
+        "TEST_BOUNDARY_EXACT_ONE": 1,
+        "TEST_ASYMMETRIC_DEFICIT": 1,
+        "TEST_BOTTLENECK_L": 1,
+        "TEST_UNRELATED_ONLY": 0,
+        "TEST_SINGLE_L_O_DEFICIT": 0,
+    }
+
+    for key, exp_val in expected_harness.items():
+        act_val = harness_results.get(key)
+        if act_val is None:
+            return False, f"Harness missing key: {key}"
+        if act_val != exp_val:
+            return False, f"Harness mismatch for {key}: expected {exp_val}, got {act_val}"
+
+    return True, "All checks passed"
 
 
-def test_deliberate_boundary_mismatch(actual_boundary: int) -> bool:
-    deliberate_wrong = 1  # Boundary "b" must return 0, not 1
-    try:
-        assert actual_boundary == deliberate_wrong, "Deliberate boundary mismatch check"
-        return False
-    except AssertionError:
-        return True
+def run_mutation_tests(extracted_code: str, build_dir: Path) -> None:
+    """
+    Genuine C++ mutation tests:
+    Creates intentionally faulty versions of the C++ implementation, compiles them,
+    runs the validation, and asserts that the checker REJECTS the faulty code.
+    """
+    print("\n--- Running Mutation Test Suite ---")
+
+    # Mutation 1: Uniform Multiplicity Fallacy (ignoring factor of 2 for 'l' and 'o')
+    mutated_1 = extracted_code.replace("count['l' - 'a'] / 2", "count['l' - 'a']")
+    mutated_1 = mutated_1.replace("count['o' - 'a'] / 2", "count['o' - 'a']")
+    if mutated_1 == extracted_code:
+        print("[ERROR] Mutation 1 pattern replacement failed to modify code!", file=sys.stderr)
+        sys.exit(1)
+
+    passed_1, reason_1 = validate_implementation(mutated_1, "mutation_no_division", build_dir)
+    if passed_1:
+        print("[ERROR] Mutation 1 was NOT rejected! Checker failed to detect missing division by 2 bug.", file=sys.stderr)
+        sys.exit(1)
+    print(f"✓ PASS: Mutation 1 (uniform multiplicity without /2) was correctly REJECTED:")
+    print(f"        -> {reason_1}")
+
+    # Mutation 2: Boundary / Deficit Fallacy (counting only 'b' without checking other letters)
+    mutated_2 = re.sub(r"return\s+min\(\{[^}]+\}\);", "return count['b' - 'a'];", extracted_code)
+    if mutated_2 == extracted_code:
+        print("[ERROR] Mutation 2 pattern replacement failed to modify code!", file=sys.stderr)
+        sys.exit(1)
+
+    passed_2, reason_2 = validate_implementation(mutated_2, "mutation_only_count_b", build_dir)
+    if passed_2:
+        print("[ERROR] Mutation 2 was NOT rejected! Checker failed to detect 'only count b' bug.", file=sys.stderr)
+        sys.exit(1)
+    print(f"✓ PASS: Mutation 2 (single-character 'b' fallacy) was correctly REJECTED:")
+    print(f"        -> {reason_2}")
+
+    # Mutation 3: Always return zero (stub bug)
+    mutated_3 = re.sub(r"return\s+min\(\{[^}]+\}\);", "return 0;", extracted_code)
+    if mutated_3 == extracted_code:
+        print("[ERROR] Mutation 3 pattern replacement failed to modify code!", file=sys.stderr)
+        sys.exit(1)
+
+    passed_3, reason_3 = validate_implementation(mutated_3, "mutation_always_zero", build_dir)
+    if passed_3:
+        print("[ERROR] Mutation 3 was NOT rejected! Checker failed to detect 'always zero' bug.", file=sys.stderr)
+        sys.exit(1)
+    print(f"✓ PASS: Mutation 3 (always return zero) was correctly REJECTED:")
+    print(f"        -> {reason_3}")
 
 
 def main():
@@ -163,79 +261,26 @@ def main():
     with tempfile.TemporaryDirectory() as tmp_dir:
         build_dir = Path(tmp_dir)
 
-        print("\n=== Step 3: Compiling and running published C++ code ===")
-        proc_pub = compile_and_run(extracted_code, "balloon_published", build_dir)
-        pub_stdout = proc_pub.stdout.strip()
-        print("Actual stdout from published code:")
-        for line in pub_stdout.splitlines():
-            print(f"  {line}")
-
-        expected_pub_lines = [
-            'Input: text = "nlaebolko"',
-            'Output: 1',
-            'Input: text = "loonbalxballpoon"',
-            'Output: 2',
-            'Input: text = "leetcode"',
-            'Output: 0',
-            'Input: text = "b"',
-            'Output: 0',
-        ]
-        actual_pub_lines = [line.strip() for line in pub_stdout.splitlines() if line.strip()]
-
-        if len(actual_pub_lines) != len(expected_pub_lines):
-            print(f"[ASSERTION ERROR] Line count mismatch: expected {len(expected_pub_lines)}, got {len(actual_pub_lines)}", file=sys.stderr)
+        print("\n=== Step 3: Validating published C++ implementation ===")
+        is_valid, message = validate_implementation(extracted_code, "published_solution", build_dir)
+        if not is_valid:
+            print(f"[ASSERTION ERROR] Published C++ code failed validation:\n{message}", file=sys.stderr)
             sys.exit(1)
 
-        for idx, (exp, act) in enumerate(zip(expected_pub_lines, actual_pub_lines)):
-            if exp != act:
-                print(f"[ASSERTION ERROR] Line {idx + 1} mismatch!\nExpected: '{exp}'\nActual:   '{act}'", file=sys.stderr)
-                sys.exit(1)
-            print(f"✓ PASS: Line {idx + 1} matches: '{act}'")
+        print("✓ PASS: Published C++ implementation passed all assertions:")
+        print("  - Example 1 ('nlaebolko' -> 1)")
+        print("  - Example 2 ('loonbalxballpoon' -> 2)")
+        print("  - Example 3 ('leetcode' -> 0)")
+        print("  - Example 4 Boundary ('b' -> 0)")
+        print("  - Extended Harness (10 test cases including missing 'n', exact 'balloon', and asymmetric deficits)")
 
-        print("\n=== Step 4: Compiling and running extended test harness ===")
-        harness_code = create_extended_harness(extracted_code)
-        proc_harness = compile_and_run(harness_code, "balloon_harness", build_dir)
-        harness_results = parse_harness_output(proc_harness.stdout)
-
-        expected_harness = {
-            "TEST_ORIGINAL_1": 1,
-            "TEST_ORIGINAL_2": 2,
-            "TEST_ORIGINAL_3": 0,
-            "TEST_BOUNDARY_SINGLE_CHAR": 0,
-            "TEST_BOUNDARY_LENGTH_6_MISSING_N": 0,
-            "TEST_BOUNDARY_EXACT_ONE": 1,
-            "TEST_ASYMMETRIC_DEFICIT": 1,
-            "TEST_BOTTLENECK_L": 1,
-            "TEST_UNRELATED_ONLY": 0,
-        }
-
-        for key, exp_val in expected_harness.items():
-            act_val = harness_results.get(key)
-            if act_val is None:
-                print(f"[ASSERTION ERROR] Key '{key}' missing from harness output!", file=sys.stderr)
-                sys.exit(1)
-            if act_val != exp_val:
-                print(f"[ASSERTION ERROR] Test '{key}' mismatch: expected {exp_val}, got {act_val}", file=sys.stderr)
-                sys.exit(1)
-            print(f"✓ PASS: {key} = {act_val} (expected {exp_val})")
-
-        print("\n=== Step 5: Executing deliberate wrong-result tests ===")
-        stdout_fail_detected = test_deliberate_stdout_mismatch(pub_stdout)
-        if not stdout_fail_detected:
-            print("[ERROR] Negative test 1 failed: Checker did not detect intentional stdout mismatch!", file=sys.stderr)
-            sys.exit(1)
-        print("✓ PASS: Negative test 1 correctly detected intentional mismatch on stdout.")
-
-        boundary_res = harness_results.get("TEST_BOUNDARY_SINGLE_CHAR", -1)
-        boundary_fail_detected = test_deliberate_boundary_mismatch(boundary_res)
-        if not boundary_fail_detected:
-            print("[ERROR] Negative test 2 failed: Checker did not detect intentional boundary mismatch!", file=sys.stderr)
-            sys.exit(1)
-        print("✓ PASS: Negative test 2 correctly detected intentional mismatch on boundary result.")
+        print("\n=== Step 4: Executing genuine C++ mutation tests ===")
+        run_mutation_tests(extracted_code, build_dir)
 
     print("\n========================================================")
     print("🎉 ALL CHECKS PASSED: 'Maximum Number of Balloons' C++")
-    print("   implementation and documentation verified successfully.")
+    print("   implementation, published outputs, and mutation")
+    print("   rejection tests verified successfully.")
     print("========================================================")
     sys.exit(0)
 

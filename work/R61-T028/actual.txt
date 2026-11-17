@@ -34,20 +34,28 @@ TEST_BOUNDARY_EXACT_ONE             "balloon"                   1               
 TEST_ASYMMETRIC_DEFICIT             "balloonballoo"             1               1               PASS
 TEST_BOTTLENECK_L                   "bbbbbaaoooonnnnnll"        1               1               PASS
 TEST_UNRELATED_ONLY                 "xyz"                       0               0               PASS
+TEST_SINGLE_L_O_DEFICIT             "balon"                     0               0               PASS
 ------------------------------------------------------------------------------------------------------
 
-3. Deliberate Failure Detection Results:
-----------------------------------------
-Negative Test 1 (stdout mismatch test):
-  Asserted substring "Output: 999" in actual stdout.
-  Result: AssertionError raised and caught successfully. (PASS)
+3. Genuine C++ Mutation Test Results:
+-------------------------------------
+Mutation 1 (Uniform Multiplicity Fallacy without division by 2):
+  Compiled: Yes (temporary binary)
+  Validation status: REJECTED (PASS)
+  Observed Failure: Harness mismatch for TEST_BOTTLENECK_L: expected 1, got 2
 
-Negative Test 2 (boundary return mismatch test):
-  Asserted TEST_BOUNDARY_SINGLE_CHAR (0) == 1.
-  Result: AssertionError raised and caught successfully. (PASS)
+Mutation 2 (Single-Character 'b' Fallacy):
+  Compiled: Yes (temporary binary)
+  Validation status: REJECTED (PASS)
+  Observed Failure: Published stdout line 8 mismatch: expected 'Output: 0', got 'Output: 1'
+
+Mutation 3 (Always Return Zero Stub):
+  Compiled: Yes (temporary binary)
+  Validation status: REJECTED (PASS)
+  Observed Failure: Published stdout line 2 mismatch: expected 'Output: 1', got 'Output: 0'
 
 Overall Verification Status:
-All 8 published lines matched expected output exactly.
-All 9 extended test harness assertions passed.
-All deliberate negative tests detected failures correctly.
+All published stdout lines matched expected output exactly.
+All 10 extended test harness assertions passed.
+All 3 genuine C++ mutations were compiled, executed, and successfully rejected by the validation harness.
 Status: PASS (100% Match)

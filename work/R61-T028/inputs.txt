@@ -45,3 +45,17 @@ text = "bbbbbaaoooonnnnnll"
 
 TEST_UNRELATED_ONLY:
 text = "xyz"
+
+TEST_SINGLE_L_O_DEFICIT:
+text = "balon"
+
+3. C++ Mutation Test Invocations:
+---------------------------------
+Mutation 1 (Uniform Multiplicity Fallacy):
+Omission of / 2 for 'l' and 'o' counts; tested against full harness.
+
+Mutation 2 (Single-Character 'b' Fallacy):
+Only returns count['b' - 'a']; tested against published examples and harness.
+
+Mutation 3 (Stub / Zero Return Fallacy):
+Always returns 0; tested against published examples and harness.
