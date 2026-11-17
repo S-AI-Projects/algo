@@ -1,0 +1,31 @@
+{
+  "issue": "GitHub Issue #21: R61-T021 — Make the C# 9 example executable",
+  "document": "docs/languages/csharp/csharp-9.md",
+  "interface": "IAnimal",
+  "contract_members": [
+    "void MakeSound()"
+  ],
+  "test_cases": [
+    {
+      "case_id": "TC-01",
+      "name": "Worked Example (Preserved)",
+      "target_class": "Dog",
+      "interface_ref": "IAnimal dog = new Dog()",
+      "method_invocation": "dog.MakeSound()",
+      "input": "Instance of Dog passed via IAnimal interface reference; no method arguments (void)",
+      "contract_context": "Standard concrete implementation producing audible animal sound",
+      "expected_output": "Bark"
+    },
+    {
+      "case_id": "TC-02",
+      "name": "Boundary Example (Edge Condition)",
+      "target_class": "Fish",
+      "interface_ref": "IAnimal fish = new Fish()",
+      "method_invocation": "fish.MakeSound()",
+      "input": "Instance of Fish passed via IAnimal interface reference; no method arguments (void)",
+      "contract_context": "Boundary condition modeling silent animal with non-audible output adhering to contract",
+      "expected_output": "Silence"
+    }
+  ]
+}
+
