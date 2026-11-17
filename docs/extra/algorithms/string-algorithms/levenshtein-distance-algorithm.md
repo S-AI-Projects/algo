@@ -133,6 +133,34 @@ public:
         
         return dp[m][n];
     }
+
+    // Independent distance-only method that retains just the previous row.
+    int calculateDistanceRolling(const string& str1, const string& str2) {
+        int m = str1.length();
+        int n = str2.length();
+        vector<int> previous(n + 1);
+        vector<int> current(n + 1);
+
+        for (int j = 0; j <= n; ++j) {
+            previous[j] = j * insertCost;
+        }
+        for (int i = 1; i <= m; ++i) {
+            current[0] = i * deleteCost;
+            for (int j = 1; j <= n; ++j) {
+                if (str1[i - 1] == str2[j - 1]) {
+                    current[j] = previous[j - 1];
+                } else {
+                    current[j] = min({
+                        previous[j] + deleteCost,
+                        current[j - 1] + insertCost,
+                        previous[j - 1] + substituteCost
+                    });
+                }
+            }
+            previous.swap(current);
+        }
+        return previous[n];
+    }
     
     // Calculate distance and store edit path
     int calculateDistanceWithPath(const string& str1, 
@@ -267,6 +295,12 @@ public:
         // Basic distance calculation
         int distance = algo.calculateDistance(str1, str2);
         cout << "\nLevenshtein distance: " << distance << endl;
+        cout << "Rolling-row distance: "
+             << algo.calculateDistanceRolling(str1, str2) << endl;
+
+        // Empty source is a valid boundary: inserting all target characters costs 7.
+        cout << "Empty-string boundary: "
+             << algo.calculateDistanceRolling("", str2) << endl;
         
         // Normalized distance
         double normalized = algo.getNormalizedDistance(str1, str2);
@@ -290,6 +324,20 @@ int main() {
     LevenshteinDemo::demonstrateAlgorithm();
     return 0;
 }
+```
+
+### Full Table and Rolling Rows Compared
+
+For the worked input `"kitten"` → `"sitting"`, the full-table method returns `3`: substitute `k` with `s`, substitute `e` with `i`, then insert `g`. The independent rolling-row method returns the same `3`. Both methods fill the same recurrence in $O(mn)$ time. The full table retains $(m+1)(n+1)$ costs, which the path-reconstruction method needs for backtracking; the distance-only method keeps only the previous and current rows, using $O(n)$ integer cells where `n` is the target length. It cannot reconstruct the edit path after older rows are discarded.
+
+For the boundary input `""` → `"sitting"`, the initial row is `[0, 1, 2, 3, 4, 5, 6, 7]`; no source characters are processed, so the distance is `7` insertions.
+
+**Relevant output:**
+
+```text
+Levenshtein distance: 3
+Rolling-row distance: 3
+Empty-string boundary: 7
 ```
 
 ### Key Features:
