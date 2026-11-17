@@ -3,6 +3,7 @@
 **Repository:** `S-AI-Projects/algo`  
 **Task Branch:** `R61-T030`  
 **Target Document:** `docs/extra/graphs/dfs_java.md`  
+**Pull Request:** [#69](https://github.com/S-AI-Projects/algo/pull/69)  
 
 ---
 
