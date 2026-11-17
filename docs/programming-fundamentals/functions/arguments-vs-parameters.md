@@ -76,6 +76,16 @@ function sumAll(...numbers) {
 
 // 5 arguments are passed
 console.log(sumAll(1, 2, 3, 4, 5)); // Output: 15
+console.log(sumAll()); // Output: 0 (the rest parameter receives an empty array)
+```
+
+Here, `numbers` is one rest parameter whose value is an array. The five values in the first call are arguments collected into that array. A common misconception is that a rest parameter requires at least one argument; `sumAll()` is valid JavaScript, supplies an empty array, and `reduce(..., 0)` returns the chosen initial value `0`.
+
+**Expected output:**
+
+```text
+15
+0
 ```
 
 #### B. Python (`*args` and `**kwargs`)

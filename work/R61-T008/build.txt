@@ -1,0 +1,9 @@
+Command: python3 work/R61-T008/check.py
+Result: PASS; the published five-argument and empty-rest calls printed 15 and 0.
+
+Command: npm run validate:docs
+Result: PASS; 946 files scanned, 0 errors, 0 warnings.
+
+Command: npm run build
+Result: PASS; English and Hindi production output generated.
+Warnings: existing /stories/#explore broken anchor in both locales; optional ws native modules bufferutil and utf-8-validate are absent; Docusaurus update check could not access its local config store.
