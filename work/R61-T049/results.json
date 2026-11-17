@@ -1,0 +1,70 @@
+{
+  "task": "R61-T049",
+  "item": "Weighted Word Mapping Resource Scaling",
+  "article": "/Users/chetas/Desktop/algo:assignment/algo/docs/dsa-problems/easy/weighted-word-mapping.md",
+  "tool_versions": {
+    "python": "3.14.7 (v3.14.7:823f0323ee6, Aug  5 2026, 07:07:01) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.4.1.1)",
+    "node": "v24.18.0",
+    "npm": "11.16.0"
+  },
+  "resource_semantics": {
+    "view_vs_copy": "const string& word loop iteration avoids deep-copying string heap buffers",
+    "capacity_reservation": "result.reserve(words.size()) guarantees exactly 0 dynamic heap reallocations",
+    "type_operations": "O(1) direct array indexing weights[c - 'a'], modulo accumulation prevents overflow"
+  },
+  "checks": [
+    {
+      "description": "Article worked example (words=['abcd','def','xyz'])",
+      "input": [
+        "abcd",
+        "def",
+        "xyz"
+      ],
+      "expected": "rij",
+      "actual": "rij",
+      "passed": true
+    },
+    {
+      "description": "Boundary case 1: Remainder 0 maps to 'z'",
+      "input": [
+        "a"
+      ],
+      "expected": "z",
+      "actual": "z",
+      "passed": true
+    },
+    {
+      "description": "Boundary case 2: Remainder 25 maps to 'a'",
+      "input": [
+        "a"
+      ],
+      "expected": "a",
+      "actual": "a",
+      "passed": true
+    },
+    {
+      "description": "Boundary case 3: Empty words array",
+      "input": [],
+      "expected": "",
+      "actual": "",
+      "passed": true
+    },
+    {
+      "description": "Resource experiment: Buffer capacity reallocation count with reserve()",
+      "input": "100 appends with reserve(100)",
+      "expected_reallocations": 0,
+      "actual_reallocations": 0,
+      "passed": true
+    },
+    {
+      "description": "Deliberate wrong result failure check",
+      "input": "result == 'wrong_output'",
+      "expected_exit_code_non_zero": true,
+      "actual_exit_code": -6,
+      "passed": true
+    }
+  ],
+  "extracted_code": "#include <iostream>\n#include <vector>\n#include <string>\n#include <cassert>\n\nusing namespace std;\n\nclass Solution {\npublic:\n    string mapWordWeights(const vector<string>& words, const vector<int>& weights) {\n        string result = \"\";\n        result.reserve(words.size()); // Pre-allocate buffer to avoid dynamic reallocations\n        \n        for (const string& word : words) { // Const reference avoids redundant string copies\n            int sum = 0;\n            for (char c : word) {\n                sum = (sum + weights[c - 'a']) % 26;\n            }\n            int rem = sum;\n            result += (char)('z' - rem);\n        }\n        return result;\n    }\n};\n\nint main() {\n    Solution sol;\n\n    // Worked Example 1 from problem description\n    vector<string> words = {\"abcd\", \"def\", \"xyz\"};\n    vector<int> weights = {5,3,12,14,1,2,3,2,10,6,6,9,7,8,7,10,8,9,6,9,9,8,3,7,7,2};\n\n    string result = sol.mapWordWeights(words, weights);\n    cout << \"Worked Example Output: \" << result << endl;\n    assert(result == \"rij\");\n\n    // Boundary Case 1: Minimum remainder (0 maps to 'z')\n    vector<string> boundaryZero = {\"a\"};\n    vector<int> weightsZero(26, 0);\n    assert(sol.mapWordWeights(boundaryZero, weightsZero) == \"z\");\n\n    // Boundary Case 2: Maximum remainder (25 maps to 'a')\n    vector<string> boundaryMax = {\"a\"};\n    vector<int> weightsMax(26, 25);\n    assert(sol.mapWordWeights(boundaryMax, weightsMax) == \"a\");\n\n    // Boundary Case 3: Empty words array\n    vector<string> emptyWords = {};\n    assert(sol.mapWordWeights(emptyWords, weights) == \"\");\n\n    // Small experiment: Measure capacity reallocation count with and without reserve()\n    string unreserved;\n    size_t unreservedReallocs = 0;\n    size_t prevCap = unreserved.capacity();\n    for (int i = 0; i < 100; ++i) {\n        unreserved += 'a';\n        if (unreserved.capacity() != prevCap) {\n            unreservedReallocs++;\n            prevCap = unreserved.capacity();\n        }\n    }\n\n    string reserved;\n    reserved.reserve(100);\n    size_t reservedCap = reserved.capacity();\n    size_t reservedReallocs = 0;\n    for (int i = 0; i < 100; ++i) {\n        reserved += 'a';\n        if (reserved.capacity() != reservedCap) {\n            reservedReallocs++;\n        }\n    }\n    cout << \"Capacity Reallocations without reserve (100 appends): \" << unreservedReallocs << endl;\n    cout << \"Capacity Reallocations with reserve (100 appends): \" << reservedReallocs << endl;\n    assert(reservedReallocs == 0);\n\n    return 0;\n}"
+}
