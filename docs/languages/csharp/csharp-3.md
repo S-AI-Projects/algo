@@ -86,6 +86,55 @@ public int Subtract(int a, int b) {
 int result = Subtract(10, 5); // Passes 10 and 5 as arguments
 ```
 
+### Copy and Resource Behavior of Value Parameters
+
+The original `Subtract(10, 5)` call performs a fixed number of integer operations and returns `5`. The example below also shows what the parameter receives when the argument is an `int` or an array:
+
+```csharp
+using System;
+
+public class FunctionResourceDemo
+{
+    static int Subtract(int a, int b) => a - b;
+
+    static void Increment(int value)
+    {
+        value++;
+    }
+
+    static void ReplaceFirst(int[] values)
+    {
+        values[0] = 99;
+    }
+
+    public static void Main()
+    {
+        Console.WriteLine($"Subtract(10, 5) = {Subtract(10, 5)}");
+
+        int score = 5;
+        Increment(score);
+        Console.WriteLine($"int after method = {score}");
+
+        int[] scores = { 5 };
+        ReplaceFirst(scores);
+        Console.WriteLine($"array element after method = {scores[0]}");
+
+        Console.WriteLine($"Subtract(5, 5) = {Subtract(5, 5)}");
+    }
+}
+```
+
+**Expected output:**
+
+```text
+Subtract(10, 5) = 5
+int after method = 5
+array element after method = 99
+Subtract(5, 5) = 0
+```
+
+Each call above uses a fixed number of operations: time is $O(1)$. `Increment` receives a copy of the `int`, so changing its local parameter leaves `score` as `5`. `ReplaceFirst` receives a copy of the array reference; that reference still points to the caller's same array, so writing `values[0]` changes the caller-visible element. The call copies one reference and does not copy the array or allocate a replacement array, so its extra parameter storage is $O(1)$. The equal-arguments boundary `Subtract(5, 5)` returns `0`.
+
 ---
 
 ## 5. Method Overloading

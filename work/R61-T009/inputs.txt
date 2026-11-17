@@ -1,0 +1,1 @@
+Subtract(10, 5); Increment(5); ReplaceFirst(new[] {5}); Subtract(5, 5)

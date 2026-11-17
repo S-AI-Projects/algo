@@ -1,0 +1,4 @@
+Subtract(10, 5) = 5
+int after method = 5
+array element after method = 99
+Subtract(5, 5) = 0
