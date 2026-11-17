@@ -37,4 +37,7 @@ TEST_STREAMING_GENERATOR:
   stream = (x for x in range(50)), k = 4
 
 TEST_STATISTICAL_UNIFORMITY:
-  stream = range(10), k = 3, trials = 20,000
+  stream = range(10), k = 3, trials = 100,000, seed = 42
+
+TEST_MEMORY_INVARIANCE:
+  k = 5, stream_scales = [5, 100, 1000, 10000, 100000, 1000000], seed = 42

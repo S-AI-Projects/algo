@@ -13,15 +13,16 @@ Checker Requirements:
 3. Dynamically import the extracted published function into Python runtime.
 4. Verify the article's worked example and boundary example against contractual invariants.
 5. Verify extended boundary conditions (empty stream, n == k, k == 1, generator streams).
-6. Verify statistical uniformity property (empirical frequency across trials).
-7. Perform deliberate incorrect-result and mutation tests:
+6. Verify statistical uniformity property (100,000 trials, k=3, n=10, seed 42 matching article).
+7. Perform reproducible memory invariance experiment using sys.getsizeof across stream scales.
+8. Perform deliberate incorrect-result and mutation tests:
    - Prove that the checker catches wrong stdout expectations.
    - Prove that the checker catches wrong boundary assertions.
    - Mutate implementation (off-by-one / out-of-bounds index) and verify rejection.
    - Mutate implementation (no-op replacement) and verify rejection.
    - Mutate implementation (empty stub return) and verify rejection.
-8. Propagate subprocess and assertion failures with non-zero exit code on error.
-9. Generate complete supporting evidence files in work/R61-T029/.
+9. Propagate subprocess and assertion failures with non-zero exit code on error.
+10. Generate complete supporting evidence files in work/R61-T029/.
 """
 
 import importlib.util
@@ -215,7 +216,10 @@ TEST_STREAMING_GENERATOR:
   stream = (x for x in range(50)), k = 4
 
 TEST_STATISTICAL_UNIFORMITY:
-  stream = range(10), k = 3, trials = 20,000
+  stream = range(10), k = 3, trials = 100,000, seed = 42
+
+TEST_MEMORY_INVARIANCE:
+  k = 5, stream_scales = [5, 100, 1000, 10000, 100000, 1000000], seed = 42
 """
     (work_dir / "inputs.txt").write_text(inputs_content, encoding="utf-8")
 
@@ -236,10 +240,33 @@ Boundary sample (n <= k): [10, 20, 30]
 - reservoir_sampling([], 5): []
 - reservoir_sampling([100, 200, 300], 1): length 1, element in {100, 200, 300}
 - reservoir_sampling(generator(50), 4): length 4, all distinct elements in [0, 49]
-- Statistical Uniformity (k=3, n=10, 20,000 trials):
-  Expected probability per item: 0.3000 (approx 6,000 counts per item +/- 3 sigma)
 
-3. Deliberate Failure Rejection Assertions:
+3. Statistical Uniformity (k=3, n=10, 100,000 trials, seed=42):
+---------------------------------------------------------------
+Expected theoretical probability: k / n = 3 / 10 = 0.3000
+Expected counts: 30,000 counts per item
+Theoretical standard deviation: sqrt(100000 * 0.3 * 0.7) ≈ 144.9 counts (0.145%)
+Expected exact counts with seed 42:
+  Item 0: 30,038 (0.3004)
+  Item 1: 30,099 (0.3010)
+  Item 2: 29,971 (0.2997)
+  Item 3: 30,088 (0.3009)
+  Item 4: 30,065 (0.3006)
+  Item 5: 29,758 (0.2976)
+  Item 6: 29,892 (0.2989)
+  Item 7: 29,792 (0.2979)
+  Item 8: 30,107 (0.3011)
+  Item 9: 30,190 (0.3019)
+All items fall within 2 sigma of 30,000, confirming unbiased empirical sampling.
+
+4. Memory Invariance Experiment (sys.getsizeof, k=5):
+------------------------------------------------------
+Reservoir capacity k = 5 across stream scales n = 5, 100, 1,000, 10,000, 100,000, 1,000,000.
+Expected reservoir length: exactly 5 for all scales.
+Expected shallow container memory: strictly invariant across all stream sizes (120 bytes on 64-bit CPython 3.9).
+Note: sys.getsizeof measures shallow container size, not deep referenced objects or total process memory.
+
+5. Deliberate Failure Rejection Assertions:
 -------------------------------------------
 - Negative Test 1 (stdout mismatch): Assertion fails when expecting [999999, 888888]
 - Negative Test 2 (boundary mismatch): Assertion fails when expecting [99, 99, 99]
@@ -285,6 +312,8 @@ Boundary sample (n <= k): [10, 20, 30]
 Operating System: {platform.system()} {platform.release()} ({platform.machine()})
 Platform Details: {platform.platform()}
 Python Version: {sys.version.split()[0]} ({sys.executable})
+Python Implementation: {platform.python_implementation()} ({platform.python_compiler()})
+Pointer Size: {platform.architecture()[0]}
 Node.js Version: {node_version}
 npm Version: {npm_version}
 Git Version: {git_version}
@@ -390,35 +419,73 @@ def main():
     harness_results["TEST_STREAMING_GENERATOR"] = gen_sample
     print("✓ PASS: Harness verified single-pass lazy generator streaming input.")
 
-    # Check 7: Statistical uniformity property check
-    print("\n[Phase 4] Testing statistical uniformity invariant (20,000 trials, k=3, n=10)...")
-    n_trials = 20000
+    # Check 7: Statistical uniformity property check (Exact 100,000 trials matching article)
+    print("\n[Phase 4] Testing statistical uniformity invariant (100,000 trials, k=3, n=10, seed 42)...")
+    n_trials = 100000
     n_stream = 10
     k_res = 3
+    random.seed(42)
     counts = [0] * n_stream
     for _ in range(n_trials):
         for item in reservoir_sampling(range(n_stream), k_res):
             counts[item] += 1
 
     expected_prob = k_res / n_stream  # 0.3000
-    expected_count = expected_prob * n_trials  # 6000
-    # Standard deviation: sqrt(N * p * (1-p)) = sqrt(20000 * 0.3 * 0.7) = sqrt(4200) ≈ 64.8
-    # 4 sigma tolerance ≈ 260 counts (~1.3%)
+    expected_count = int(expected_prob * n_trials)  # 30,000
+    # Standard deviation: sqrt(N * p * (1-p)) = sqrt(100000 * 0.3 * 0.7) ≈ 144.9 counts
+    # 4 sigma tolerance ≈ 580 counts (~0.58%)
     for idx, count in enumerate(counts):
         diff = abs(count - expected_count)
-        assert diff < 400, f"Item {idx} count {count} deviates too far from expected {expected_count}"
+        assert diff < 600, f"Item {idx} count {count} deviates too far from expected {expected_count}"
+
+    # Confirm exact reproducibility with seed 42
+    expected_seed42_counts = [30038, 30099, 29971, 30088, 30065, 29758, 29892, 29792, 30107, 30190]
+    assert counts == expected_seed42_counts, f"Counts {counts} do not match reproducible seed 42 expectation {expected_seed42_counts}"
 
     harness_results["TEST_STATISTICAL_UNIFORMITY"] = {
         "trials": n_trials,
         "k": k_res,
         "n": n_stream,
+        "seed": 42,
         "expected_prob": expected_prob,
         "counts": counts,
+        "frequencies": [round(c / n_trials, 4) for c in counts],
     }
-    print(f"✓ PASS: All 10 items within tight statistical tolerance of expected {expected_count} hits.")
+    print(f"✓ PASS: All 10 items matched reproducible 100,000-trial distribution:")
+    for idx, c in enumerate(counts):
+        print(f"  Item {idx}: count={c}, freq={c/n_trials:.4f} (dev: {((c - expected_count)/expected_count)*100:+.2f}%)")
 
-    # Step 4: Deliberate failure and mutation tests
-    print("\n[Phase 5] Running deliberate failure and mutation rejection checks...")
+    # Step 4: Reproducible Memory Invariance Experiment
+    print("\n[Phase 5] Running reproducible memory invariance experiment (sys.getsizeof)...")
+    k_mem = 5
+    stream_scales = [5, 100, 1000, 10000, 100000, 1000000]
+    memory_results = []
+    for n in stream_scales:
+        random.seed(42)
+        res = reservoir_sampling(range(n), k_mem)
+        assert len(res) == k_mem, f"Reservoir length {len(res)} != {k_mem} at scale n={n}"
+        sz = sys.getsizeof(res)
+        memory_results.append({
+            "stream_size": n,
+            "reservoir_len": len(res),
+            "shallow_bytes": sz,
+        })
+        print(f"  Stream n = {n:7d}: reservoir len = {len(res)}, sys.getsizeof = {sz} bytes")
+
+    first_sz = memory_results[0]["shallow_bytes"]
+    assert all(m["shallow_bytes"] == first_sz for m in memory_results), "Memory allocation varied across stream scales!"
+    harness_results["TEST_MEMORY_INVARIANCE"] = {
+        "k": k_mem,
+        "scales": memory_results,
+        "shallow_bytes_invariant": first_sz,
+        "python_version": sys.version.split()[0],
+        "platform": platform.platform(),
+    }
+    print(f"✓ PASS: Reservoir shallow memory is strictly invariant at {first_sz} bytes across all stream sizes (O(k) space).")
+    print("  Note: sys.getsizeof measures shallow container size on this platform/runtime, not complete object or process memory.")
+
+    # Step 5: Deliberate failure and mutation tests
+    print("\n[Phase 6] Running deliberate failure and mutation rejection checks...")
     negative_test_results = {}
 
     mismatch_detected = test_deliberate_stdout_mismatch(stdout_text)
@@ -456,8 +523,8 @@ def main():
     negative_test_results["MUTATION_TEST_EMPTY_STUB"] = "REJECTED_WITH_MISMATCH"
     print("✓ PASS: Mutation Test 3: checker correctly rejected empty stub return mutation.")
 
-    # Step 5: Generate evidence files
-    print("\n[Phase 6] Writing evidence files to work/R61-T029/...")
+    # Step 6: Generate evidence files
+    print("\n[Phase 7] Writing evidence files to work/R61-T029/...")
     generate_evidence_files(
         work_dir=work_dir,
         published_code=published_code,
@@ -478,13 +545,15 @@ All checks completed successfully.
   * Boundary example (n == 0) -> PASS
   * Boundary example (k == 1) -> PASS
   * Lazy generator streaming input -> PASS
-- Phase 4: Statistical uniformity test -> PASS
-- Phase 5: Deliberate failure & mutation tests -> PASS
+- Phase 4: Statistical uniformity test (100,000 trials, seed 42) -> PASS
+- Phase 5: Memory invariance experiment (sys.getsizeof, n=5..1,000,000) -> PASS
+- Phase 6: Deliberate failure & mutation tests -> PASS
   * Deliberate stdout mismatch test -> PASS
   * Deliberate boundary mismatch test -> PASS
   * Mutation 1 (out-of-bounds index) -> PASS
   * Mutation 2 (no-op replacement) -> PASS
   * Mutation 3 (empty stub) -> PASS
+- Phase 7: Evidence files generated in work/R61-T029/ -> PASS
 """
     (work_dir / "verification_output.txt").write_text(verification_log, encoding="utf-8")
     print("✓ PASS: Generated inputs.txt, expected.txt, actual.txt, environment.txt, verification_output.txt")
