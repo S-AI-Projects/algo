@@ -1,0 +1,9 @@
+Command: python3 work/R61-T002/check.py
+Result: PASS; extracted C++ solution produced both documented arrays.
+
+Command: npm run validate:docs
+Result: PASS with 0 errors and 1 existing warning: this article has no optional sidebar_position (946 files scanned).
+
+Command: npm run build
+Result: PASS; English and Hindi production output generated.
+Warnings: existing /stories/#explore broken anchor in both locales; optional ws native modules bufferutil and utf-8-validate are absent; Docusaurus update check could not access its local config store.

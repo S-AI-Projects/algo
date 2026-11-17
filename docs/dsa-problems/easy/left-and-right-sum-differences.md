@@ -62,6 +62,12 @@ To avoid calculating the left and right sums from scratch for every element (whi
 3. Iterate through the array. For any element at index `i`, the `rightSum` can be deduced dynamically using the formula: `rightSum = totalSum - leftSum - nums[i]`.
 4. Calculate the absolute difference, add it to our answer array, and update the `leftSum` by adding `nums[i]` before moving to the next iteration.
 
+#### Boundary and Running-Sum Trace
+
+For `nums = [10, 4, 8, 3]`, the total is `25`. Before processing index `i`, `leftSum` contains exactly the values before `i`; therefore `rightSum = totalSum - leftSum - nums[i]` contains exactly the values after `i`. At index 1, for example, `leftSum = 10`, `rightSum = 25 - 10 - 4 = 11`, and the answer is `|10 - 11| = 1`. Only after recording that result do we add `nums[1]` to `leftSum`, making it `14` for the next index.
+
+The article's one-element example, `nums = [1]`, is the smallest illustrated input. Its only element has no values on either side, so both sums are `0` and the result is `[0]`. This follows directly from the problem's definitions of the left and right sums; it does not require an extra special case.
+
 * **Time Complexity:** $O(n)$ because we iterate through the `nums` array twice (once to find the total sum, and once to calculate the differences).
 * **Space Complexity:** $O(1)$ auxiliary space. We use an output array to store the results, which is generally not counted towards auxiliary space complexity. The space used for tracking sums is constant.
 
