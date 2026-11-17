@@ -12,23 +12,41 @@ Given a string `text`, you want to use the characters of `text` to form as many 
 
 You can use each character in `text` **at most once**. Return the maximum number of instances that can be formed.
 
+### Problem Contract & Constraints:
+
+- **Input:** `text` (a string of lowercase English letters)
+- **Constraints:**
+  - $1 \le \text{text.length} \le 10^4$
+  - `text` consists of lowercase English letters only (`'a'` through `'z'`).
+- **Output:** An integer representing the maximum number of complete instances of `"balloon"` that can be constructed simultaneously.
+
+---
+
+### Examples:
+
 **Example 1:**
 
-Input: `text = "nlaebolko"`
-Output: `1`
+Input: `text = "nlaebolko"`  
+Output: `1`  
 **Explanation:** We can form one instance of the word "balloon".
 
 **Example 2:**
 
-Input: `text = "loonbalxballpoon"`
-Output: `2`
+Input: `text = "loonbalxballpoon"`  
+Output: `2`  
 **Explanation:** We can form two instances of the word "balloon".
 
 **Example 3:**
 
-Input: `text = "leetcode"`
-Output: `0`
+Input: `text = "leetcode"`  
+Output: `0`  
 **Explanation:** We cannot form the word "balloon".
+
+**Example 4 (Boundary Example):**
+
+Input: `text = "b"`  
+Output: `0`  
+**Explanation:** The input has length $1 < 7$ (where 7 is the length of `"balloon"`). Because characters `'a'`, `'l'`, `'o'`, and `'n'` are entirely absent, the limiting count is 0.
 
 ## Video Explanation
 
@@ -46,22 +64,116 @@ Output: `0`
 
 ### 1. Frequency Counting Array
 
-To find how many times we can form the word "balloon", we need to count the occurrences of its constituent characters in the input string `text`. 
+To determine how many times the word **"balloon"** can be formed, we must analyze the frequency of each required character in `text`.
 
-The word **"balloon"** requires:
-- `b`: 1
-- `a`: 1
-- `l`: 2
-- `o`: 2
-- `n`: 1
+#### Character Multiplicity Requirements:
 
-1. **Count Frequencies:** Use a frequency array of size 26 (to represent the English alphabet) or a hash map to count the occurrences of every character in the `text`.
-2. **Calculate Limiting Factor:** The maximum number of "balloon" words we can form is constrained by the character that appears the least relative to its required amount. 
-3. **Find the Minimum:** We take the minimum count among `b`, `a`, `l/2`, `o/2`, and `n`. We divide the counts of `l` and `o` by 2 because each instance of the word requires two of those letters.
+The word **"balloon"** consists of 7 characters with the following breakdown:
+- `'b'`: requires **1** occurrence per word
+- `'a'`: requires **1** occurrence per word
+- `'l'`: requires **2** occurrences per word
+- `'o'`: requires **2** occurrences per word
+- `'n'`: requires **1** occurrence per word
+
+Every other character in `text` (such as `'x'`, `'k'`, `'e'`, or `'p'`) is unrelated and contributes 0 toward forming `"balloon"`.
+
+#### Derivation of the Limiting Formula:
+
+Because each character can be used at most once, the maximum number of complete `"balloon"` instances is constrained by the single most deficient constituent letter relative to its required multiplicity.
+
+For characters appearing once (`'b'`, `'a'`, `'n'`), each occurrence yields up to 1 potential word:
+$$\text{available}(c) = \text{count}[c]$$
+
+For characters appearing twice (`'l'`, `'o'`), each word requires a complete pair. We compute how many full pairs are available using integer floor division:
+$$\text{available}('l') = \left\lfloor \frac{\text{count}['l']}{2} \right\rfloor, \quad \text{available}('o') = \left\lfloor \frac{\text{count}['o']}{2} \right\rfloor$$
+
+The total number of full instances is determined by the minimum limiting frequency across all required letters:
+$$\text{result} = \min\left(\text{count}['b'], \text{count}['a'], \left\lfloor \frac{\text{count}['l']}{2} \right\rfloor, \left\lfloor \frac{\text{count}['o']}{2} \right\rfloor, \text{count}['n']\right)$$
+
+---
+
+### Step-by-Step Concrete Walkthroughs
+
+#### Trace 1: Original Worked Example (`text = "loonbalxballpoon"`)
+
+1. **Count Frequencies:**
+   - `'a'`: 2
+   - `'b'`: 2
+   - `'l'`: 4
+   - `'o'`: 4
+   - `'n'`: 2
+   - Unrelated: `'p'`: 1, `'x'`: 1
+
+2. **Evaluate Formations:**
+
+| Target Character | Multiplicity Needed | Total Count in Text | Integer Division | Usable Sets |
+| :---: | :---: | :---: | :---: | :---: |
+| `'b'` | 1 | 2 | $2 / 1$ | 2 |
+| `'a'` | 1 | 2 | $2 / 1$ | 2 |
+| `'l'` | 2 | 4 | $\lfloor 4 / 2 \rfloor$ | 2 |
+| `'o'` | 2 | 4 | $\lfloor 4 / 2 \rfloor$ | 2 |
+| `'n'` | 1 | 2 | $2 / 1$ | 2 |
+
+3. **Bottleneck Calculation:**
+   $$\min(2, 2, 2, 2, 2) = 2$$
+   Unrelated characters `'x'` and `'p'` are ignored and do not affect the result.
+
+---
+
+#### Trace 2: Original Worked Example (`text = "nlaebolko"`)
+
+1. **Count Frequencies:**
+   - `'a'`: 1
+   - `'b'`: 1
+   - `'l'`: 2
+   - `'o'`: 2
+   - `'n'`: 1
+   - Unrelated: `'e'`: 1, `'k'`: 1
+
+2. **Evaluate Formations:**
+
+| Target Character | Multiplicity Needed | Total Count in Text | Integer Division | Usable Sets |
+| :---: | :---: | :---: | :---: | :---: |
+| `'b'` | 1 | 1 | $1 / 1$ | 1 |
+| `'a'` | 1 | 1 | $1 / 1$ | 1 |
+| `'l'` | 2 | 2 | $\lfloor 2 / 2 \rfloor$ | 1 |
+| `'o'` | 2 | 2 | $\lfloor 2 / 2 \rfloor$ | 1 |
+| `'n'` | 1 | 1 | $1 / 1$ | 1 |
+
+3. **Bottleneck Calculation:**
+   $$\min(1, 1, 1, 1, 1) = 1$$
+
+---
+
+#### Trace 3: Asymmetric Limiting Deficit (`text = "balloonballoo"`)
+
+Consider a string with ample `'b'`, `'a'`, `'l'`, and `'o'`, but missing a second `'n'`:
+- Counts: `'b'`: 2, `'a'`: 2, `'l'`: 4, `'o'`: 4, `'n'`: 1
+- Usable sets:
+  - `b`: 2
+  - `a`: 2
+  - `l`: $\lfloor 4 / 2 \rfloor = 2$
+  - `o`: $\lfloor 4 / 2 \rfloor = 2$
+  - `n`: $1$
+- **Result:** $\min(2, 2, 2, 2, 1) = 1$. The single deficit in `'n'` caps the entire formation at 1.
+
+---
+
+#### Common Misconceptions & Pitfalls
+
+1. **Uniform Multiplicity Fallacy:**
+   Assuming each character in `"balloon"` only needs to appear once. A string with $\text{count}['l'] = 1$ cannot provide the two `'l'`s required for a single `"balloon"`. Integer division $\lfloor \text{count}['l'] / 2 \rfloor$ correctly handles the doubled requirement.
+2. **Total Count Aggregation Fallacy:**
+   Summing all matching characters and dividing by 7 (e.g., $\lfloor \sum \text{counts} / 7 \rfloor$). For example, `text = "bbbbbaaoooonnnnn"` has 16 matching letters ($16 / 7 = 2$), but 0 instances of `'l'`. Surplus letters cannot substitute for missing ones; the minimum limiting component governs the result.
+3. **Unrelated / Noise Characters:**
+   Unrelated characters (like `'x'`, `'k'`, `'e'`) do not prevent or decrease valid balloon formations. They are simply disregarded during the evaluation.
+4. **Contract Scope:**
+   The problem specifies lowercase English letters. Non-alphabetic symbols or uppercase letters (such as `'B'`) are outside the problem contract.
 
 ### Complexity
-* **Time Complexity:** $O(N)$ where $N$ is the length of the string `text`. We only need to iterate through the string once to count the characters.
-* **Space Complexity:** $O(1)$ because the frequency array is fixed at size 26, which is constant regardless of the input string's size.
+
+* **Time Complexity:** $O(N)$ where $N$ is the length of the string `text`. We iterate through `text` once to count frequencies, followed by an $O(1)$ minimum calculation across the 5 target characters.
+* **Space Complexity:** $O(1)$ because the frequency array has a fixed size of 26 integers, which is constant and independent of the input size.
 
 ---
 
@@ -71,6 +183,13 @@ The word **"balloon"** requires:
   <TabItem value="cpp" label="C++" default>
 
 ```cpp
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
 class Solution {
 public:
     int maxNumberOfBalloons(string text) {
@@ -91,6 +210,32 @@ public:
         });
     }
 };
+
+int main() {
+    Solution solution;
+
+    // Example 1 (Original worked example)
+    string text1 = "nlaebolko";
+    cout << "Input: text = \"" << text1 << "\"" << endl;
+    cout << "Output: " << solution.maxNumberOfBalloons(text1) << endl;
+
+    // Example 2 (Original worked example)
+    string text2 = "loonbalxballpoon";
+    cout << "Input: text = \"" << text2 << "\"" << endl;
+    cout << "Output: " << solution.maxNumberOfBalloons(text2) << endl;
+
+    // Example 3 (Original worked example)
+    string text3 = "leetcode";
+    cout << "Input: text = \"" << text3 << "\"" << endl;
+    cout << "Output: " << solution.maxNumberOfBalloons(text3) << endl;
+
+    // Example 4 (Boundary example: single character string)
+    string text4 = "b";
+    cout << "Input: text = \"" << text4 << "\"" << endl;
+    cout << "Output: " << solution.maxNumberOfBalloons(text4) << endl;
+
+    return 0;
+}
 ```
 
   </TabItem>
@@ -167,3 +312,16 @@ var maxNumberOfBalloons = function(text) {
 
   </TabItem>
 </Tabs>
+
+### Example Output
+
+```text
+Input: text = "nlaebolko"
+Output: 1
+Input: text = "loonbalxballpoon"
+Output: 2
+Input: text = "leetcode"
+Output: 0
+Input: text = "b"
+Output: 0
+```

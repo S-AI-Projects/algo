@@ -1,0 +1,53 @@
+Actual Execution Results for Assignment R61-T028 (Maximum Number of Balloons - LeetCode 1189)
+=============================================================================================
+
+Target Document: docs/dsa-problems/easy/maximum-number-of-balloons.md
+Checker Script: work/R61-T028/check.py
+Compiler: Apple clang version 21.0.0 (clang-2100.1.1.101) (g++ -std=c++17 -O2)
+
+1. Actual Standard Output from Published Extracted C++ Code:
+------------------------------------------------------------
+Input: text = "nlaebolko"
+Output: 1
+Input: text = "loonbalxballpoon"
+Output: 2
+Input: text = "leetcode"
+Output: 0
+Input: text = "b"
+Output: 0
+
+2. Comparison Table:
+--------------------
+------------------------------------------------------------------------------------------------------
+Test Identifier                     Input Text                  Expected        Actual          Status
+------------------------------------------------------------------------------------------------------
+Line 1 & 2 (Original Example 1)     "nlaebolko"                 Output: 1       Output: 1       PASS
+Line 3 & 4 (Original Example 2)     "loonbalxballpoon"          Output: 2       Output: 2       PASS
+Line 5 & 6 (Original Example 3)     "leetcode"                  Output: 0       Output: 0       PASS
+Line 7 & 8 (Boundary Example 4)     "b"                         Output: 0       Output: 0       PASS
+TEST_ORIGINAL_1                     "nlaebolko"                 1               1               PASS
+TEST_ORIGINAL_2                     "loonbalxballpoon"          2               2               PASS
+TEST_ORIGINAL_3                     "leetcode"                  0               0               PASS
+TEST_BOUNDARY_SINGLE_CHAR           "b"                         0               0               PASS
+TEST_BOUNDARY_LENGTH_6_MISSING_N    "balloo"                    0               0               PASS
+TEST_BOUNDARY_EXACT_ONE             "balloon"                   1               1               PASS
+TEST_ASYMMETRIC_DEFICIT             "balloonballoo"             1               1               PASS
+TEST_BOTTLENECK_L                   "bbbbbaaoooonnnnnll"        1               1               PASS
+TEST_UNRELATED_ONLY                 "xyz"                       0               0               PASS
+------------------------------------------------------------------------------------------------------
+
+3. Deliberate Failure Detection Results:
+----------------------------------------
+Negative Test 1 (stdout mismatch test):
+  Asserted substring "Output: 999" in actual stdout.
+  Result: AssertionError raised and caught successfully. (PASS)
+
+Negative Test 2 (boundary return mismatch test):
+  Asserted TEST_BOUNDARY_SINGLE_CHAR (0) == 1.
+  Result: AssertionError raised and caught successfully. (PASS)
+
+Overall Verification Status:
+All 8 published lines matched expected output exactly.
+All 9 extended test harness assertions passed.
+All deliberate negative tests detected failures correctly.
+Status: PASS (100% Match)
