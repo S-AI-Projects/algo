@@ -41,6 +41,12 @@ The **maximum sum** of any subarray of size `K` is `9`.
 
 This problem can be efficiently solved using the **Sliding Window** technique. Instead of recalculating the sum of each subarray from scratch, we can slide the window across the array and adjust the sum incrementally by adding the new element and removing the element that goes out of the window.
 
+### Loop Invariant and Boundary
+
+After the first `k` values are added, `current_sum` is the sum of the complete window `arr[0..k-1]`, and `max_sum` is the largest sum among the complete windows seen so far (initially, just that first window). At the start of the iteration with index `i`, `current_sum` represents `arr[i-k..i-1]`. The update `current_sum += arr[i] - arr[i-k]` removes the outgoing left value and adds the new right value, so afterward it represents exactly `arr[i-k+1..i]`. Updating `max_sum` then extends its guarantee to include this window. When the loop ends, every size-`k` window has been considered.
+
+For the worked input, the window sums are `8`, `7`, `9`, and `6`; the running maximum changes `8 → 8 → 9 → 9`. The smallest valid example `arr = [7], k = 1` has one complete window and returns `7`. The implementation's `n < k` guard handles inputs with no size-`k` window; the examples below test valid inputs with `1 <= k <= n`.
+
 ### Algorithm Steps:
 
 1. **Initialize the window**: Start by calculating the sum of the first subarray (the first window) of size `K`.
@@ -60,6 +66,8 @@ This problem can be efficiently solved using the **Sliding Window** technique. I
 #include <iostream>
 #include <vector>
 #include <climits>
+#include <algorithm>
+#include <cassert>
 using namespace std;
 
 int maxSumSubarray(const vector<int>& arr, int k) {
@@ -93,6 +101,14 @@ int main() {
 
     int result = maxSumSubarray(arr, k);
     cout << "Maximum sum of subarray of size " << k << ": " << result << endl;
+
+    // Boundary and bounded variations keep the invariant valid for negatives too.
+    assert(maxSumSubarray({7}, 1) == 7);                 // smallest valid window
+    assert(maxSumSubarray({-4, -2, -7}, 2) == -6);       // all-negative values
+    assert(maxSumSubarray({1, 2, 3}, 3) == 6);           // k equals n
+    assert(maxSumSubarray({1, 2, 3}, 1) == 3);           // k equals 1
+    assert(maxSumSubarray({0, 0, 0}, 2) == 0);           // repeated zeros
+    assert(maxSumSubarray({5, -5, 5, -5}, 2) == 0);      // alternating signs
 
     return 0;
 }
