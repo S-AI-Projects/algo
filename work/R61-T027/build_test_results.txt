@@ -1,0 +1,92 @@
+Build and Test Execution Results for Issue #27 (R61-T027)
+Generated: 2026-11-17T04:44:00Z
+Branch: student/e26b07f0757
+Target File: docs/basic-data-structures/array/wiggle-sort.md
+
+================================================================================
+1. Validation Script (python3 work/R61-T027/check.py)
+================================================================================
+Command: python3 work/R61-T027/check.py
+Exit Code: 0
+Status: PASS
+
+Log Output:
+================================================================================
+ R61-T027 Automated Verification: Wiggle Sort Step-by-Step Derivation
+================================================================================
+
+--- Step 1: Locating target markdown documentation ---
+Article path: /Users/ajaygurjar/algo-1/docs/basic-data-structures/array/wiggle-sort.md
+
+--- Step 2: Extracting Java implementation from markdown ---
+Extracted 41 lines of Java source from docs/basic-data-structures/array/wiggle-sort.md.
+Source preview (first 10 lines):
+  import java.util.Arrays;
+  
+  public class WiggleSort {
+  
+      /**
+       * Sorts the array in-place into a wiggle pattern.
+       * @param nums the array of integers to be wiggle sorted.
+       */
+      public static void sort(int[] nums) {
+          // Defensive check to prevent NullPointerException
+  ...
+
+--- Step 3: Detecting Java runtime ---
+Java binary located: /opt/homebrew/opt/openjdk/bin/java
+  openjdk version "27.0.1.0.3" 2026-10-24
+  OpenJDK Runtime Environment Homebrew (build 27.0.1.0.3)
+  OpenJDK 64-Bit Server VM Homebrew (build 27.0.1.0.3, mixed mode, sharing)
+
+--- Step 4: Executing extracted Java code ---
+Actual stdout lines received:
+  > Worked Example Output: [3, 5, 1, 6, 2, 4]
+  > Boundary Example Output: [1]
+
+--- Step 5: Asserting expected output values ---
+Comparing Expected vs. Actual:
+  Expected: 'Worked Example Output: [3, 5, 1, 6, 2, 4]'
+  Actual:   'Worked Example Output: [3, 5, 1, 6, 2, 4]'
+  Status:   MATCH (PASS)
+
+  Expected: 'Boundary Example Output: [1]'
+  Actual:   'Boundary Example Output: [1]'
+  Status:   MATCH (PASS)
+
+PASS: Both worked example and boundary example match expected output.
+
+--- Step 6: Performing negative test with incorrect expectation ---
+PASS: Deliberate incorrect result properly triggered AssertionError.
+
+================================================================================
+ ALL CHECKS PASSED: Wiggle Sort derivation and execution verified successfully!
+================================================================================
+
+================================================================================
+2. Front-matter Validation (npm run validate:docs)
+================================================================================
+Command: npm run validate:docs
+Exit Code: 0
+Status: PASS
+
+Log Output:
+> algo@0.0.0 validate:docs
+> node scripts/validate-frontmatter.js
+
+ℹ️ Comparing current HEAD against base reference: main
+🔍 Validating front-matter in documentation files...
+
+✅ All documentation files have valid front-matter!
+
+📊 Scanned 946 files, found 0 error(s) and 0 warning(s)
+
+================================================================================
+3. Production Build Validation (npm run build)
+================================================================================
+Command: npm run build
+Exit Code: 0
+Status: PASS
+Log Output:
+[SUCCESS] Generated static files in "build".
+[SUCCESS] Generated static files in "build/hi".

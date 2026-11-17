@@ -1,0 +1,46 @@
+{
+  "issue": "GitHub Issue #27: R61-T027 — Derive the result step by step: Wiggle Sort",
+  "document": "docs/basic-data-structures/array/wiggle-sort.md",
+  "target_class": "WiggleSort",
+  "contract_methods": [
+    "public static void sort(int[] nums)",
+    "private static void swap(int[] nums, int i, int j)",
+    "public static void main(String[] args)"
+  ],
+  "contract_condition": "arr[0] <= arr[1] >= arr[2] <= arr[3] >= ...",
+  "test_cases": [
+    {
+      "case_id": "TC-01",
+      "name": "Worked Example (Documented LeetCode 280 Case)",
+      "input_array": [3, 5, 2, 1, 6, 4],
+      "input_type": "int[]",
+      "length": 6,
+      "method_invocation": "WiggleSort.sort(nums)",
+      "contract_context": "Standard unsorted array traversing loop from i = 0 to 4, performing swaps at i = 2 and i = 3",
+      "intermediate_states": [
+        {"iteration": "Initial", "array": [3, 5, 2, 1, 6, 4], "action": "none"},
+        {"iteration": "i=0 (even)", "array": [3, 5, 2, 1, 6, 4], "action": "none (3 <= 5)"},
+        {"iteration": "i=1 (odd)", "array": [3, 5, 2, 1, 6, 4], "action": "none (5 >= 2)"},
+        {"iteration": "i=2 (even)", "array": [3, 5, 1, 2, 6, 4], "action": "swap(2, 3) because 2 > 1"},
+        {"iteration": "i=3 (odd)", "array": [3, 5, 1, 6, 2, 4], "action": "swap(3, 4) because 2 < 6"},
+        {"iteration": "i=4 (even)", "array": [3, 5, 1, 6, 2, 4], "action": "none (2 <= 4)"}
+      ],
+      "expected_output_array": [3, 5, 1, 6, 2, 4],
+      "expected_stdout": "Worked Example Output: [3, 5, 1, 6, 2, 4]"
+    },
+    {
+      "case_id": "TC-02",
+      "name": "Boundary Example (Defensive Contract: nums.length <= 1)",
+      "input_array": [1],
+      "input_type": "int[]",
+      "length": 1,
+      "method_invocation": "WiggleSort.sort(boundary)",
+      "contract_context": "Single-element array triggering defensive early-return guard: if (nums == null || nums.length <= 1)",
+      "intermediate_states": [
+        {"iteration": "Defensive check", "array": [1], "action": "early return, zero iterations"}
+      ],
+      "expected_output_array": [1],
+      "expected_stdout": "Boundary Example Output: [1]"
+    }
+  ]
+}
