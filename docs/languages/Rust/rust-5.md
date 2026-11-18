@@ -344,6 +344,69 @@ fn increase(num: &mut i32) {
 
 ---
 
+## Function Invariant and Bounded Variations
+
+- **Precise Invariant:** For any `i32` arguments `(a, b)` within non-overflowing bounds (`|a|, |b| <= 1_000_000`), calling `sum(a, b)` evaluates its final expression `a + b` without mutating caller variables (`i32` implements `Copy`) and satisfies commutativity (`sum(a, b) == sum(b, a)`) and additive identity (`sum(a, 0) == a`).
+- **Concrete Intermediate State:** On the worked fixture `(x = 3, y = 7)`, calling `sum(x, y)` copies `3` and `7` into parameters `a` and `b`, evaluates `3 + 7 -> 10`, returns `10`, and preserves `(x, y) == (3, 7)`.
+- **Boundary Contract (`fn function_name()` and `sum(0, 0)`):** A zero-parameter function `noop()` returns the unit type `()` with no side effects, and `sum(0, 0)` returns `0`.
+
+```rust
+fn noop() {}
+
+fn greet_message() -> String {
+    String::from("Welcome to Rust!")
+}
+
+fn sum(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+fn main() {
+    println!("Worked example (greet): {}", greet_message());
+    let (x, y) = (3, 7);
+    let worked = sum(x, y);
+    assert_eq!((x, y), (3, 7));
+    println!("Worked example (sum(3, 7)): {}", worked);
+
+    assert_eq!(noop(), ());
+    println!("Boundary example (noop -> (), sum(0, 0)): {}", sum(0, 0));
+
+    let cases = [
+        ("Invariant fixture", 3, 7, 10),
+        ("Variation 1", -5, 5, 0),
+        ("Variation 2", 10, -3, 7),
+        ("Variation 3", 0, 42, 42),
+        ("Variation 4", -12, -8, -20),
+        ("Variation 5", 100, 250, 350),
+    ];
+
+    for &(label, a, b, expected) in &cases {
+        let forward = sum(a, b);
+        let reverse = sum(b, a);
+        assert_eq!(forward, expected);
+        assert_eq!(forward, reverse);
+        assert_eq!(sum(a, 0), a);
+        println!("{} ({}, {}) => {}", label, a, b, forward);
+    }
+    println!("All 6 invariant cases verified!");
+}
+```
+
+### Output
+
+```text
+Worked example (greet): Welcome to Rust!
+Worked example (sum(3, 7)): 10
+Boundary example (noop -> (), sum(0, 0)): 0
+Invariant fixture (3, 7) => 10
+Variation 1 (-5, 5) => 0
+Variation 2 (10, -3) => 7
+Variation 3 (0, 42) => 42
+Variation 4 (-12, -8) => -20
+Variation 5 (100, 250) => 350
+All 6 invariant cases verified!
+```
+
 # Advantages of Functions
 
 Functions provide many benefits:
