@@ -117,39 +117,99 @@ LSTMs process data in sequential order, using the previous hidden state and cell
   LSTMs need memory proportional to the sequence length $T$ and the number of hidden units $h$, resulting in a space complexity of $O(T \cdot h)$.
 
 ### Example:
-Consider an example where we use an LSTM to perform sentiment analysis on text data:
+Consider a deterministic, self-contained LSTM sentiment example using fixed seeds and sorted vocabulary indices:
 
 ```python
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras import layers, models
 
-# Sample input data (e.g., text sequence for sentiment analysis)
+
+def sigmoid(x):
+    return 1.0 / (1.0 + np.exp(-x))
+
+
+def build_vocab(text):
+    # Sort unique characters to remove PYTHONHASHSEED-dependent set() order
+    vocab = sorted(set(text))
+    char_to_idx = {ch: idx for idx, ch in enumerate(vocab)}
+    return vocab, char_to_idx
+
+
+def encode_one_hot(text, char_to_idx):
+    seq = np.zeros((len(text), len(char_to_idx)), dtype=np.float64)
+    for t, ch in enumerate(text):
+        seq[t, char_to_idx[ch]] = 1.0
+    return seq
+
+
+def run_lstm_sentiment(text, target=1.0, hidden_size=8, epochs=100, lr=0.1, seed=42):
+    # Local seeded RNG avoids mutating process-global random state
+    rng = np.random.default_rng(seed)
+    vocab, char_to_idx = build_vocab(text)
+    x_seq = encode_one_hot(text, char_to_idx)
+    concat_size = hidden_size + len(vocab)
+
+    Wf = rng.normal(0.0, 0.1, (concat_size, hidden_size))
+    bf = np.zeros(hidden_size)
+    Wi = rng.normal(0.0, 0.1, (concat_size, hidden_size))
+    bi = np.zeros(hidden_size)
+    Wc = rng.normal(0.0, 0.1, (concat_size, hidden_size))
+    bc = np.zeros(hidden_size)
+    Wo = rng.normal(0.0, 0.1, (concat_size, hidden_size))
+    bo = np.zeros(hidden_size)
+    Wy = rng.normal(0.0, 0.1, (hidden_size, 1))
+    by = np.zeros(1)
+
+    def forward(seq):
+        h = np.zeros(hidden_size)
+        c = np.zeros(hidden_size)
+        for x_t in seq:
+            z = np.concatenate([h, x_t])
+            f_t = sigmoid(z @ Wf + bf)
+            i_t = sigmoid(z @ Wi + bi)
+            c_tilde = np.tanh(z @ Wc + bc)
+            c = f_t * c + i_t * c_tilde
+            o_t = sigmoid(z @ Wo + bo)
+            h = o_t * np.tanh(c)
+        return h, float(sigmoid(h @ Wy + by)[0])
+
+    for _ in range(epochs):
+        h_last, prob = forward(x_seq)
+        grad = prob - target
+        Wy -= lr * np.outer(h_last, [grad])
+        by -= lr * grad
+
+    _, final_prob = forward(x_seq)
+    label = "Positive" if final_prob > 0.5 else "Negative"
+    return vocab, [char_to_idx[ch] for ch in text], round(final_prob, 4), label
+
+
+# Worked example with literal fixture from the article
 text = "This movie was fantastic"
-char_to_idx = {ch: idx for idx, ch in enumerate(set(text))}
-idx_to_char = {idx: ch for ch, idx in char_to_idx.items()}
-input_seq = [char_to_idx[ch] for ch in text]
-
-# Prepare input data
-input_seq = np.array(input_seq).reshape(1, -1)
-
-# LSTM Model
-model = models.Sequential()
-
-# LSTM Layer
-model.add(layers.LSTM(50, input_shape=(None, len(char_to_idx))))
-model.add(layers.Dense(1, activation='sigmoid'))  # Binary sentiment classification
-
-# Compile model
-model.compile(optimizer='adam', loss='binary_crossentropy')
-
-# Train the model (for illustration, usually requires more training)
-model.fit(input_seq, np.array([1]), epochs=100)  # Example of positive sentiment
-
-# Predict sentiment
-prediction = model.predict(input_seq)
-predicted_sentiment = "Positive" if prediction > 0.5 else "Negative"
+vocab, input_seq, prob, predicted_sentiment = run_lstm_sentiment(text, target=1.0, seed=42)
+print(f"Vocabulary size: {len(vocab)}, First 5 sorted tokens: {vocab[:5]}")
+print(f"Encoded sequence prefix: {input_seq[:6]}")
+print(f"Predicted Probability: {prob:.4f}")
 print(f"Predicted Sentiment: {predicted_sentiment}")
+
+# Smallest valid boundary example (single time step, T = 1)
+b_vocab, b_seq, b_prob, b_sentiment = run_lstm_sentiment("a", target=1.0, seed=42)
+print(f"Boundary (T=1) vocab: {b_vocab}, seq: {b_seq}, prob: {b_prob:.4f}, sentiment: {b_sentiment}")
+```
+
+### Reproducibility & Boundary Case
+
+- **Hidden State Removed:** Replacing `enumerate(set(text))` with `sorted(set(text))` eliminates dependence on Python's per-process `PYTHONHASHSEED`, and initializing weights via a local `np.random.default_rng(42)` generator avoids mutating process-global RNG state.
+- **Concrete Intermediate State:** On `"This movie was fantastic"`, sorting the 15 unique characters yields `[' ', 'T', 'a', 'c', 'e', ...]` and maps the prefix `"This m"` deterministically to `[1, 6, 7, 11, 0, 8]`.
+- **Boundary Case (`T = 1`):** Consistent with the time/space complexity contract ($T \ge 1$), a single-character sequence `"a"` executes one LSTM cell step (`vocab = ['a']`, `seq = [0]`) and converges to `"Positive"`.
+
+### Example Output
+
+```plaintext
+Vocabulary size: 15, First 5 sorted tokens: [' ', 'T', 'a', 'c', 'e']
+Encoded sequence prefix: [1, 6, 7, 11, 0, 8]
+Predicted Probability: 0.8996
+Predicted Sentiment: Positive
+Boundary (T=1) vocab: ['a'], seq: [0], prob: 0.8993, sentiment: Positive
 ```
 
 ### Applications of LSTMs:
