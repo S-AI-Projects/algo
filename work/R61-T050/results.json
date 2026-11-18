@@ -1,0 +1,121 @@
+{
+  "task": "R61-T050",
+  "item": "docs/dsa-problems/medium/combination-sum.md",
+  "status": "PASSED",
+  "tools": {
+    "python": "3.14.7",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "arch": "arm64",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.4.1.1)"
+  },
+  "golden_execution": {
+    "stdout": "Worked Example 1 result: [[2,2,3],[7]]\nAll worked and boundary examples passed successfully!",
+    "returncode": 0
+  },
+  "mutation_testing": {
+    "mutant_operation": "Changed Choice 1 recursion parameter from index to index + 1 (disallowing candidate reuse)",
+    "distinguishing_input": "candidates = [2, 3, 6, 7], target = 7",
+    "golden_result": "COMBINATIONS_FOUND=2\nFOUND_REUSE=TRUE",
+    "golden_passed": true,
+    "mutant_result": "COMBINATIONS_FOUND=1\nFOUND_REUSE=FALSE",
+    "mutant_stderr": "Assertion failure: expected [2, 2, 3] to be present and total combinations == 2, but got size 1",
+    "mutant_killed": true
+  },
+  "test_cases": [
+    {
+      "case": "Worked Example 1",
+      "input": {
+        "candidates": [
+          2,
+          3,
+          6,
+          7
+        ],
+        "target": 7
+      },
+      "expected": [
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          7
+        ]
+      ],
+      "status": "PASSED"
+    },
+    {
+      "case": "Worked Example 2",
+      "input": {
+        "candidates": [
+          2,
+          3,
+          5
+        ],
+        "target": 8
+      },
+      "expected": [
+        [
+          2,
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          3,
+          3
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "status": "PASSED"
+    },
+    {
+      "case": "Boundary Example 3 (Target < Min Candidate)",
+      "input": {
+        "candidates": [
+          2
+        ],
+        "target": 1
+      },
+      "expected": [],
+      "status": "PASSED"
+    },
+    {
+      "case": "Boundary Example 4 (Repeated Single Candidate)",
+      "input": {
+        "candidates": [
+          3
+        ],
+        "target": 9
+      },
+      "expected": [
+        [
+          3,
+          3,
+          3
+        ]
+      ],
+      "status": "PASSED"
+    },
+    {
+      "case": "Boundary Example 5 (Single Candidate Exact Match)",
+      "input": {
+        "candidates": [
+          5
+        ],
+        "target": 5
+      },
+      "expected": [
+        [
+          5
+        ]
+      ],
+      "status": "PASSED"
+    }
+  ]
+}
