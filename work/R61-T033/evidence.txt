@@ -1,0 +1,12 @@
+=== Tool Versions ===
+Python 3.15.2
+v20.20.2
+10.8.2
+=== Inputs ===
+Fixture: [12, 11, 13, 5, 6] | Boundary: [42]
+=== Check Execution ===
+PASS: Published Insertion Sort example executed and matched expected output.
+[ 5, 6, 11, 12, 13 ]
+Swap-based alternative: [ 5, 6, 11, 12, 13 ]
+Boundary (shift-based): [ 42 ]
+Boundary (swap-based): [ 42 ]
