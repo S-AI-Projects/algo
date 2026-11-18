@@ -110,6 +110,15 @@ if __name__ == "__main__":
     print(f"Average waiting time = {avg_wait_time}")
     print(f"Average turnaround time = {avg_turnaround_time}")
 
+    # Smallest valid boundary case: single process (len(processes) == 1)
+    boundary_processes = [(1, 5, 1)]
+    boundary_wait = calculate_wait_times(boundary_processes)
+    boundary_tat = calculate_turnaround_times(boundary_processes, boundary_wait)
+    print(f"\nBoundary Case (1 Process): {boundary_processes}")
+    print(f"Waiting Times: {boundary_wait}, Turnaround Times: {boundary_tat}")
+    print(f"Average waiting time = {calculate_avg_wait_time(boundary_wait)}")
+    print(f"Average turnaround time = {calculate_avg_turnaround_time(boundary_tat)}")
+
 ```
 
 ## Explanation of the Code
@@ -121,17 +130,26 @@ if __name__ == "__main__":
     - Average Times:
         - The average waiting time and average turnaround time are calculated by taking the sum of the respective times and dividing by the total number of processes.
 
-## Example Output
-For the input where processes are [(1, 10, 2), (2, 1, 1), (3, 2, 3), (4, 1, 4)], the output is as follows:
-```plaintext
-Process ID    Burst Time    Priority    Waiting Time    Turnaround Time
-2             1             1           0               1
-1             10            2           1               11
-3             2             3           11              13
-4             1             4           13              14
+### Boundary Case & Precondition
+- **Precondition:** The input list `processes` must contain at least one process (`len(processes) >= 1`) with non-negative burst times, because `calculate_avg_wait_time` and `calculate_avg_turnaround_time` divide by `len(wait_times)` and `len(turnaround_times)` directly (passing `[]` raises `ZeroDivisionError`).
+- **Concrete Input & Intermediate State:** For `[(1, 10, 2), (2, 1, 1), (3, 2, 3), (4, 1, 4)]`, sorting by `(priority, process_id)` produces `[(2, 1, 1), (1, 10, 2), (3, 2, 3), (4, 1, 4)]`, yielding intermediate arrays `wait_times = [0, 1, 11, 13]` and `turnaround_times = [1, 11, 13, 14]`.
+- **Smallest Valid Boundary (`len(processes) == 1`):** For `[(1, 5, 1)]`, the waiting-time loop `range(1, 1)` does not execute (`wait_times = [0]`) and `turnaround_times = [5]`, so average waiting time is `0.0` and average turnaround time equals the single process's burst time (`5.0`).
 
+## Example Output
+For the worked example input `[(1, 10, 2), (2, 1, 1), (3, 2, 3), (4, 1, 4)]` followed by the 1-process boundary case `[(1, 5, 1)]`, the exact output is:
+```plaintext
+Process ID	Burst Time	Priority	Waiting Time	Turnaround Time
+2		1		1		0		1
+1		10		2		1		11
+3		2		3		11		13
+4		1		4		13		14
 Average waiting time = 6.25
 Average turnaround time = 9.75
+
+Boundary Case (1 Process): [(1, 5, 1)]
+Waiting Times: [0], Turnaround Times: [5]
+Average waiting time = 0.0
+Average turnaround time = 5.0
 ```
 
 ## Time and Space Complexity
