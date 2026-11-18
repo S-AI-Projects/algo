@@ -71,6 +71,58 @@ Since we need to find *all* possible combinations that meet a specific condition
 * **Time Complexity:** $O(2^{T/M})$ where $T$ is the target value and $M$ is the minimum value in the `candidates` array. In the worst case, the recursion tree can branch out exponentially, bounded by the maximum possible depth of $T/M$.
 * **Space Complexity:** $O(T/M)$ for the auxiliary recursion stack space. The longest possible combination (and thus the deepest recursion tree) occurs when we repeatedly pick the smallest element.
 
+### Mutation Testing & Invariant Analysis
+
+Backtracking algorithms depend critically on preserving state-space traversal invariants during each recursive step.
+
+#### 1. The Reuse Invariant
+In Choice 1 (include current candidate), the algorithm allows the current number to be reused by passing the same `index` to the recursive call:
+```cpp
+// Correct Choice 1: retain index to allow candidate reuse
+current.push_back(candidates[index]);
+backtrack(candidates, target - candidates[index], res, current, index);
+current.pop_back();
+```
+Because the problem contract allows choosing the same number an unlimited number of times, passing `index` keeps `candidates[index]` available for subsequent recursive selections until the remaining target is reduced to zero or below.
+
+#### 2. The One-Operation Mutant
+Consider an off-by-one parameter mutation in Choice 1 where `index` is prematurely incremented:
+```cpp
+// Mutated Choice 1: prematurely advances index to index + 1
+current.push_back(candidates[index]);
+backtrack(candidates, target - candidates[index], res, current, index + 1); // MUTANT
+current.pop_back();
+```
+This mutation restricts selections to at most one occurrence per candidate (converting the algorithm into 0/1 subset sum without replacement, akin to Combination Sum II).
+
+#### 3. Distinguishing Test & State Trace
+A distinguishing test must supply an input where the target sum requires selecting at least one candidate multiple times:
+- **Input:** `candidates = [2, 3, 6, 7]`, `target = 7`
+- **Expected Output:** `[[2, 2, 3], [7]]`
+
+**Step-by-Step State Evolution:**
+1. **Initial State:** `backtrack(candidates, target = 7, res, current = [], index = 0)`
+2. **First Choice 1:** Includes `candidates[0] = 2`, `current = [2]`, `target = 5`.
+3. **Divergence Point:**
+   - **Correct Implementation (`index = 0`):**
+     Calls `backtrack(..., target = 5, ..., index = 0)`.
+     Next Choice 1 includes `2` again: `current = [2, 2]`, `target = 3`, `index = 0`.
+     Next Choice 1 includes `2`: `current = [2, 2, 2]`, `target = 1`. Next call makes `target = -1 < 0` (pruned).
+     Backtracks to `current = [2, 2]`, explores Choice 2 (skip to `index = 1`, candidate `3`).
+     Includes `3`: `current = [2, 2, 3]`, `target = 3 - 3 = 0`.
+     Base case hit: records valid combination `[2, 2, 3]`.
+     Subsequently finds `[7]`. Output contains both `[[2, 2, 3], [7]]`.
+   - **Mutated Implementation (`index + 1 = 1`):**
+     Calls `backtrack(..., target = 5, ..., index = 1)`.
+     Candidate `2` is immediately locked out. Remaining subproblems can only choose from `[3, 6, 7]`.
+     No subset of $\{3, 6, 7\}$ sums to $5$ ($5 - 3 = 2$, but `2` is unreachable).
+     All sub-branches prune without finding `[2, 2, 3]`.
+     The mutant only discovers `[7]`.
+4. **Verification:**
+   - **Golden Output:** `[[2, 2, 3], [7]]` (size: 2)
+   - **Mutant Output:** `[[7]]` (size: 1)
+   The test asserts `res.size() == 2` and verifies the presence of `[2, 2, 3]`, immediately catching and killing the mutant.
+
 ---
 
 ## Solutions
@@ -79,6 +131,13 @@ Since we need to find *all* possible combinations that meet a specific condition
   <TabItem value="cpp" label="C++" default>
 
 ```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cassert>
+
+using namespace std;
+
 class Solution {
 public:
     void backtrack(vector<int>& candidates, int target, vector<vector<int>>& res, vector<int>& current, int index) {
@@ -109,6 +168,60 @@ public:
         return res;
     }
 };
+
+int main() {
+    Solution solver;
+
+    // Worked Example 1: Literal input [2,3,6,7], target = 7
+    vector<int> c1 = {2, 3, 6, 7};
+    int t1 = 7;
+    vector<vector<int>> res1 = solver.combinationSum(c1, t1);
+    assert(res1.size() == 2);
+    assert(res1[0] == vector<int>({2, 2, 3}));
+    assert(res1[1] == vector<int>({7}));
+
+    // Worked Example 2: Literal input [2,3,5], target = 8
+    vector<int> c2 = {2, 3, 5};
+    int t2 = 8;
+    vector<vector<int>> res2 = solver.combinationSum(c2, t2);
+    assert(res2.size() == 3);
+    assert(res2[0] == vector<int>({2, 2, 2, 2}));
+    assert(res2[1] == vector<int>({2, 3, 3}));
+    assert(res2[2] == vector<int>({3, 5}));
+
+    // Boundary Example 3: Target smaller than smallest candidate
+    vector<int> c3 = {2};
+    int t3 = 1;
+    vector<vector<int>> res3 = solver.combinationSum(c3, t3);
+    assert(res3.empty());
+
+    // Boundary Example 4: Single candidate with multiple repeated selections
+    vector<int> c4 = {3};
+    int t4 = 9;
+    vector<vector<int>> res4 = solver.combinationSum(c4, t4);
+    assert(res4.size() == 1);
+    assert(res4[0] == vector<int>({3, 3, 3}));
+
+    // Boundary Example 5: Single candidate exact match
+    vector<int> c5 = {5};
+    int t5 = 5;
+    vector<vector<int>> res5 = solver.combinationSum(c5, t5);
+    assert(res5.size() == 1);
+    assert(res5[0] == vector<int>({5}));
+
+    cout << "Worked Example 1 result: [";
+    for (size_t i = 0; i < res1.size(); ++i) {
+        cout << "[";
+        for (size_t j = 0; j < res1[i].size(); ++j) {
+            cout << res1[i][j] << (j + 1 < res1[i].size() ? "," : "");
+        }
+        cout << "]" << (i + 1 < res1.size() ? "," : "");
+    }
+    cout << "]" << endl;
+
+    cout << "All worked and boundary examples passed successfully!" << endl;
+    return 0;
+}
 ```
 
   </TabItem>
