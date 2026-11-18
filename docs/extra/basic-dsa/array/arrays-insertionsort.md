@@ -157,8 +157,41 @@ function insertionSort(arr) {
     return arr;
 }
 
+function insertionSortBySwaps(arr) {
+    for (let i = 1; i < arr.length; i++) {
+        let j = i;
+        while (j > 0 && arr[j - 1] > arr[j]) {
+            [arr[j - 1], arr[j]] = [arr[j], arr[j - 1]];
+            j--;
+        }
+    }
+    return arr;
+}
+
 const arr = [12, 11, 13, 5, 6];
-console.log(insertionSort(arr)); // Output: [5, 6, 11, 12, 13]
+console.log(insertionSort([...arr])); // Output: [ 5, 6, 11, 12, 13 ]
+console.log("Swap-based alternative:", insertionSortBySwaps([...arr]));
+
+const boundaryArr = [42];
+console.log("Boundary (shift-based):", insertionSort([...boundaryArr]));
+console.log("Boundary (swap-based):", insertionSortBySwaps([...boundaryArr]));
+```
+
+### Method Comparison: Shift-Based vs. Adjacent-Swap Insertion Sort
+
+Both implementations sort any finite array in ascending order using $O(1)$ auxiliary space and produce the same sorted prefix after each pass (`[11, 12, 13, 5, 6]` -> `[11, 12, 13, 5, 6]` -> `[5, 11, 12, 13, 6]` -> `[5, 6, 11, 12, 13]`), but they differ in intermediate states and writes:
+
+- **Source Method (`insertionSort` — Shift-Based):** Stores `key = arr[i]` and shifts larger elements right (`arr[j + 1] = arr[j]`), creating temporary duplicates (during `i = 3` with `key = 5`: `[11, 12, 13, 13, 6]` -> `[11, 12, 12, 13, 6]` -> `[11, 11, 12, 13, 6]`) before writing `key` once at index `0`. On `[12, 11, 13, 5, 6]`, this performs **7 shifts + 4 key placements = 11 array writes**.
+- **Alternative Method (`insertionSortBySwaps` — Adjacent-Swap):** Moves `arr[j]` leftward via adjacent swaps (`[12, 11, 5, 13, 6]` -> `[12, 5, 11, 13, 6]` -> `[5, 11, 12, 13, 6]`), keeping every intermediate state a valid permutation without a `key` variable. On `[12, 11, 13, 5, 6]`, this performs **7 adjacent swaps = 14 element writes**.
+- **Boundary Case (`[42]`):** For a 1-element array (`arr.length === 1`), the outer loop never runs, performing `0` comparisons and `0` writes and returning `[42]`.
+
+## Example Output
+
+```plaintext
+[ 5, 6, 11, 12, 13 ]
+Swap-based alternative: [ 5, 6, 11, 12, 13 ]
+Boundary (shift-based): [ 42 ]
+Boundary (swap-based): [ 42 ]
 ```
 
 ## Complexity Analysis
