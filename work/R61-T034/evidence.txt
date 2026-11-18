@@ -1,0 +1,19 @@
+=== Tool Versions ===
+Python 3.15.2
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+v20.20.2
+10.8.2
+=== Inputs ===
+Fixture: (3, 7) | Boundary: noop(), sum(0, 0) | 5 Variations: (-5, 5), (10, -3), (0, 42), (-12, -8), (100, 250)
+=== Check Execution ===
+PASS: Published Rust Functions invariant example compiled and matched expected output.
+Worked example (greet): Welcome to Rust!
+Worked example (sum(3, 7)): 10
+Boundary example (noop -> (), sum(0, 0)): 0
+Invariant fixture (3, 7) => 10
+Variation 1 (-5, 5) => 0
+Variation 2 (10, -3) => 7
+Variation 3 (0, 42) => 42
+Variation 4 (-12, -8) => -20
+Variation 5 (100, 250) => 350
+All 6 invariant cases verified!
