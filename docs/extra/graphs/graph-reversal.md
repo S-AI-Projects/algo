@@ -75,7 +75,6 @@ These steps succinctly outline the algorithm's approach to transforming the dire
 ### C++ Implementation:
 
 ```cpp
-
 #include <iostream>
 #include <vector>
 
@@ -83,31 +82,70 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> solve(vector<vector<int>>& graph) {
-        vector<vector<int>> ans(graph.size());
-        for (int i = 0; i < graph.size(); ++i) {
-            for (int x : graph[i]) {
-                ans[x].push_back(i);
+    vector<vector<int>> solve(const vector<vector<int>>& graph) {
+        const int vertexCount = static_cast<int>(graph.size());
+        vector<vector<int>> reversedGraph(vertexCount);
+
+        // Flip each directed edge (sourceVertex -> targetVertex) into (targetVertex -> sourceVertex)
+        for (int sourceVertex = 0; sourceVertex < vertexCount; ++sourceVertex) {
+            for (int targetVertex : graph[sourceVertex]) {
+                reversedGraph[targetVertex].push_back(sourceVertex);
             }
         }
-        return ans;
+        return reversedGraph;
     }
 };
 
-int main() {
-    Solution ob;
-    vector<vector<int>> graph = {{1, 2}, {4}, {4}, {1, 2}, {3}};
-    vector<vector<int>> result = ob.solve(graph);
-
-    // Print the result
-    for (const auto& vec : result) {
+void printAdjacencyList(const vector<vector<int>>& adj) {
+    for (const auto& neighbors : adj) {
         cout << "[ ";
-        for (int val : vec) {
-            cout << val << " ";
+        for (int vertex : neighbors) {
+            cout << vertex << " ";
         }
         cout << "]" << endl;
     }
+}
+
+int main() {
+    Solution ob;
+
+    // Worked example from Sample Input (5 vertices: 0..4)
+    vector<vector<int>> graph = {{1, 2}, {4}, {4}, {1, 2}, {3}};
+    vector<vector<int>> result = ob.solve(graph);
+    cout << "Worked example (5 nodes):" << endl;
+    printAdjacencyList(result);
+
+    // Boundary example: smallest non-empty graph (n = 1, single isolated node 0)
+    vector<vector<int>> singleNodeGraph = {{}};
+    vector<vector<int>> singleNodeResult = ob.solve(singleNodeGraph);
+    cout << "Boundary example (1 isolated node):" << endl;
+    printAdjacencyList(singleNodeResult);
 
     return 0;
 }
+```
+
+### Intermediate States & Boundary Case
+
+- **Refactored Edge-Reversal Operation:** Naming the outer index `sourceVertex` and inner neighbor `targetVertex` makes it explicit that an outgoing edge `sourceVertex -> targetVertex` in `graph` becomes `targetVertex -> sourceVertex` via `reversedGraph[targetVertex].push_back(sourceVertex)`.
+- **Exact Intermediate States on `{{1, 2}, {4}, {4}, {1, 2}, {3}}`:**
+  - Initialized `reversedGraph` (`n = 5`): `[[], [], [], [], []]`
+  - After `sourceVertex = 0` (edges `0->1, 0->2`): `[[], [0], [0], [], []]`
+  - After `sourceVertex = 1` (edge `1->4`): `[[], [0], [0], [], [1]]`
+  - After `sourceVertex = 2` (edge `2->4`): `[[], [0], [0], [], [1, 2]]`
+  - After `sourceVertex = 3` (edges `3->1, 3->2`): `[[], [0, 3], [0, 3], [], [1, 2]]`
+  - After `sourceVertex = 4` (edge `4->3`): `[[], [0, 3], [0, 3], [4], [1, 2]]`
+- **Boundary Case (`n = 1` isolated vertex `{{}}`):** Consistent with the `0..n-1` vertex contract, a 1-node graph with no outgoing edges executes the outer loop once and the inner neighbor loop zero times, returning `[[]]`.
+
+### Example Output
+
+```plaintext
+Worked example (5 nodes):
+[ ]
+[ 0 3 ]
+[ 0 3 ]
+[ 4 ]
+[ 1 2 ]
+Boundary example (1 isolated node):
+[ ]
 ```
