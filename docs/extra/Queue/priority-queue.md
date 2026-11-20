@@ -105,14 +105,21 @@ class PriorityQueue:
      def size(self):
           return len(self.elements)
 
-# Example usage
+# Example usage (worked fixture)
 pq = PriorityQueue()
 pq.insert("Task 1", 2)
 pq.insert("Task 2", 1)
-print(pq.remove())  # Output: ("Task 2", 1)
-print(pq.peek())    # Output: ("Task 1", 2)
+print(pq.remove())    # Output: ('Task 2', 1)
+print(pq.peek())      # Output: ('Task 1', 2)
 print(pq.is_empty())  # Output: False
-print(pq.size())    # Output: 1
+print(pq.size())      # Output: 1
+
+# Boundary example: empty priority queue (size == 0)
+empty_pq = PriorityQueue()
+print(empty_pq.remove())    # Output: Priority Queue Underflow
+print(empty_pq.peek())      # Output: Priority Queue is empty
+print(empty_pq.is_empty())  # Output: True
+print(empty_pq.size())      # Output: 0
 ```
 
 #### C++ Implementation
