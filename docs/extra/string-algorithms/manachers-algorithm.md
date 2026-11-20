@@ -93,3 +93,19 @@ except IndexError as exc:
 safe_pal, _ = manacher_longest_palindrome("^a$")
 print(f"Bounds-safe on '^a$': longest={safe_pal!r}")
 ```
+
+## Failure Case & Source Contract
+
+- **Sentinel Collision Limitation:** The standard sentinel optimization (`^#...#$`) assumes `^` and `$` never appear inside the input string `s`. When `s = "^a$"`, the transformed string becomes `"^#^#a#$#$"`; at index `i = 7` (`#`), `t[6] == t[8] == "$"` matches the right sentinel, so an unguarded `while` expansion attempts to read `t[9]` and fails with `IndexError` unless explicit `0 <= left` and `right < n` bounds checks are retained.
+- **Total Operation & Empty-Result Contract:** Because `manacher_longest_palindrome` is a total function over `str`, an empty input `""` returns the empty substring `""` (`len = 0`), contrasting with the minimal non-empty boundary `"a"` (`longest = "a"`, `len = 1`, `radii = "00100"`).
+- **Tie-Breaking Behavior (`"babad"`):** On `"babad"`, `t = "^#b#a#b#a#d#$"` yields `radii = "0010303010100"`, where both `"bab"` (center `4`) and `"aba"` (center `6`) have radius `3`; strict `radii[i] > max_len` deterministically selects the leftmost longest palindrome `"bab"`.
+
+### Example Output
+
+```plaintext
+Worked ('babad'): longest='bab', radii=0010303010100
+Boundary (''): longest='', len=0
+Boundary ('a'): longest='a', len=1, radii=00100
+Naive sentinel on '^a$' raised: IndexError
+Bounds-safe on '^a$': longest='^'
+```
