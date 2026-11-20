@@ -122,6 +122,29 @@ print(empty_pq.is_empty())  # Output: True
 print(empty_pq.size())      # Output: 0
 ```
 
+##### Step-by-Step Derivation of Intermediate States
+
+- **Initialize (`pq = PriorityQueue()`):** `self.elements` starts as an empty Python list `[]`.
+- **`pq.insert("Task 1", 2)`:** `list.append` appends `('Task 1', 2)` and `list.sort(key=lambda x: x[1])` keeps `self.elements == [('Task 1', 2)]`.
+- **`pq.insert("Task 2", 1)`:** `list.append` produces `[('Task 1', 2), ('Task 2', 1)]`, and `list.sort(key=lambda x: x[1])` orders by ascending priority (`1 < 2`) to yield `[('Task 2', 1), ('Task 1', 2)]`.
+- **`pq.remove()`:** `is_empty()` (`len(self.elements) == 0`) is `False`; `list.pop(0)` removes and returns index `0` (`('Task 2', 1)`), leaving `self.elements == [('Task 1', 2)]`.
+- **`pq.peek()`:** `is_empty()` is `False`; indexing `self.elements[0]` returns `('Task 1', 2)` without mutating `self.elements`.
+- **`pq.is_empty()` & `pq.size()`:** `len(self.elements) == 0` evaluates to `False`, and `len(self.elements)` returns `1`.
+- **Boundary Case (`empty_pq`, `size == 0`):** With `self.elements == []`, `is_empty()` evaluates to `True`, triggering the guard branches in `remove()` (`"Priority Queue Underflow"`) and `peek()` (`"Priority Queue is empty"`), while `size()` returns `0`.
+
+##### Example Output
+
+```plaintext
+('Task 2', 1)
+('Task 1', 2)
+False
+1
+Priority Queue Underflow
+Priority Queue is empty
+True
+0
+```
+
 #### C++ Implementation
 
 ```cpp
