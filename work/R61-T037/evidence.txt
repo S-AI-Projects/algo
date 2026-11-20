@@ -1,0 +1,16 @@
+=== Tool Versions ===
+Python 3.15.2
+v20.20.2
+10.8.2
+=== Inputs ===
+Worked Fixture: insert('Task 1', 2), insert('Task 2', 1), remove(), peek(), is_empty(), size() | Boundary (size == 0): empty PriorityQueue() remove(), peek(), is_empty(), size()
+=== Expected vs Actual Output (check.py) ===
+PASS: Published Priority Queue Python example executed and matched expected output.
+('Task 2', 1)
+('Task 1', 2)
+False
+1
+Priority Queue Underflow
+Priority Queue is empty
+True
+0
