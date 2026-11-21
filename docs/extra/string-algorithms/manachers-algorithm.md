@@ -20,3 +20,92 @@ To gracefully handle both even and odd length palindromes, the standard trick is
 ## Complexity Analysis
 - **Time Complexity:** `O(N)` as the right boundary only ever moves to the right.
 - **Space Complexity:** `O(N)` to store the array of palindrome radii.
+
+## Runnable Python Example
+
+```python
+def manacher_longest_palindrome(s):
+    if not s:
+        return "", ""
+
+    # Transform string with delimiters and boundary sentinels
+    t = "^#" + "#".join(s) + "#$"
+    n = len(t)
+    radii = [0] * n
+    center = 0
+    right = 0
+
+    for i in range(1, n - 1):
+        mirror = 2 * center - i
+        if i < right:
+            radii[i] = min(right - i, radii[mirror])
+
+        # Explicit bounds checks prevent out-of-range reads if input contains ^ or $
+        while i - 1 - radii[i] >= 0 and i + 1 + radii[i] < n and t[i - 1 - radii[i]] == t[i + 1 + radii[i]]:
+            radii[i] += 1
+
+        if i + radii[i] > right:
+            center = i
+            right = i + radii[i]
+
+    max_len = 0
+    best_center = 0
+    for i in range(1, n - 1):
+        if radii[i] > max_len:
+            max_len = radii[i]
+            best_center = i
+
+    start = (best_center - max_len) // 2
+    return s[start : start + max_len], "".join(str(r) for r in radii)
+
+
+def naive_sentinel_manacher(s):
+    # Relies on ^ and $ never appearing in s (omits bounds checks)
+    t = "^#" + "#".join(s) + "#$"
+    radii = [0] * len(t)
+    center = right = 0
+    for i in range(1, len(t) - 1):
+        if i < right:
+            radii[i] = min(right - i, radii[2 * center - i])
+        while t[i - 1 - radii[i]] == t[i + 1 + radii[i]]:
+            radii[i] += 1
+        if i + radii[i] > right:
+            center, right = i, i + radii[i]
+    return radii
+
+
+# 1. Worked example (with tie between "bab" and "aba")
+worked_pal, worked_radii = manacher_longest_palindrome("babad")
+print(f"Worked ('babad'): longest={worked_pal!r}, radii={worked_radii}")
+
+# 2. Boundary examples: total empty-result contrast ("" vs "a")
+empty_pal, empty_radii = manacher_longest_palindrome("")
+single_pal, single_radii = manacher_longest_palindrome("a")
+print(f"Boundary (''): longest={empty_pal!r}, len={len(empty_pal)}")
+print(f"Boundary ('a'): longest={single_pal!r}, len={len(single_pal)}, radii={single_radii}")
+
+# 3. Failure-case contrast: input containing sentinel characters ("^a$")
+try:
+    naive_sentinel_manacher("^a$")
+except IndexError as exc:
+    print(f"Naive sentinel on '^a$' raised: {type(exc).__name__}")
+
+safe_pal, _ = manacher_longest_palindrome("^a$")
+print(f"Bounds-safe on '^a$': longest={safe_pal!r}")
+```
+
+## Failure Case & Source Contract
+
+- **Sentinel Collision Limitation:** The standard sentinel optimization (`^#...#$`) assumes `^` and `$` never appear inside the input string `s`. When `s = "^a$"`, the transformed string becomes `"^#^#a#$#$"`; at index `i = 7` (`#`), `t[6] == t[8] == "$"` matches the right sentinel, so an unguarded `while` expansion attempts to read `t[9]` and fails with `IndexError` unless explicit `0 <= left` and `right < n` bounds checks are retained.
+- **Total Operation & Empty-Result Contract:** Because `manacher_longest_palindrome` is a total function over `str`, an empty input `""` returns the empty substring `""` (`len = 0`), contrasting with the minimal non-empty boundary `"a"` (`longest = "a"`, `len = 1`, `radii = "00100"`).
+- **Tie-Breaking Behavior (`"babad"`):** On `"babad"`, `t = "^#b#a#b#a#d#$"` yields `radii = "0010303010100"`, where both `"bab"` (center `4`) and `"aba"` (center `6`) have radius `3`; strict `radii[i] > max_len` deterministically selects the leftmost longest palindrome `"bab"`.
+
+### Example Output
+
+```plaintext
+Worked ('babad'): longest='bab', radii=0010303010100
+Boundary (''): longest='', len=0
+Boundary ('a'): longest='a', len=1, radii=00100
+Naive sentinel on '^a$' raised: IndexError
+Bounds-safe on '^a$': longest='^'
+```
