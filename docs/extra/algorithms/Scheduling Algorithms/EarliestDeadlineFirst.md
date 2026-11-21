@@ -106,8 +106,14 @@ if __name__ == "__main__":
         print(f"{process_id}\t\t{burst_time}\t\t{deadline}\t\t{wait_times[i]}\t\t{turnaround_times[i]}")
     
     # Display averages
-    print(f"Average waiting time = {avg_wait_time}")
-    print(f"Average turnaround time = {avg_turnaround_time}")
+    print(f"Average waiting time = {avg_wait_time:.2f}")
+    print(f"Average turnaround time = {avg_turnaround_time:.2f}")
+
+    # Boundary example: single process (range(1, 1) loop does not execute)
+    single_process = [(1, 4, 5)]
+    single_wait = calculate_wait_times(single_process)
+    single_turnaround = calculate_turnaround_times(single_process, single_wait)
+    print(f"Boundary (n=1): wait={single_wait}, turnaround={single_turnaround}, avg_wait={calculate_avg_wait_time(single_wait):.2f}, avg_turnaround={calculate_avg_turnaround_time(single_turnaround):.2f}")
 
 ```
 
@@ -117,16 +123,22 @@ if __name__ == "__main__":
     - Average Times: The average waiting time and average turnaround time are calculated by taking the sum of the respective times and dividing by the total number of processes.
 
 ## Example Output
-For the input where processes are [(1, 3, 4), (2, 2, 2), (3, 1, 3)], the output is as follows:
-```bash
-Process ID    Burst Time    Deadline    Waiting Time    Turnaround Time
-2             2             2           0               2
-3             1             3           2               3
-1             3             4           5               8
-
-Average waiting time = 2.33
-Average turnaround time = 4.33
+For the worked input `[(1, 3, 4), (2, 2, 2), (3, 1, 3)]` followed by the single-process boundary input `[(1, 4, 5)]`, the exact output is:
+```plaintext
+Process ID	Burst Time	Deadline	Waiting Time	Turnaround Time
+2		2		2		0		2
+3		1		3		2		3
+1		3		4		3		6
+Average waiting time = 1.67
+Average turnaround time = 3.67
+Boundary (n=1): wait=[0], turnaround=[4], avg_wait=0.00, avg_turnaround=4.00
 ```
+
+### Schedule State & Regression Invariants
+
+- **Intermediate Deadline-Sorted Order:** `calculate_wait_times` sorts `[(1, 3, 4), (2, 2, 2), (3, 1, 3)]` in place by deadline (`key=lambda x: x[2]`) into `[(2, 2, 2), (3, 1, 3), (1, 3, 4)]`. Sorting by burst time (`x[1]`) instead would schedule Process `3` before Process `2` and alter every waiting and turnaround value.
+- **Cumulative Waiting-Time Recurrence:** For `i >= 1`, `wait_times[i] = processes[i - 1][1] + wait_times[i - 1]` accumulates prior burst times (`wait_times = [0, 2, 3]`, yielding `turnaround_times = [2, 3, 6]`, `avg_wait_time = 1.67`, and `avg_turnaround_time = 3.67`). Dropping `+ wait_times[i - 1]` (a one-operation mutant) undercounts Process `1`'s wait time as `1` instead of `3`.
+- **Single-Process Boundary (`n = 1`):** On `[(1, 4, 5)]`, `range(1, 1)` performs zero iterations, returning `wait = [0]` and `turnaround = [4]`.
 
 ## Time and Space Complexity
     - Time Complexity: The time complexity is O(n log n) due to the sorting of processes, where n is the number of processes.
