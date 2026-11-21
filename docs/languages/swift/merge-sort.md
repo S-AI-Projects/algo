@@ -60,11 +60,41 @@ func merge<T: Comparable>(_ left: [T], _ right: [T]) -> [T] {
     return orderedArray
 }
 
-// Example usage:
+// 1. Worked example (literal fixture)
 let numbers = [12, 11, 13, 5, 6, 7]
 let sortedNumbers = mergeSort(numbers)
 print("Sorted array: \(sortedNumbers)")
-// Output: Sorted array: [5, 6, 7, 11, 12, 13]
+
+// 2. Boundary examples (base-case contract: array.count <= 1)
+let emptyNumbers: [Int] = []
+print("Empty array: \(mergeSort(emptyNumbers))")
+print("Single-element array: \(mergeSort([42]))")
+
+// 3. Resource & copy-behavior observation experiment
+struct ResourceMetrics {
+    var splits = 0
+    var sliceCopies = 0
+    var mergeAppends = 0
+}
+
+func observedMergeSort<T: Comparable>(_ array: [T], _ metrics: inout ResourceMetrics) -> [T] {
+    guard array.count > 1 else { return array }
+    metrics.splits += 1
+    let middleIndex = array.count / 2
+    // Array(array[...]) materializes zero-copy ArraySlice views into new Array buffers
+    metrics.sliceCopies += 2
+    let leftArray = observedMergeSort(Array(array[0..<middleIndex]), &metrics)
+    let rightArray = observedMergeSort(Array(array[middleIndex..<array.count]), &metrics)
+    let merged = merge(leftArray, rightArray)
+    metrics.mergeAppends += merged.count
+    return merged
+}
+
+for sample in [emptyNumbers, [42], numbers] {
+    var metrics = ResourceMetrics()
+    let _ = observedMergeSort(sample, &metrics)
+    print("n=\(sample.count): splits=\(metrics.splits), sliceCopies=\(metrics.sliceCopies), mergeAppends=\(metrics.mergeAppends)")
+}
 ```
 
 ## Complexity Analysis
