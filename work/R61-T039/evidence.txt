@@ -1,0 +1,16 @@
+=== Tool Versions ===
+Apple Swift version 6.4.2 (swiftlang-6.4.2.1.9 clang-2100.4.1.1)
+Target: arm64-apple-macosx27.2.0
+Python 3.15.2
+v20.20.2
+10.8.2
+=== Inputs ===
+Worked Fixture: [12, 11, 13, 5, 6, 7] | Boundary Cases: [] (n=0), [42] (n=1) | Resource Metrics: splits, sliceCopies, mergeAppends
+=== Expected vs Actual Output (check.py) ===
+PASS: Published Swift Merge Sort example executed and matched expected output.
+Sorted array: [5, 6, 7, 11, 12, 13]
+Empty array: []
+Single-element array: [42]
+n=0: splits=0, sliceCopies=0, mergeAppends=0
+n=1: splits=0, sliceCopies=0, mergeAppends=0
+n=6: splits=5, sliceCopies=10, mergeAppends=16
