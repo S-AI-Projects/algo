@@ -1,0 +1,13 @@
+=== Tool Versions ===
+Python 3.15.2
+v20.20.2
+10.8.2
+=== Inputs ===
+Worked Fixture: 'babad' | Boundary Contrast: '' vs 'a' | Failure Contrast: '^a$'
+=== Expected vs Actual Output (check.py) ===
+PASS: Published Manacher's Algorithm Python example executed and matched expected output.
+Worked ('babad'): longest='bab', radii=0010303010100
+Boundary (''): longest='', len=0
+Boundary ('a'): longest='a', len=1, radii=00100
+Naive sentinel on '^a$' raised: IndexError
+Bounds-safe on '^a$': longest='^'
