@@ -106,8 +106,14 @@ if __name__ == "__main__":
         print(f"{process_id}\t\t{burst_time}\t\t{deadline}\t\t{wait_times[i]}\t\t{turnaround_times[i]}")
     
     # Display averages
-    print(f"Average waiting time = {avg_wait_time}")
-    print(f"Average turnaround time = {avg_turnaround_time}")
+    print(f"Average waiting time = {avg_wait_time:.2f}")
+    print(f"Average turnaround time = {avg_turnaround_time:.2f}")
+
+    # Boundary example: single process (range(1, 1) loop does not execute)
+    single_process = [(1, 4, 5)]
+    single_wait = calculate_wait_times(single_process)
+    single_turnaround = calculate_turnaround_times(single_process, single_wait)
+    print(f"Boundary (n=1): wait={single_wait}, turnaround={single_turnaround}, avg_wait={calculate_avg_wait_time(single_wait):.2f}, avg_turnaround={calculate_avg_turnaround_time(single_turnaround):.2f}")
 
 ```
 
