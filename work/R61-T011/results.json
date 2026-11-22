@@ -1,0 +1,95 @@
+{
+  "task_id": "R61-T011",
+  "source_article": "docs/extra/linked-list/intersection-linked-lists.md",
+  "inputs": [
+    {
+      "name": "shared_tail",
+      "list1": [
+        10,
+        15,
+        30
+      ],
+      "list2": [
+        3,
+        6,
+        9,
+        15,
+        30
+      ],
+      "shared_node_value": 15,
+      "expected_result": 15,
+      "alignment": "Advance list2 by 2 nodes (3 and 6); after 9 is compared with 10, both pointers reach the shared node 15."
+    },
+    {
+      "name": "equal_values_without_shared_node",
+      "list1": [
+        15,
+        30
+      ],
+      "list2": [
+        15
+      ],
+      "nodes_are_shared": false,
+      "expected_result": -1
+    }
+  ],
+  "expected_stdout": "The intersection point is 15\nThe intersection point for lists without a shared node is -1\n",
+  "tools": {
+    "python": "3.14.5 (v3.14.5:5607950ef23, May 10 2026, 07:38:09) [Clang 21.0.0 (clang-2100.0.123.102)]",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.4.1.1)",
+    "node": "v26.5.0",
+    "npm": "12.0.1"
+  },
+  "result": "passed",
+  "compiler_version_command": {
+    "command": [
+      "/usr/bin/g++",
+      "--version"
+    ],
+    "returncode": 0,
+    "stdout": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin27.2.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "stderr": ""
+  },
+  "node_version_command": {
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--version"
+    ],
+    "returncode": 0,
+    "stdout": "v26.5.0\n",
+    "stderr": ""
+  },
+  "npm_version_command": {
+    "command": [
+      "/opt/homebrew/bin/npm",
+      "--version"
+    ],
+    "returncode": 0,
+    "stdout": "12.0.1\n",
+    "stderr": ""
+  },
+  "compile": {
+    "command": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-Wall",
+      "-Wextra",
+      "-pedantic",
+      "<article_example.cpp>",
+      "-o",
+      "<article_example>"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "execution": {
+    "command": [
+      "<article_example>"
+    ],
+    "returncode": 0,
+    "stdout": "The intersection point is 15\nThe intersection point for lists without a shared node is -1\n",
+    "stderr": ""
+  },
+  "actual_stdout": "The intersection point is 15\nThe intersection point for lists without a shared node is -1\n"
+}
