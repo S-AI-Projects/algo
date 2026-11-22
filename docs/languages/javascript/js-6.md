@@ -54,6 +54,21 @@ let difference = '10' - 2;  // 8 (string "10" is converted to number)
 let truthy = '5' == 5;  // true (type coercion between string and number)
 ```
 
+For `result`, the `+` operator sees a string operand, converts `3` to `'3'`,
+then concatenates: `'5' + '3'` gives the string `'53'`. Subtraction is numeric:
+`'10'` converts to `10`, so `10 - 2` is the number `8`. Loose equality also
+converts `'5'` to `5`, making `5 == 5` true. These results have different types:
+`typeof result` is `'string'`, while `typeof difference` is `'number'`.
+
+The zero boundary makes the operator distinction clear: `'0' + 0` is the string
+`'00'`, while `'0' - 0` is the number `0`.
+
+```javascript
+let zeroText = '0';
+let joinedZero = zeroText + 0;   // "00"
+let numericZero = zeroText - 0;  // 0
+```
+
 - Explanation:
     - In the first example, JavaScript converts the `number` `3` to a `string` before concatenating it with `"5"`.
     - In the second example, `"10"` (`string`) is automatically converted to a `number` to perform subtraction.
