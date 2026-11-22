@@ -135,7 +135,6 @@ int pathQuery(int u, int v) {
 
 ```python
 import sys
-sys.setrecursionlimit(200000)
 
 class HeavyLightDecomposition:
     def __init__(self, n, adj, values):
@@ -151,8 +150,13 @@ class HeavyLightDecomposition:
         self.timer = 0
         self.base_array = [0] * n
 
-        self._dfs_size(0, -1)
-        self._dfs_hld(0, 0)
+        old_recursion_limit = sys.getrecursionlimit()
+        try:
+            sys.setrecursionlimit(max(old_recursion_limit, 2 * n + 100))
+            self._dfs_size(0, -1)
+            self._dfs_hld(0, 0)
+        finally:
+            sys.setrecursionlimit(old_recursion_limit)
         self.seg = [float("-inf")] * (4 * n)
         self._build(1, 0, n - 1)
 
@@ -215,6 +219,27 @@ class HeavyLightDecomposition:
         result = max(result, self._query(1, 0, self.n - 1, self.pos_in_base[u], self.pos_in_base[v]))
         return result
 ```
+
+### Reproducible Python Example
+
+Use this fixed tree, with node values `[5, 2, 9, 4, 7]` and edges
+`[(0, 1), (0, 2), (1, 3), (1, 4)]`. The maximum on the path from node `3` to
+node `2` is `9` (values `4, 2, 5, 9`). A single-node tree is the boundary case:
+querying node `0` to itself returns its value `-3`.
+
+```python
+adj = [[1, 2], [0, 3, 4], [0], [1], [1]]
+hld = HeavyLightDecomposition(5, adj, [5, 2, 9, 4, 7])
+print(hld.path_query(3, 2))  # 9
+
+single = HeavyLightDecomposition(1, [[]], [-3])
+print(single.path_query(0, 0))  # -3
+```
+
+The class temporarily raises Python's recursion limit only while building the
+decomposition and restores the caller's prior limit even if preprocessing
+raises an exception. The example uses fixed input and has no random or locale
+dependent state.
 
 ### Pseudo Code
 
