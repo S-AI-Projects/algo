@@ -1,0 +1,6 @@
+{
+  "fixture": {"x": 4, "y": -21, "sum": -17, "sum_type": "int"},
+  "variations": [[0, 0], [1, 2], [-1, 2], [2, -1], [-8, -13], [1000, -997]],
+  "invariant": "type(a) is int, type(b) is int, and type(a+b) is int",
+  "python": "3.14"
+}

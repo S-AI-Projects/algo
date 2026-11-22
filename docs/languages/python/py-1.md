@@ -31,6 +31,17 @@ x = 4
 y = -21
 ```
 
+For these examples, the invariant is that each variable remains an `int` and
+adding the two values produces an `int`. With the literal values above,
+`x + y` is `-17`, and `type(x + y)` is `<class 'int'>`. Python integers have
+arbitrary precision, so this remains true for positive and negative integer
+values; the sign and size of the sum can change without changing its type.
+
+```python
+print(x + y)       # -17
+print(type(x + y)) # <class 'int'>
+```
+
 ### b. Floating-Point Numbers (`float`)
 - Represents real numbers with a decimal point.
 ```python
