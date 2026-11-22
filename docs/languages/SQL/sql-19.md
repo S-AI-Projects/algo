@@ -68,4 +68,32 @@ FROM Products
 WHERE ProductID LIKE '1___';
 ```
 
+For the examples below, use this small `Products` table:
+
+| ProductID | ProductName |
+| --- | --- |
+| 1001 | Chai |
+| 1002 | Chang |
+| 1003 | Aniseed Syrup |
+| 1004 | Chef Anton's Cajun Seasoning |
+
+The first query returns `Chai`, `Chang`, and `Chef Anton's Cajun Seasoning`; the second returns `Chang`, `Aniseed Syrup`, and `Chef Anton's Cajun Seasoning`; the third returns `Aniseed Syrup`; and the fourth returns all four IDs because each has four characters beginning with `1`. A boundary query such as `ProductName LIKE 'Qz%'` returns no rows. `%` can match an empty sequence, while `_` consumes exactly one character, so `1___` requires exactly four characters beginning with `1`.
+
+`LIKE` does not copy the matching strings into a new result structure as part of pattern matching: the engine checks candidate rows and returns rows that satisfy the predicate. A leading wildcard often prevents a conventional B-tree from narrowing the search to a starting range. The exact plan depends on the database, collation, index, and settings. For example, in SQLite 3.50.4, an experiment adding 1,000 rows to the sample table and indexing `ProductName COLLATE NOCASE` used an index range search for `LIKE 'Ch%'` (503 matches), but scanned the index for `LIKE '%an%'` (3 matches). This illustrates query-plan behavior, not a universal complexity guarantee; inspect the plan on the database and schema you use. The fixed introductory `SELECT` syntax itself has no meaningful standalone time or space benchmark.
+
+```sql
+CREATE TABLE Products (ProductID TEXT PRIMARY KEY, ProductName TEXT);
+INSERT INTO Products VALUES
+  ('1001', 'Chai'),
+  ('1002', 'Chang'),
+  ('1003', 'Aniseed Syrup'),
+  ('1004', 'Chef Anton''s Cajun Seasoning');
+
+SELECT ProductName FROM Products WHERE ProductName LIKE 'Ch%' ORDER BY ProductName;
+SELECT ProductName FROM Products WHERE ProductName LIKE '%an%' ORDER BY ProductName;
+SELECT ProductName FROM Products WHERE ProductName LIKE '%syrup' ORDER BY ProductName;
+SELECT ProductID FROM Products WHERE ProductID LIKE '1___' ORDER BY ProductID;
+SELECT ProductName FROM Products WHERE ProductName LIKE 'Qz%' ORDER BY ProductName;
+```
+
 **Note:** The specific implementation and syntax might vary slightly depending on the database system you're using (e.g., MySQL, PostgreSQL, SQL Server). However, the core concept of using the `LIKE` operator with wildcard characters remains consistent.

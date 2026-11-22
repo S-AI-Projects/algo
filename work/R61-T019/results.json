@@ -1,0 +1,115 @@
+{
+  "article_example": {
+    "expected": [
+      [
+        [
+          "Chai"
+        ],
+        [
+          "Chang"
+        ],
+        [
+          "Chef Anton's Cajun Seasoning"
+        ]
+      ],
+      [
+        [
+          "Aniseed Syrup"
+        ],
+        [
+          "Chang"
+        ],
+        [
+          "Chef Anton's Cajun Seasoning"
+        ]
+      ],
+      [
+        [
+          "Aniseed Syrup"
+        ]
+      ],
+      [
+        [
+          "1001"
+        ],
+        [
+          "1002"
+        ],
+        [
+          "1003"
+        ],
+        [
+          "1004"
+        ]
+      ],
+      []
+    ],
+    "actual": [
+      [
+        [
+          "Chai"
+        ],
+        [
+          "Chang"
+        ],
+        [
+          "Chef Anton's Cajun Seasoning"
+        ]
+      ],
+      [
+        [
+          "Aniseed Syrup"
+        ],
+        [
+          "Chang"
+        ],
+        [
+          "Chef Anton's Cajun Seasoning"
+        ]
+      ],
+      [
+        [
+          "Aniseed Syrup"
+        ]
+      ],
+      [
+        [
+          "1001"
+        ],
+        [
+          "1002"
+        ],
+        [
+          "1003"
+        ],
+        [
+          "1004"
+        ]
+      ],
+      []
+    ]
+  },
+  "sqlite_version": "3.50.4",
+  "python_version": "3.14.5",
+  "experiment": {
+    "rows_added": 1000,
+    "index": "ProductName COLLATE NOCASE",
+    "plans": {
+      "prefix": {
+        "pattern": "Ch%",
+        "query_plan": [
+          "SEARCH Products USING COVERING INDEX products_name_nocase (ProductName>? AND ProductName<?)"
+        ],
+        "match_count": 503
+      },
+      "leading_wildcard": {
+        "pattern": "%an%",
+        "query_plan": [
+          "SCAN Products USING COVERING INDEX products_name_nocase"
+        ],
+        "match_count": 3
+      }
+    }
+  },
+  "observations": "Prefix pattern uses an index range; leading wildcard scans the index (SQLite 3.50.4)."
+}
