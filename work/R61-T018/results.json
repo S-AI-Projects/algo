@@ -1,0 +1,6 @@
+{
+  "worked_input": [10, 12, 13, 16, 18, 19, 20, 21, 22, 23, 24, 33, 35, 42, 47],
+  "target": 18,
+  "expected": {"index": 4, "repeated_hit": 0, "repeated_miss": -1, "empty_input": -1},
+  "compiler": "g++ C++17"
+}

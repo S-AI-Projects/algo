@@ -18,6 +18,12 @@ Interpolation search is an optimized variant of binary search that works based o
 - **Works on Sorted Arrays**:  
   Like binary search, interpolation search requires the array to be sorted for efficient searching.
 
+- **Equal Boundary Values**: When the current range's first and last values are
+  equal, the interpolation denominator is zero. The implementation handles
+  this case directly: it returns the boundary index if that value is the
+  target, or `-1` otherwise. Sorted input is required for correctness; uniform
+  distribution affects the expected speed, not whether a search result is valid.
+
 - **Memory Efficiency**:  
   The algorithm operates in constant space, requiring no additional memory beyond the input array.
 
@@ -76,6 +82,10 @@ int interpolationSearch(int arr[], int size, int target) {
     int low = 0, high = size - 1;
 
     while (low <= high && target >= arr[low] && target <= arr[high]) {
+        // Avoid dividing by zero when the remaining range has one value.
+        if (arr[low] == arr[high]) {
+            return arr[low] == target ? low : -1;
+        }
         if (low == high) {
             if (arr[low] == target) return low;
             return -1;
@@ -109,6 +119,11 @@ int main() {
         cout << "Element not found" << endl;
     }
 
+    int repeated[] = {7, 7, 7};
+    cout << "Repeated value index: " << interpolationSearch(repeated, 3, 7) << endl;
+    cout << "Repeated value absent: " << interpolationSearch(repeated, 3, 6) << endl;
+    cout << "Empty input: " << interpolationSearch(arr, 0, 18) << endl;
+
     return 0;
 }
 ```
@@ -121,6 +136,10 @@ using namespace std;
 
 int interpolationSearchRecursive(int arr[], int low, int high, int target) {
     if (low <= high && target >= arr[low] && target <= arr[high]) {
+        // Avoid dividing by zero when the remaining range has one value.
+        if (arr[low] == arr[high]) {
+            return arr[low] == target ? low : -1;
+        }
         if (low == high) {
             if (arr[low] == target) return low;
             return -1;
