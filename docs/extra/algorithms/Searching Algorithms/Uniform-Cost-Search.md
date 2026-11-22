@@ -9,6 +9,8 @@ sidebar_label: Uniform-Cost
 
 **Uniform-Cost Search (UCS)** is a search algorithm that expands the node with the lowest cost first, ensuring that it finds the least-cost path in weighted graphs. UCS is similar to Dijkstra's algorithm but is often applied in AI and pathfinding scenarios.
 
+UCS is optimal when every traversed edge has a non-negative cost. This is a precondition of the algorithm, not a universal rule that all other inputs are invalid. The example below uses non-negative edge costs. When the start is already the goal, the least-cost path is the empty path, so its cost is `0`.
+
 ### Video Explanation**
 <LiteYouTubeEmbed
   id="dRMvK76xQJI"
@@ -53,38 +55,81 @@ sidebar_label: Uniform-Cost
 
 ### Uniform-Cost Search Algorithm (Java Implementation):
 
+In the worked graph, the direct route from node 1 to node 3 costs 8. UCS first explores node 2 at cost 2, then reaches node 3 for a total cost of 5. The boundary case starts and ends at node 1, so no edge is traversed.
+
 ```java
 import java.util.*;
 
 class GraphNode {
-    int id, cost;
-    List<GraphNode> neighbors;
+    final int id;
+    final List<Edge> neighbors = new ArrayList<>();
 
-    GraphNode(int id, int cost) {
+    GraphNode(int id) {
         this.id = id;
+    }
+
+    void connectTo(GraphNode neighbor, int edgeCost) {
+        neighbors.add(new Edge(neighbor, edgeCost));
+    }
+}
+
+class Edge {
+    final GraphNode to;
+    final int cost;
+
+    Edge(GraphNode to, int cost) {
+        if (cost < 0) throw new IllegalArgumentException("UCS requires non-negative edge costs");
+        this.to = to;
         this.cost = cost;
-        neighbors = new ArrayList<>();
+    }
+}
+
+class QueueEntry {
+    final GraphNode node;
+    final int cost;
+
+    QueueEntry(GraphNode node, int cost) {
+        this.node = node;
+        this.cost = cost;
     }
 }
 
 class UniformCostSearch {
     public static int ucs(GraphNode start, GraphNode goal) {
-        PriorityQueue<GraphNode> pq = new PriorityQueue<>(Comparator.comparingInt(n -> n.cost));
-        Set<GraphNode> visited = new HashSet<>();
-        pq.add(new GraphNode(start.id, 0));
+        PriorityQueue<QueueEntry> pq = new PriorityQueue<>(Comparator.comparingInt(entry -> entry.cost));
+        Map<GraphNode, Integer> bestCost = new HashMap<>();
+        pq.add(new QueueEntry(start, 0));
+        bestCost.put(start, 0);
 
         while (!pq.isEmpty()) {
-            GraphNode current = pq.poll();
-            if (current.id == goal.id) return current.cost;
-            visited.add(current);
+            QueueEntry current = pq.poll();
+            if (current.cost != bestCost.get(current.node)) continue;
+            if (current.node == goal) return current.cost;
 
-            for (GraphNode neighbor : current.neighbors) {
-                if (!visited.contains(neighbor)) {
-                    pq.add(new GraphNode(neighbor.id, current.cost + neighbor.cost));
+            for (Edge edge : current.node.neighbors) {
+                int nextCost = current.cost + edge.cost;
+                if (nextCost < bestCost.getOrDefault(edge.to, Integer.MAX_VALUE)) {
+                    bestCost.put(edge.to, nextCost);
+                    pq.add(new QueueEntry(edge.to, nextCost));
                 }
             }
         }
-        return -1; // Goal not reachable
+        return -1; // Goal is unreachable from the start.
+    }
+}
+
+class UniformCostSearchDemo {
+    public static void main(String[] args) {
+        GraphNode start = new GraphNode(1);
+        GraphNode middle = new GraphNode(2);
+        GraphNode goal = new GraphNode(3);
+
+        start.connectTo(goal, 8);
+        start.connectTo(middle, 2);
+        middle.connectTo(goal, 3);
+
+        System.out.println("Worked example cost: " + UniformCostSearch.ucs(start, goal));
+        System.out.println("Start equals goal cost: " + UniformCostSearch.ucs(start, start));
     }
 }
 ```
