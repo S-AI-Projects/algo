@@ -48,6 +48,17 @@ Given an input array: `[3, 6, 8, 10, 1, 2, 1]`, Quick Sort works as follows:
 2. Partition the array: `[1, 2, 1]` on the left of `3` and `[6, 8, 10]` on the right.
 3. Recursively sort both sub-arrays.
 
+The sorted result is `[1, 1, 2, 3, 6, 8, 10]`. The empty array is a valid
+boundary input; sorting it leaves it empty.
+
+In the implementation below, median-of-three chooses `3` from the first, middle,
+and last values (`3`, `10`, and `1`). During Lomuto partition, after the scan
+reaches the second `1` (index 4), `i` is `1` and the array is
+`[1, 1, 8, 10, 6, 2, 3]`: indices `0..i` contain values at most the pivot,
+while the scanned values after `i` are greater. The final `2` moves into index
+2, then the pivot swaps into index 3, yielding
+`[1, 1, 2, 3, 6, 8, 10]`. The pivot index is therefore `3`.
+
 ### Java Implementation
 
 Here is a basic implementation of Quick Sort in Java:
@@ -140,6 +151,7 @@ class QuickSort {
         const pivot = this.medianOfThree(arr, low, high);
         let i = low - 1;
         for (let j = low; j < high; j++) {
+            // Invariant: arr[low..i] <= pivot; arr[i+1..j-1] > pivot.
             if (arr[j] <= pivot) {
                 i++;
                 [arr[i], arr[j]] = [arr[j], arr[i]];

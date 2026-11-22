@@ -1,0 +1,8 @@
+{
+  "input": [3, 6, 8, 10, 1, 2, 1],
+  "pivot": 3,
+  "intermediate_after_index_4": {"i": 1, "array": [1, 1, 8, 10, 6, 2, 3]},
+  "expected_partition": {"pivot_index": 3, "array": [1, 1, 2, 3, 6, 8, 10]},
+  "boundary": {"input": [], "output": []},
+  "node": "current environment"
+}
