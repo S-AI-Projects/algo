@@ -11,6 +11,71 @@ tags: [dsa, faq, algorithms, greedy algorithms]
 ### Definition:
 Huffman Coding is a method used for lossless data compression. It assigns variable-length codes to input characters, with shorter codes assigned to more frequent characters.
 
+### Worked example
+
+Given the frequencies `A: 5, B: 9, C: 12, D: 13, E: 16, F: 45`, repeatedly remove the two least-frequent nodes and insert their combined node. The first merge is `A(5) + B(9) = 14`; the next is `C(12) + D(13) = 25`. This deterministic example breaks equal-frequency ties by insertion order, and labels the first removed child `0` and the second `1`:
+
+```python
+import heapq
+
+
+def huffman_codes(frequencies):
+    if not frequencies:
+        return {}
+
+    heap = []
+    for order, (symbol, frequency) in enumerate(frequencies.items()):
+        heap.append((frequency, order, symbol))
+    heapq.heapify(heap)
+    next_order = len(heap)
+
+    while len(heap) > 1:
+        left_frequency, _, left = heapq.heappop(heap)
+        right_frequency, _, right = heapq.heappop(heap)
+        parent = (left, right)
+        heapq.heappush(
+            heap, (left_frequency + right_frequency, next_order, parent)
+        )
+        next_order += 1
+
+    codes = {}
+
+    def visit(node, prefix):
+        if isinstance(node, str):
+            codes[node] = prefix or "0"
+            return
+        left, right = node
+        visit(left, prefix + "0")
+        visit(right, prefix + "1")
+
+    visit(heap[0][2], "")
+    return codes
+
+
+frequencies = {"A": 5, "B": 9, "C": 12, "D": 13, "E": 16, "F": 45}
+codes = huffman_codes(frequencies)
+for symbol in frequencies:
+    print(f"{symbol}: {codes[symbol]}")
+
+print("single symbol:", huffman_codes({"X": 7}))
+print("empty input:", huffman_codes({}))
+```
+
+Expected output:
+
+```text
+A: 1100
+B: 1101
+C: 100
+D: 101
+E: 111
+F: 0
+single symbol: {'X': '0'}
+empty input: {}
+```
+
+The single-symbol boundary case uses the one-bit code `0` because an empty bit string cannot distinguish an encoded symbol. Empty input produces no codes. With a min-heap, each of the `n - 1` merges removes and inserts heap nodes, taking `O(n log n)` time overall; the tree and result need `O(n)` space. The specific bit strings can vary when frequencies tie or when left/right branches are swapped, while the prefix-free property and weighted cost remain the same.
+
 ### Video Explanation 
 
 <LiteYouTubeEmbed

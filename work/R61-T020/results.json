@@ -1,0 +1,20 @@
+{
+  "article_example": {
+    "expected_stdout": "A: 1100\nB: 1101\nC: 100\nD: 101\nE: 111\nF: 0\nsingle symbol: {'X': '0'}\nempty input: {}\n",
+    "actual_stdout": "A: 1100\nB: 1101\nC: 100\nD: 101\nE: 111\nF: 0\nsingle symbol: {'X': '0'}\nempty input: {}\n"
+  },
+  "boundary_cases": {
+    "single_symbol": "{'X': '0'}",
+    "empty_input": "{}"
+  },
+  "runtime": {
+    "python": "3.14.5",
+    "executable": "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
+  },
+  "mutant_test": {
+    "mutation": "left_frequency + right_frequency -> left_frequency * right_frequency",
+    "mutant_exit_code": 0,
+    "mutant_stdout": "A: 100\nB: 101\nC: 110\nD: 111\nE: 00\nF: 01\nsingle symbol: {'X': '0'}\nempty input: {}\n",
+    "detected": true
+  }
+}
