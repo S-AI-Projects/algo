@@ -1,0 +1,7 @@
+{
+  "tree_values": [5, 2, 9, 4, 7],
+  "edges": [[0, 1], [0, 2], [1, 3], [1, 4]],
+  "expected": {"path_3_to_2_max": 9, "single_node_value": -3},
+  "process_state": "Python recursion limit after both constructions equals its original value",
+  "python": "3.14"
+}
