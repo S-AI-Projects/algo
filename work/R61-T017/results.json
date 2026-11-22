@@ -1,0 +1,4 @@
+{
+  "expected": {"result": "53", "difference": 8, "truthy": true, "result_type": "string", "difference_type": "number", "joined_zero": "00", "numeric_zero": 0},
+  "node": "current environment"
+}
