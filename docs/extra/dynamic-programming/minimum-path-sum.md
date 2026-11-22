@@ -48,6 +48,24 @@ dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
 - dp[0][j] = grid[0][j] + dp[0][j-1] (first row, only from left)
 - dp[i][0] = grid[i][0] + dp[i-1][0] (first column, only from above)
 
+## Worked Example and Method Comparison
+
+For the grid `[[1, 3, 1], [1, 5, 1], [4, 2, 1]]`, the full-table method records
+the best sum at every cell. Its rows become `[[1, 4, 5], [2, 7, 6], [6, 8, 7]]`.
+The destination therefore has sum `7`, along the path `(0,0) -> (0,1) ->
+(0,2) -> (1,2) -> (2,2)`.
+
+The space-optimized method gets the same answer while keeping one row. Before
+processing the last row its state is `[2, 7, 6]`; after that row it is
+`[6, 8, 7]`. At column `j`, `dp[j]` still holds the value from above and
+`dp[j-1]` already holds the value from the left. The full table stores all
+`m*n` intermediate sums, which is useful for path reconstruction; the rolling
+row overwrites old sums and uses `O(n)` space when `n` is the row width.
+
+An empty grid is the smallest boundary case accepted by these functions: both
+return `0` because there is no destination cell to visit. For a non-empty grid,
+the documented input is a rectangular grid of non-negative integers.
+
 ## Python Implementation
 
 ### Standard DP (Tabulation)
