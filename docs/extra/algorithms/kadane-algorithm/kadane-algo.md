@@ -58,7 +58,10 @@ The algorithm follows these steps:
 ### C++ Implementation:
 
 ```cpp
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
 class Solution {
@@ -67,7 +70,7 @@ public:
     int maxSubArray(vector<int>& nums) {
         int max_current = nums[0], max_global = nums[0];
 
-        for (int i = 1; i < nums.size(); i++) {
+        for (size_t i = 1; i < nums.size(); i++) {
             // Update max_current to include current element or start fresh from current element
             max_current = max(nums[i], max_current + nums[i]);
 
@@ -95,8 +98,67 @@ int main() {
 }
 ```
 
+### Output:
+
+```text
+The maximum sum of the contiguous subarray is: 6
+```
+
+### Step-by-Step Worked Example:
+
+To remove any hidden state, we trace the exact evolution of the intermediate variables `max_current` and `max_global` across every element of the input array `nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4}`:
+
+- **State Definitions**:
+  - `max_current`: The maximum contiguous subarray sum ending at the current index $i$. At each element, we determine whether to extend the existing contiguous subarray (`max_current + nums[i]`) or discard the accumulated sum and start a new contiguous subarray starting at `nums[i]` (`nums[i]`):
+    $$\text{max\_current}_i = \max(\text{nums}[i], \text{max\_current}_{i-1} + \text{nums}[i])$$
+  - `max_global`: The global maximum contiguous subarray sum encountered across all indices $0 \dots i$:
+    $$\text{max\_global}_i = \max(\text{max\_global}_{i-1}, \text{max\_current}_i)$$
+
+#### State Trace Table:
+
+| Index ($i$) | Element (`nums[i]`) | Candidate 1 (`nums[i]`) | Candidate 2 (`max_current + nums[i]`) | Updated `max_current` | Updated `max_global` | Contiguous Subarray Ending at $i$ | Status / Explanation |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---|
+| Init | - | - | - | `-2` | `-2` | `[-2]` | Initialized to first element `nums[0] = -2`. |
+| 1 | `1` | `1` | $-2 + 1 = -1$ | `1` | `1` | `[1]` | $\max(1, -1) = 1$. Resetting to start fresh at `1` is better than extending negative sum. `max_global` updated to `1`. |
+| 2 | `-3` | `-3` | $1 + (-3) = -2$ | `-2` | `1` | `[1, -3]` | $\max(-3, -2) = -2$. Extending previous subarray. `max_global` remains `1`. |
+| 3 | `4` | `4` | $-2 + 4 = 2$ | `4` | `4` | `[4]` | $\max(4, 2) = 4$. Resetting to start fresh at `4` is optimal. `max_global` updated to `4`. |
+| 4 | `-1` | `-1` | $4 + (-1) = 3$ | `3` | `4` | `[4, -1]` | $\max(-1, 3) = 3$. Extending previous subarray. `max_global` remains `4`. |
+| 5 | `2` | `2` | $3 + 2 = 5$ | `5` | `5` | `[4, -1, 2]` | $\max(2, 5) = 5$. Extending previous subarray. `max_global` updated to `5`. |
+| 6 | `1` | `1` | $5 + 1 = 6$ | `6` | `6` | `[4, -1, 2, 1]` | $\max(1, 6) = 6$. Extending previous subarray. `max_global` reaches peak sum `6`. |
+| 7 | `-5` | `-5` | $6 + (-5) = 1$ | `1` | `6` | `[4, -1, 2, 1, -5]` | $\max(-5, 1) = 1$. Extending previous subarray. `max_global` remains `6`. |
+| 8 | `4` | `4` | $1 + 4 = 5$ | `5` | `6` | `[4, -1, 2, 1, -5, 4]` | $\max(4, 5) = 5$. Extending previous subarray. `max_global` remains `6`. |
+
+#### Identifying the Maximum Subarray:
+
+From the intermediate state trace, the maximum global value `max_global = 6` is reached at index $6$. 
+
+Tracing backward from index $6$ to the point where the current subarray began (index $3$, where `max_current` started fresh at `nums[3] = 4`):
+- **Maximum Subarray**: `[4, -1, 2, 1]` (spanning indices $3$ through $6$)
+- **Maximum Subarray Sum**: $4 + (-1) + 2 + 1 = 6$
+
+### Boundary Example:
+
+Consider the boundary case with a single negative integer:
+- **Input**: `nums = [-7]`
+- **Array Size**: $N = 1$
+
+#### Execution Trace:
+1. **Initialization**:
+   - `max_current = nums[0] = -7`
+   - `max_global = nums[0] = -7`
+2. **Loop Condition**:
+   - The loop condition `for (size_t i = 1; i < nums.size(); i++)` evaluates `1 < 1`, which is `false`. The loop body terminates immediately without executing.
+3. **Result**:
+   - The function returns `max_global = -7`.
+   - **Expected Output / Result**: `-7`
+   - **Maximum Contiguous Subarray**: `[-7]` with sum `-7`.
+
+#### Boundary Insights:
+- **Single-Element Boundaries ($N = 1$)**: Confirms that single-element arrays terminate gracefully without out-of-bounds index operations or illegal pointer arithmetic.
+- **Negative Value Initialization**: If `max_current` or `max_global` were improperly initialized to `0` instead of `nums[0]`, the algorithm would incorrectly output `0` (which corresponds to an empty subarray, violating the non-empty contiguous subarray requirement). Initializing with `nums[0]` ensures all-negative arrays are evaluated correctly.
+
 ## Related Topics
 
 - **[Moore's Voting Algorithm](../moores-voting-algorithm/moore-voting-algo.md)**: Optimal $O(N)$ algorithm for majority element detection.
 - **[Two Pointers & Sliding Window](../two-pointers-sliding-window.md)**: Techniques for subarray and window processing ($O(N)$).
-- **[Monotonic Stack & Queue](../monotonic-stack-queue.md)**: Efficient structure for next greater element and sliding window maximum ($O(N)$).
+- **[Monotonic Stack & Queue](../monotonic-stack-queue.md)**: Efficient structure for next greater element and sliding window maximum ($O(N)$).
