@@ -1,0 +1,61 @@
+Actual Execution Results for Assignment R61-T028 (Maximum Number of Balloons - LeetCode 1189)
+=============================================================================================
+
+Target Document: docs/dsa-problems/easy/maximum-number-of-balloons.md
+Checker Script: work/R61-T028/check.py
+Compiler: Apple clang version 21.0.0 (clang-2100.1.1.101) (g++ -std=c++17 -O2)
+
+1. Actual Standard Output from Published Extracted C++ Code:
+------------------------------------------------------------
+Input: text = "nlaebolko"
+Output: 1
+Input: text = "loonbalxballpoon"
+Output: 2
+Input: text = "leetcode"
+Output: 0
+Input: text = "b"
+Output: 0
+
+2. Comparison Table:
+--------------------
+------------------------------------------------------------------------------------------------------
+Test Identifier                     Input Text                  Expected        Actual          Status
+------------------------------------------------------------------------------------------------------
+Line 1 & 2 (Original Example 1)     "nlaebolko"                 Output: 1       Output: 1       PASS
+Line 3 & 4 (Original Example 2)     "loonbalxballpoon"          Output: 2       Output: 2       PASS
+Line 5 & 6 (Original Example 3)     "leetcode"                  Output: 0       Output: 0       PASS
+Line 7 & 8 (Boundary Example 4)     "b"                         Output: 0       Output: 0       PASS
+TEST_ORIGINAL_1                     "nlaebolko"                 1               1               PASS
+TEST_ORIGINAL_2                     "loonbalxballpoon"          2               2               PASS
+TEST_ORIGINAL_3                     "leetcode"                  0               0               PASS
+TEST_BOUNDARY_SINGLE_CHAR           "b"                         0               0               PASS
+TEST_BOUNDARY_LENGTH_6_MISSING_N    "balloo"                    0               0               PASS
+TEST_BOUNDARY_EXACT_ONE             "balloon"                   1               1               PASS
+TEST_ASYMMETRIC_DEFICIT             "balloonballoo"             1               1               PASS
+TEST_BOTTLENECK_L                   "bbbbbaaoooonnnnnll"        1               1               PASS
+TEST_UNRELATED_ONLY                 "xyz"                       0               0               PASS
+TEST_SINGLE_L_O_DEFICIT             "balon"                     0               0               PASS
+------------------------------------------------------------------------------------------------------
+
+3. Genuine C++ Mutation Test Results:
+-------------------------------------
+Mutation 1 (Uniform Multiplicity Fallacy without division by 2):
+  Compiled: Yes (temporary binary)
+  Validation status: REJECTED (PASS)
+  Observed Failure: Harness mismatch for TEST_BOTTLENECK_L: expected 1, got 2
+
+Mutation 2 (Single-Character 'b' Fallacy):
+  Compiled: Yes (temporary binary)
+  Validation status: REJECTED (PASS)
+  Observed Failure: Published stdout line 8 mismatch: expected 'Output: 0', got 'Output: 1'
+
+Mutation 3 (Always Return Zero Stub):
+  Compiled: Yes (temporary binary)
+  Validation status: REJECTED (PASS)
+  Observed Failure: Published stdout line 2 mismatch: expected 'Output: 1', got 'Output: 0'
+
+Overall Verification Status:
+All published stdout lines matched expected output exactly.
+All 10 extended test harness assertions passed.
+All 3 genuine C++ mutations were compiled, executed, and successfully rejected by the validation harness.
+Status: PASS (100% Match)

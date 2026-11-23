@@ -1,0 +1,55 @@
+Expected Outputs for Assignment R61-T028 (Maximum Number of Balloons - LeetCode 1189)
+==================================================================================
+
+Target Document: docs/dsa-problems/easy/maximum-number-of-balloons.md
+
+1. Published Executable Standard Output:
+----------------------------------------
+Input: text = "nlaebolko"
+Output: 1
+Input: text = "loonbalxballpoon"
+Output: 2
+Input: text = "leetcode"
+Output: 0
+Input: text = "b"
+Output: 0
+
+2. Per-Input Expected Return Values:
+------------------------------------
+- text = "nlaebolko"                 -> 1
+- text = "loonbalxballpoon"          -> 2
+- text = "leetcode"                  -> 0
+- text = "b"                         -> 0
+- text = "balloo"                    -> 0
+- text = "balloon"                   -> 1
+- text = "balloonballoo"             -> 1
+- text = "bbbbbaaoooonnnnnll"        -> 1
+- text = "xyz"                       -> 0
+- text = "balon"                     -> 0
+
+3. Harness Key-Value Map:
+-------------------------
+TEST_ORIGINAL_1: 1
+TEST_ORIGINAL_2: 2
+TEST_ORIGINAL_3: 0
+TEST_BOUNDARY_SINGLE_CHAR: 0
+TEST_BOUNDARY_LENGTH_6_MISSING_N: 0
+TEST_BOUNDARY_EXACT_ONE: 1
+TEST_ASYMMETRIC_DEFICIT: 1
+TEST_BOTTLENECK_L: 1
+TEST_UNRELATED_ONLY: 0
+TEST_SINGLE_L_O_DEFICIT: 0
+
+4. C++ Mutation Test Expected Outcomes:
+---------------------------------------
+Mutation 1 (No / 2 on 'l' and 'o'):
+  Validation outcome: False
+  Rejection reason: "Harness mismatch for TEST_BOTTLENECK_L: expected 1, got 2"
+
+Mutation 2 (Only return count of 'b'):
+  Validation outcome: False
+  Rejection reason: "Published stdout line 8 mismatch: expected 'Output: 0', got 'Output: 1'"
+
+Mutation 3 (Always return 0):
+  Validation outcome: False
+  Rejection reason: "Published stdout line 2 mismatch: expected 'Output: 1', got 'Output: 0'"

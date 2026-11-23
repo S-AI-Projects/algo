@@ -1,0 +1,61 @@
+Test Inputs for Assignment R61-T028 (Maximum Number of Balloons - LeetCode 1189)
+================================================================================
+
+Target Document: docs/dsa-problems/easy/maximum-number-of-balloons.md
+
+1. Published Executable Examples:
+---------------------------------
+Example 1 (Original worked example):
+text = "nlaebolko"
+
+Example 2 (Original worked example):
+text = "loonbalxballpoon"
+
+Example 3 (Original worked example):
+text = "leetcode"
+
+Example 4 (Boundary example - single character, length < 7):
+text = "b"
+
+2. Extended Test Harness Inputs:
+--------------------------------
+TEST_ORIGINAL_1:
+text = "nlaebolko"
+
+TEST_ORIGINAL_2:
+text = "loonbalxballpoon"
+
+TEST_ORIGINAL_3:
+text = "leetcode"
+
+TEST_BOUNDARY_SINGLE_CHAR:
+text = "b"
+
+TEST_BOUNDARY_LENGTH_6_MISSING_N:
+text = "balloo"
+
+TEST_BOUNDARY_EXACT_ONE:
+text = "balloon"
+
+TEST_ASYMMETRIC_DEFICIT:
+text = "balloonballoo"
+
+TEST_BOTTLENECK_L:
+text = "bbbbbaaoooonnnnnll"
+
+TEST_UNRELATED_ONLY:
+text = "xyz"
+
+TEST_SINGLE_L_O_DEFICIT:
+text = "balon"
+
+3. C++ Mutation Test Invocations:
+---------------------------------
+Mutation 1 (Uniform Multiplicity Fallacy):
+Omission of / 2 for 'l' and 'o' counts; tested against full harness.
+
+Mutation 2 (Single-Character 'b' Fallacy):
+Only returns count['b' - 'a']; tested against published examples and harness.
+
+Mutation 3 (Stub / Zero Return Fallacy):
+Always returns 0; tested against published examples and harness.
