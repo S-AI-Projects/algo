@@ -1,0 +1,49 @@
+Test Inputs and Specifications for Fenwick Tree (R61-T026)
+=============================================================
+
+1. Original Worked Example:
+   Tree Size: n = 10
+   Operations:
+     - update(3, 5): adds 5 at index 3 (updates BITree indices 3, 4, 8)
+     - update(5, 2): adds 2 at index 5 (updates BITree indices 5, 6, 8)
+     - getSum(5): accumulates BITree[5] (2) + BITree[4] (5) = 7
+     - rangeSum(3, 5): evaluates getSum(5) - getSum(2) = 7 - 0 = 7
+   Expected Output:
+     "Sum from 1 to 5: 7"
+     "Range Sum from 3 to 5: 7"
+
+2. Boundary Example (Empty Prefix Query):
+   Operation: getSum(0)
+   Condition: while (i > 0) loop evaluates 0 > 0 (false), terminates immediately without iteration
+   Expected Return Value: 0
+   Expected Output:
+     "Empty prefix sum (getSum(0)): 0"
+
+3. Boundary Invariant for Range Sums:
+   Operation: rangeSum(1, 5)
+   Formula: getSum(5) - getSum(0) = 7 - 0 = 7
+   Expected Return Value: 7
+
+4. Point Queries across Array:
+   - getSum(1): 0 (no updates at index 1)
+   - getSum(2): 0
+   - getSum(3): 5 (BITree[3] = 5)
+   - getSum(4): 5 (BITree[4] = 5)
+   - getSum(5): 7 (BITree[5] + BITree[4] = 2 + 5 = 7)
+   - getSum(6): 7 (BITree[6] + BITree[4] = 2 + 5 = 7)
+   - getSum(7): 7
+   - getSum(8): 7 (BITree[8] = 7)
+
+5. Single-Element Range Queries:
+   - rangeSum(3, 3): getSum(3) - getSum(2) = 5 - 0 = 5
+   - rangeSum(5, 5): getSum(5) - getSum(4) = 7 - 5 = 2
+   - rangeSum(4, 5): getSum(5) - getSum(3) = 7 - 5 = 2
+
+6. Subsequent Update Test:
+   Operation: update(1, 10)
+   Updates: BITree indices 1, 2, 4, 8 receive +10
+   Expected:
+     - getSum(1) = 10
+     - getSum(3) = 15
+     - getSum(5) = 17
+     - rangeSum(1, 3) = 15

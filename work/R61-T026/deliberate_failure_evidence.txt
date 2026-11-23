@@ -1,0 +1,49 @@
+Deliberate Failure Test Evidence for Assignment R61-T026
+=========================================================
+
+To prove that the automated checker reliably catches discrepancies and errors,
+two deliberate wrong-result test cases were executed.
+
+Test 1: Deliberate Stdout Mismatch Assertion
+--------------------------------------------
+Tested Assertion:
+    assert actual_output == "Sum from 1 to 5: 999\nRange Sum from 3 to 5: 7\nEmpty prefix sum (getSum(0)): 0"
+
+Actual Value:
+    "Sum from 1 to 5: 7\nRange Sum from 3 to 5: 7\nEmpty prefix sum (getSum(0)): 0"
+
+Result:
+    AssertionError: Deliberate wrong-stdout assertion
+    Checker caught failure: YES
+    Verification status: PASS (Intentional failure successfully detected)
+
+Traceback Representation:
+    Traceback (most recent call last):
+      File "work/R61-T026/check.py", line 144, in test_deliberate_stdout_mismatch
+        assert actual_output == deliberate_wrong, "Deliberate wrong-stdout assertion"
+    AssertionError: Deliberate wrong-stdout assertion
+
+
+Test 2: Deliberate Boundary Query Mismatch Assertion
+----------------------------------------------------
+Background:
+    An empty prefix query getSum(0) must evaluate to 0 because an empty range has sum 0.
+    If an erroneous implementation accessed out-of-bounds memory or calculated a non-zero
+    dummy sentinel sum (e.g. 99), this assertion ensures the checker will flag the error.
+
+Tested Assertion:
+    assert actual_boundary == 99
+
+Actual Value:
+    0
+
+Result:
+    AssertionError: Deliberate boundary assertion
+    Checker caught failure: YES
+    Verification status: PASS (Intentional failure successfully detected)
+
+Traceback Representation:
+    Traceback (most recent call last):
+      File "work/R61-T026/check.py", line 152, in test_deliberate_boundary_mismatch
+        assert actual_boundary == deliberate_wrong, "Deliberate boundary assertion"
+    AssertionError: Deliberate boundary assertion
