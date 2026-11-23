@@ -1,0 +1,18 @@
+Runtime and Compiler Environment for Issue #22 (R61-T022)
+Target: docs/languages/cpp/cp-13.md
+--------------------------------------------------------------------------------
+Compiler:
+  g++: Apple clang version 21.0.0 (clang-2100.1.1.101)
+
+Python Runtime:
+  python: 3.9.6 (/Library/Developer/CommandLineTools/usr/bin/python3)
+
+Node & NPM Environment:
+  node: v26.13.1
+  npm:  11.20.0
+
+OS & Architecture:
+  system:   Darwin
+  release:  25.6.0
+  machine:  arm64
+  platform: macOS-26.6.2-arm64-arm-64bit

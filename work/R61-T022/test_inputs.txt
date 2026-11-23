@@ -1,0 +1,15 @@
+Test Inputs for Issue #22 (R61-T022)
+Document: docs/languages/cpp/cp-13.md
+Section: 1. The Core Architecture of the STL
+
+Case TC-01: Worked Example
+  Input: std::vector<int> numbers = {1, 2, 3, 4, 5}
+  Operation: std::for_each with Double functor over range [numbers.begin(), numbers.end())
+  Iterator traversal: explicit loop printing *it
+  Expected: 2 4 6 8 10 
+
+Case TC-02: Boundary / Minimum Case
+  Input: std::vector<int> empty_vec = {}
+  Operation: empty vector boundary condition verification (begin() == end())
+  Precondition: begin() == end(), 0 iterations, no dereferencing performed
+  Expected: Empty vector boundary case: no output
