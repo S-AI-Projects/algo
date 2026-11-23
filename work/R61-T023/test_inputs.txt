@@ -1,0 +1,41 @@
+Test Inputs for Issue #23 (R61-T023)
+Document: docs/languages/php/php-12.md
+Section: A Simple HTML Form / Processing Form Data
+
+Comparison: POST vs GET on Name and Email Form Fixture
+--------------------------------------------------------------------------------
+Case TC-01: POST Normal Input (Worked Example)
+  Method: POST
+  Wire Payload: name=Alice&email=alice%40example.com (Content-Length: 36)
+  Parsed: $_POST['name']='Alice', $_POST['email']='alice@example.com'
+  Expected Output: Welcome, Alice!\nYour email is: alice@example.com\n
+
+Case TC-02: GET Normal Input (Worked Example)
+  Method: GET
+  Wire Query String: name=Alice&email=alice%40example.com
+  Parsed: $_GET['name']='Alice', $_GET['email']='alice@example.com'
+  Expected Output: Welcome, Alice!\nYour email is: alice@example.com\n
+
+Case TC-03: POST Boundary Case (Missing Parameters)
+  Method: POST
+  Wire Payload: '' (empty body)
+  Precondition: $_POST['name'] ?? '' evaluates to empty string without warnings
+  Expected Output: Welcome, !\nYour email is: \n
+
+Case TC-04: GET Boundary Case (Missing Parameters)
+  Method: GET
+  Wire Query String: '' (empty query string)
+  Precondition: $_GET['name'] ?? '' evaluates to empty string without warnings
+  Expected Output: Welcome, !\nYour email is: \n
+
+Case TC-05: POST Boundary Case (Empty Strings)
+  Method: POST
+  Wire Payload: name=&email=
+  Parsed: $_POST['name']='', $_POST['email']=''
+  Expected Output: Welcome, !\nYour email is: \n
+
+Case TC-06: GET Boundary Case (Empty Strings)
+  Method: GET
+  Wire Query String: name=&email=
+  Parsed: $_GET['name']='', $_GET['email']=''
+  Expected Output: Welcome, !\nYour email is: \n

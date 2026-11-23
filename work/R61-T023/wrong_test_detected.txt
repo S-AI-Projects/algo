@@ -1,0 +1,11 @@
+--- Negative Case 1: Mutated welcome_post.php ---
+Exit Code: 1 (Expected Non-Zero)
+Captured Failure Output:
+[WORKER-FAIL] POST normal failed: 'Welcome, CORRUPTED_TEST_NAME!\nYour email is: alice@example.com\n' != 'Welcome, Alice!\nYour email is: alice@example.com\n'
+
+
+--- Negative Case 2: Mutated welcome_get.php ---
+Exit Code: 1 (Expected Non-Zero)
+Captured Failure Output:
+[WORKER-FAIL] GET normal failed: 'Welcome, Alice!\nYour email is: CORRUPTED_EMAIL\n' != 'Welcome, Alice!\nYour email is: alice@example.com\n'
+

@@ -1,0 +1,59 @@
+Expected vs. Actual Outputs for Issue #23 (R61-T023)
+Execution Target: Extracted PHP examples from docs/languages/php/php-12.md
+Validator: python3 work/R61-T023/check.py
+================================================================================
+Case TC-01: POST Normal Input (Alice, alice@example.com)
+Expected:
+Welcome, Alice!
+Your email is: alice@example.com
+Actual:
+Welcome, Alice!
+Your email is: alice@example.com
+Status: MATCH (PASS)
+--------------------------------------------------------------------------------
+Case TC-02: GET Normal Input (Alice, alice@example.com)
+Expected:
+Welcome, Alice!
+Your email is: alice@example.com
+Actual:
+Welcome, Alice!
+Your email is: alice@example.com
+Status: MATCH (PASS)
+--------------------------------------------------------------------------------
+Case TC-03: POST Boundary Case (Missing Parameters)
+Expected:
+Welcome, !
+Your email is: 
+Actual:
+Welcome, !
+Your email is: 
+Status: MATCH (PASS)
+--------------------------------------------------------------------------------
+Case TC-04: GET Boundary Case (Missing Parameters)
+Expected:
+Welcome, !
+Your email is: 
+Actual:
+Welcome, !
+Your email is: 
+Status: MATCH (PASS)
+--------------------------------------------------------------------------------
+Case TC-05: POST Boundary Case (Empty String Values)
+Expected:
+Welcome, !
+Your email is: 
+Actual:
+Welcome, !
+Your email is: 
+Status: MATCH (PASS)
+--------------------------------------------------------------------------------
+Case TC-06: GET Boundary Case (Empty String Values)
+Expected:
+Welcome, !
+Your email is: 
+Actual:
+Welcome, !
+Your email is: 
+Status: MATCH (PASS)
+================================================================================
+Overall Status: ALL CASES PERFECT MATCH
