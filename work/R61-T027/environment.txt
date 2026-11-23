@@ -1,0 +1,22 @@
+Runtime and Compiler Environment for Issue #27 (R61-T027)
+Generated: Tue Nov 17 04:43:00 UTC 2026
+
+Python Version:
+3.9.6 (default, May 22 2026, 11:13:45) 
+[Clang 21.0.0 (clang-2100.1.1.101)]
+
+Java SDK & Runtime Version:
+openjdk version "27.0.1.0.3" 2026-10-24
+OpenJDK Runtime Environment Homebrew (build 27.0.1.0.3)
+OpenJDK 64-Bit Server VM Homebrew (build 27.0.1.0.3, mixed mode, sharing)
+Java Binary Location: /opt/homebrew/opt/openjdk/bin/java
+
+Node & NPM Versions:
+node: v26.13.1
+npm:  11.20.0
+
+OS & System Architecture:
+System: Darwin
+Release: 25.6.0
+Machine: arm64
+Platform: macOS-26.6.2-arm64-arm-64bit

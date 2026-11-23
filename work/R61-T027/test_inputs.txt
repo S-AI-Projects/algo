@@ -1,0 +1,26 @@
+Test Inputs for Issue #27 (R61-T027)
+Document: docs/basic-data-structures/array/wiggle-sort.md
+Target Class: WiggleSort
+Contract: arr[0] <= arr[1] >= arr[2] <= arr[3] >= arr[4] <= ...
+
+1. Worked Example (Documented LeetCode 280 Example):
+   - Input: int[] nums = {3, 5, 2, 1, 6, 4};
+   - Call: WiggleSort.sort(nums);
+   - Invariant:
+     * Even index i (0, 2, 4): nums[i] <= nums[i + 1] (swap if nums[i] > nums[i + 1])
+     * Odd index i (1, 3): nums[i] >= nums[i + 1] (swap if nums[i] < nums[i + 1])
+   - Operations:
+     * i = 0: 3 <= 5 -> No swap. Array: [3, 5, 2, 1, 6, 4]
+     * i = 1: 5 >= 2 -> No swap. Array: [3, 5, 2, 1, 6, 4]
+     * i = 2: 2 > 1  -> swap(nums, 2, 3). Array: [3, 5, 1, 2, 6, 4]
+     * i = 3: 2 < 6  -> swap(nums, 3, 4). Array: [3, 5, 1, 6, 2, 4]
+     * i = 4: 2 <= 4 -> No swap. Array: [3, 5, 1, 6, 2, 4]
+   - Expected Output: [3, 5, 1, 6, 2, 4]
+
+2. Boundary Example (Defensive Guard Boundary):
+   - Input: int[] boundary = {1};
+   - Call: WiggleSort.sort(boundary);
+   - Condition: Evaluates `if (nums == null || nums.length <= 1)` which is true since length == 1.
+   - Operations: Immediate return with zero swaps.
+   - Purpose: Validates edge-case contract consistency for minimal array length.
+   - Expected Output: [1]

@@ -1,0 +1,32 @@
+Expected vs. Actual Outputs for Issue #27 (R61-T027)
+Execution Target: Extracted Java example from docs/basic-data-structures/array/wiggle-sort.md
+Validator: python3 work/R61-T027/check.py
+
+--------------------------------------------------------------------------------
+Case ID: TC-01 (Worked Example)
+Call: WiggleSort.sort(nums) with nums = {3, 5, 2, 1, 6, 4}
+Expected Output: Worked Example Output: [3, 5, 1, 6, 2, 4]
+Actual Output:   Worked Example Output: [3, 5, 1, 6, 2, 4]
+Status:          MATCH (PASS)
+
+--------------------------------------------------------------------------------
+Case ID: TC-02 (Boundary Example)
+Call: WiggleSort.sort(boundary) with boundary = {1}
+Expected Output: Boundary Example Output: [1]
+Actual Output:   Boundary Example Output: [1]
+Status:          MATCH (PASS)
+
+--------------------------------------------------------------------------------
+Overall Execution Result:
+Total Lines Expected: 2
+Total Lines Received: 2
+Clean Output Comparison:
+  Line 1: "Worked Example Output: [3, 5, 1, 6, 2, 4]" == "Worked Example Output: [3, 5, 1, 6, 2, 4]" -> PASS
+  Line 2: "Boundary Example Output: [1]"              == "Boundary Example Output: [1]"              -> PASS
+
+Negative Verification:
+  Deliberate mismatch test against un-sorted expectation:
+  Expected: ["Worked Example Output: [3, 5, 2, 1, 6, 4]", "Boundary Example Output: [1]"]
+  Actual:   ["Worked Example Output: [3, 5, 1, 6, 2, 4]", "Boundary Example Output: [1]"]
+  Result: Raised AssertionError as required.
+  Status: PASS
