@@ -1,0 +1,26 @@
+Actual Results for Assignment R61-T029 (Reservoir Sampling)
+===========================================================
+
+1. Published Executable Subprocess Output:
+------------------------------------------
+Random sample: [18152, 22772, 29552, 59712, 55457]
+Boundary sample (n <= k): [10, 20, 30]
+
+2. Function Harness Actual Return Values:
+-----------------------------------------
+TEST_WORKED_EXAMPLE: [18152, 22772, 29552, 59712, 55457]
+TEST_BOUNDARY_SHORT_STREAM: [10, 20, 30]
+TEST_BOUNDARY_EXACT_STREAM: [1, 2, 3, 4, 5]
+TEST_BOUNDARY_EMPTY_STREAM: []
+TEST_BOUNDARY_K_EQUALS_ONE: [200]
+TEST_STREAMING_GENERATOR: [30, 38, 45, 5]
+TEST_STATISTICAL_UNIFORMITY: {'trials': 100000, 'k': 3, 'n': 10, 'seed': 42, 'expected_prob': 0.3, 'counts': [30038, 30099, 29971, 30088, 30065, 29758, 29892, 29792, 30107, 30190], 'frequencies': [0.3004, 0.301, 0.2997, 0.3009, 0.3006, 0.2976, 0.2989, 0.2979, 0.3011, 0.3019]}
+TEST_MEMORY_INVARIANCE: {'k': 5, 'scales': [{'stream_size': 5, 'reservoir_len': 5, 'shallow_bytes': 120}, {'stream_size': 100, 'reservoir_len': 5, 'shallow_bytes': 120}, {'stream_size': 1000, 'reservoir_len': 5, 'shallow_bytes': 120}, {'stream_size': 10000, 'reservoir_len': 5, 'shallow_bytes': 120}, {'stream_size': 100000, 'reservoir_len': 5, 'shallow_bytes': 120}, {'stream_size': 1000000, 'reservoir_len': 5, 'shallow_bytes': 120}], 'shallow_bytes_invariant': 120, 'python_version': '3.9.6', 'platform': 'macOS-26.6.2-arm64-arm-64bit'}
+
+3. Deliberate Failure and Mutation Detection:
+--------------------------------------------
+NEGATIVE_TEST_STDOUT_MISMATCH: CAUGHT_ASSERTION_ERROR
+NEGATIVE_TEST_BOUNDARY_MISMATCH: CAUGHT_ASSERTION_ERROR
+MUTATION_TEST_OUT_OF_BOUNDS: REJECTED_WITH_ERROR
+MUTATION_TEST_NO_OP_REPLACEMENT: REJECTED_WITH_MISMATCH
+MUTATION_TEST_EMPTY_STUB: REJECTED_WITH_MISMATCH
