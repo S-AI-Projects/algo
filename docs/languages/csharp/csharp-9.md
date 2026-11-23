@@ -3,6 +3,8 @@ id: interfaces-in-csharp
 sidebar_position: 9  
 title: "Interfaces in C#"  
 sidebar_label: "Interfaces in C#"  
+description: "Learn about interfaces in C#, including syntax, implementation, multiple interfaces, and default methods with executable examples."
+tags: [csharp, programming, interfaces, oop, polymorphism]
 ---
 
 In C#, an interface is a contract that defines a set of methods and properties that a class must implement, without providing the implementation itself. Interfaces are fundamental to achieving abstraction, polymorphism, and multiple inheritance in C#. They allow classes to share a common contract, which helps in designing flexible and scalable applications.
@@ -50,10 +52,22 @@ class Dog : IAnimal {
     }
 }
 
+// Boundary example: an animal that makes no audible sound (silent boundary condition)
+class Fish : IAnimal {
+    public void MakeSound() {
+        Console.WriteLine("Silence");
+    }
+}
+
 class Program {
     static void Main() {
-        Dog dog = new Dog();
+        // Worked example: Dog implements IAnimal and produces sound
+        IAnimal dog = new Dog();
         dog.MakeSound();  // Outputs "Bark"
+
+        // Boundary example: Fish implements IAnimal and handles the silent boundary case
+        IAnimal fish = new Fish();
+        fish.MakeSound();  // Outputs "Silence"
     }
 }
 ```
@@ -62,8 +76,14 @@ class Program {
 
 In this example:
 - `IAnimal` is an interface with a method `MakeSound`.
-- `Dog` implements `IAnimal` by providing an implementation of `MakeSound`.
-- The `Program` class creates an instance of `Dog` and calls `MakeSound`.
+- `Dog` implements `IAnimal` by providing an implementation of `MakeSound` that outputs `"Bark"`.
+- `Fish` provides a boundary implementation of `IAnimal`, modeling a silent animal that outputs `"Silence"`.
+- `Program.Main` demonstrates interfaces directly by referencing instances through the `IAnimal` interface type (`IAnimal dog = new Dog();`, `IAnimal fish = new Fish();`).
+- **Concrete Input**: Calling `MakeSound()` on the `IAnimal` interface references.
+- **Intermediate State**: Dynamic dispatch resolves the interface contract `animal.MakeSound()` to the concrete class implementation at runtime (`Dog.MakeSound` or `Fish.MakeSound`).
+- **Expected Output**:
+  - `Bark` (worked example)
+  - `Silence` (boundary example)
 
 ## 3. Properties in Interfaces
 

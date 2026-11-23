@@ -1,0 +1,16 @@
+Test Inputs for Issue #21 (R61-T021)
+Document: docs/languages/csharp/csharp-9.md
+Target Interface: IAnimal (Contract: void MakeSound())
+
+1. Worked Example (Preserved from Article):
+   - Type: IAnimal dog = new Dog();
+   - Call: dog.MakeSound();
+   - Input: Void argument list, invocation dispatched on concrete Dog instance through IAnimal interface.
+   - Purpose: Validates that standard implementation preserves the article's literal worked-example.
+
+2. Boundary Example (Contract Boundary):
+   - Type: IAnimal fish = new Fish();
+   - Call: fish.MakeSound();
+   - Input: Void argument list, invocation dispatched on concrete Fish instance through IAnimal interface.
+   - Purpose: Validates interface contract consistency for a boundary/edge implementation (silent animal).
+

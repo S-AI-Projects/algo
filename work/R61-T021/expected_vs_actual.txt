@@ -1,0 +1,30 @@
+Expected vs. Actual Outputs for Issue #21 (R61-T021)
+Execution Target: Extracted C# example from docs/languages/csharp/csharp-9.md
+Validator: python3 work/R61-T021/check.py
+
+--------------------------------------------------------------------------------
+Case ID: TC-01 (Worked Example)
+Call: dog.MakeSound() via IAnimal reference
+Expected Output: Bark
+Actual Output:   Bark
+Status:          MATCH (PASS)
+
+--------------------------------------------------------------------------------
+Case ID: TC-02 (Boundary Example)
+Call: fish.MakeSound() via IAnimal reference
+Expected Output: Silence
+Actual Output:   Silence
+Status:          MATCH (PASS)
+
+--------------------------------------------------------------------------------
+Overall Execution Result:
+Total Lines Expected: 2
+Total Lines Received: 2
+Clean Output Comparison:
+  Line 1: "Bark"    == "Bark"    -> PASS
+  Line 2: "Silence" == "Silence" -> PASS
+
+Negative Verification:
+  Deliberate mismatch test (["Bark", "Meow"] vs ["Bark", "Silence"]) raised AssertionError as required.
+  Status: PASS
+
